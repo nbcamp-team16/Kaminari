@@ -20,6 +20,12 @@
 		4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */; };
 		4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C02AC16C9400CB3329 /* SnapKit */; };
 		4E26E4C32AC16C9400CB3329 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */; };
+		4E26E4C52AC197D900CB3329 /* CurrentWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4C42AC197D900CB3329 /* CurrentWeatherCell.swift */; };
+		4E26E4C72AC197F200CB3329 /* CurrentTimelyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4C62AC197F200CB3329 /* CurrentTimelyCell.swift */; };
+		4E26E4C92AC1993700CB3329 /* CurrentThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4C82AC1993600CB3329 /* CurrentThumbnailCell.swift */; };
+		4E26E4CB2AC1C72100CB3329 /* CurrentWeatherMockup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4CA2AC1C72100CB3329 /* CurrentWeatherMockup.swift */; };
+		4E26E4CD2AC1D7D400CB3329 /* SectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4CC2AC1D7D400CB3329 /* SectionItem.swift */; };
+		4E26E4CF2AC1D8B200CB3329 /* CustomCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4CE2AC1D8B200CB3329 /* CustomCollectionView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +42,12 @@
 		4E26E4B92AC1685000CB3329 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		4E26E4BB2AC169C600CB3329 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		4E26E4C42AC197D900CB3329 /* CurrentWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCell.swift; sourceTree = "<group>"; };
+		4E26E4C62AC197F200CB3329 /* CurrentTimelyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTimelyCell.swift; sourceTree = "<group>"; };
+		4E26E4C82AC1993600CB3329 /* CurrentThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentThumbnailCell.swift; sourceTree = "<group>"; };
+		4E26E4CA2AC1C72100CB3329 /* CurrentWeatherMockup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherMockup.swift; sourceTree = "<group>"; };
+		4E26E4CC2AC1D7D400CB3329 /* SectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionItem.swift; sourceTree = "<group>"; };
+		4E26E4CE2AC1D8B200CB3329 /* CustomCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +97,8 @@
 		4E26E4AF2AC1676700CB3329 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				4E26E4CA2AC1C72100CB3329 /* CurrentWeatherMockup.swift */,
+				4E26E4CC2AC1D7D400CB3329 /* SectionItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -93,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */,
+				4E26E4CE2AC1D8B200CB3329 /* CustomCollectionView.swift */,
 				4E26E4B22AC167A800CB3329 /* Cell */,
 			);
 			path = View;
@@ -114,6 +129,9 @@
 		4E26E4B22AC167A800CB3329 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				4E26E4C82AC1993600CB3329 /* CurrentThumbnailCell.swift */,
+				4E26E4C62AC197F200CB3329 /* CurrentTimelyCell.swift */,
+				4E26E4C42AC197D900CB3329 /* CurrentWeatherCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -198,12 +216,18 @@
 				4E26E4B62AC167F300CB3329 /* SearchViewController.swift in Sources */,
 				4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */,
 				4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */,
+				4E26E4C72AC197F200CB3329 /* CurrentTimelyCell.swift in Sources */,
+				4E26E4CB2AC1C72100CB3329 /* CurrentWeatherMockup.swift in Sources */,
 				4E26E4A02AC166B800CB3329 /* CurrentViewController.swift in Sources */,
 				4E26E4B82AC1681600CB3329 /* RegionViewController.swift in Sources */,
 				4E26E4B42AC167DC00CB3329 /* WeeklyViewController.swift in Sources */,
+				4E26E4C92AC1993700CB3329 /* CurrentThumbnailCell.swift in Sources */,
+				4E26E4CF2AC1D8B200CB3329 /* CustomCollectionView.swift in Sources */,
 				4E26E49C2AC166B800CB3329 /* AppDelegate.swift in Sources */,
 				4E26E49E2AC166B800CB3329 /* SceneDelegate.swift in Sources */,
 				4E26E4BA2AC1685000CB3329 /* DetailViewController.swift in Sources */,
+				4E26E4CD2AC1D7D400CB3329 /* SectionItem.swift in Sources */,
+				4E26E4C52AC197D900CB3329 /* CurrentWeatherCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
