@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1DC10FBB2AC17C9300EA7D1E /* WeeklyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */; };
+		1DC10FBD2AC2665200EA7D1E /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC10FBC2AC2665200EA7D1E /* CustomLabel.swift */; };
 		4E26E49C2AC166B800CB3329 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E49B2AC166B800CB3329 /* AppDelegate.swift */; };
 		4E26E49E2AC166B800CB3329 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E49D2AC166B800CB3329 /* SceneDelegate.swift */; };
 		4E26E4A02AC166B800CB3329 /* CurrentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E49F2AC166B800CB3329 /* CurrentViewController.swift */; };
@@ -19,10 +21,11 @@
 		4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4BB2AC169C600CB3329 /* TabBarController.swift */; };
 		4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */; };
 		4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C02AC16C9400CB3329 /* SnapKit */; };
-		4E26E4C32AC16C9400CB3329 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyTableViewCell.swift; sourceTree = "<group>"; };
+		1DC10FBC2AC2665200EA7D1E /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		4E26E4982AC166B800CB3329 /* Kaminari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kaminari.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E26E49B2AC166B800CB3329 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4E26E49D2AC166B800CB3329 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -44,7 +47,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */,
-				4E26E4C32AC16C9400CB3329 /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */,
+				1DC10FBC2AC2665200EA7D1E /* CustomLabel.swift */,
 				4E26E4B22AC167A800CB3329 /* Cell */,
 			);
 			path = View;
@@ -107,6 +110,7 @@
 				4E26E4B72AC1681600CB3329 /* RegionViewController.swift */,
 				4E26E4B52AC167F300CB3329 /* SearchViewController.swift */,
 				4E26E4B92AC1685000CB3329 /* DetailViewController.swift */,
+				1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -136,7 +140,6 @@
 			name = Kaminari;
 			packageProductDependencies = (
 				4E26E4C02AC16C9400CB3329 /* SnapKit */,
-				4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */,
 			);
 			productName = Kaminari;
 			productReference = 4E26E4982AC166B800CB3329 /* Kaminari.app */;
@@ -195,7 +198,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1DC10FBB2AC17C9300EA7D1E /* WeeklyTableViewCell.swift in Sources */,
 				4E26E4B62AC167F300CB3329 /* SearchViewController.swift in Sources */,
+				1DC10FBD2AC2665200EA7D1E /* CustomLabel.swift in Sources */,
 				4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */,
 				4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */,
 				4E26E4A02AC166B800CB3329 /* CurrentViewController.swift in Sources */,
@@ -435,11 +440,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
