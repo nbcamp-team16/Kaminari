@@ -130,12 +130,18 @@ extension CurrentViewController {
                 
             case .currentTimelyWeatherList:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrentTimelyCell", for: indexPath) as? CurrentTimelyCell else { preconditionFailure() }
-                
+//                guard let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: <#T##String#>, withReuseIdentifier: <#T##String#>, for: <#T##IndexPath#>) as? else { preconditionFailure() }
+                let item = CurrentTimelyWeatherMockup.weatherList[indexPath.row]
+                cell.setupUI()
                 cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
-                cell.backgroundColor = .systemBlue
+                cell.timeLabel.text = item.time
+                cell.weatherIconImageView.image = UIImage(systemName: item.weatherIcon)
+                cell.temperatureLabel.text = item.temperature
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
-                
+                cell.backgroundColor = .white
+                cell.layer.borderColor = UIColor.systemGray6.cgColor
+                cell.layer.borderWidth = 0.5
                 return cell
                 
             case .currentWeatherList:
@@ -149,6 +155,8 @@ extension CurrentViewController {
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
                 cell.backgroundColor = .white
+                cell.layer.borderColor = UIColor.systemGray6.cgColor
+                cell.layer.borderWidth = 0.5
                 return cell
             }
         }

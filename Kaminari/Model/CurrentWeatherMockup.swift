@@ -28,18 +28,18 @@ struct CurrentTimelyWeatherMockup: Hashable {
 
 extension CurrentTimelyWeatherMockup {
     static let weatherList: [CurrentTimelyWeatherMockup] = [
-        CurrentTimelyWeatherMockup(time: "2시", weatherIcon: "cloudy", temperature: "21°C"),
-        CurrentTimelyWeatherMockup(time: "3시", weatherIcon: "cloudy", temperature: "21°C"),
+        CurrentTimelyWeatherMockup(time: "2시", weatherIcon: "cloud.rain", temperature: "21°C"),
+        CurrentTimelyWeatherMockup(time: "3시", weatherIcon: "cloud.rain", temperature: "21°C"),
 
-        CurrentTimelyWeatherMockup(time: "4시", weatherIcon: "cloudy", temperature: "21°C"),
+        CurrentTimelyWeatherMockup(time: "4시", weatherIcon: "cloud.rain", temperature: "21°C"),
 
-        CurrentTimelyWeatherMockup(time: "5시", weatherIcon: "cloudy", temperature: "21°C"),
+        CurrentTimelyWeatherMockup(time: "5시", weatherIcon: "cloud.rain", temperature: "21°C"),
 
-        CurrentTimelyWeatherMockup(time: "6시", weatherIcon: "cloudy", temperature: "21°C"),
+        CurrentTimelyWeatherMockup(time: "6시", weatherIcon: "cloud.rain", temperature: "21°C"),
 
-        CurrentTimelyWeatherMockup(time: "7시", weatherIcon: "cloudy", temperature: "21°C"),
+        CurrentTimelyWeatherMockup(time: "7시", weatherIcon: "cloud.rain", temperature: "21°C"),
 
-        CurrentTimelyWeatherMockup(time: "8시", weatherIcon: "cloudy", temperature: "21°C"),
+        CurrentTimelyWeatherMockup(time: "8시", weatherIcon: "cloud.rain", temperature: "21°C"),
     ]
 }
 
