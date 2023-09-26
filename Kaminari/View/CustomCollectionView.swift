@@ -28,7 +28,7 @@ extension CustomCollectionView {
         let item = NSCollectionLayoutItem(layoutSize: layoutSize)
         return item
     }
-    
+
     func configureContentInsets(top: CGFloat, leading: CGFloat, bottom: CGFloat, trailing: CGFloat) -> NSDirectionalEdgeInsets {
         let item = NSDirectionalEdgeInsets(top: top, leading: leading, bottom: bottom, trailing: trailing)
         return item

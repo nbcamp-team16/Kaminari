@@ -82,16 +82,16 @@ extension CurrentViewController {
             } else if sectionKind == .currentTimelyWeatherList {
                 let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.2), heightDimension: .fractionalHeight(1.0))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
-                item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
+                item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
                     
-                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.68), heightDimension: .fractionalHeight(0.2))
+                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.2))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                     
                 section = NSCollectionLayoutSection(group: group)
                     
                 section.interGroupSpacing = 0
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 7, bottom: 5, trailing: 2)
+                section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 10)
                   
             } else if sectionKind == .currentWeatherList {
                 let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -130,13 +130,25 @@ extension CurrentViewController {
                 
             case .currentTimelyWeatherList:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrentTimelyCell", for: indexPath) as? CurrentTimelyCell else { preconditionFailure() }
+                
+                cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
                 cell.backgroundColor = .systemBlue
+                cell.layer.shadowOffset = CGSize(width: 2, height: 2)
+                cell.layer.cornerRadius = 10
+                
                 return cell
                 
             case .currentWeatherList:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrentWeatherCell", for: indexPath) as? CurrentWeatherCell else { preconditionFailure() }
+                let item = CurrentWeathersMockup.weatherList[indexPath.row]
+                cell.setupUI()
+                cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
+                cell.currentWeatherLabel.text = item.title
+                cell.currentTemperatureLabel.text = item.temperature
+                cell.currentDescriptionLabel.text = item.description
+                cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
-                cell.backgroundColor = .systemGreen
+                cell.backgroundColor = .white
                 return cell
             }
         }
