@@ -19,7 +19,6 @@
 		4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4BB2AC169C600CB3329 /* TabBarController.swift */; };
 		4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */; };
 		4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C02AC16C9400CB3329 /* SnapKit */; };
-		4E26E4C32AC16C9400CB3329 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,7 +43,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */,
-				4E26E4C32AC16C9400CB3329 /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,7 +134,6 @@
 			name = Kaminari;
 			packageProductDependencies = (
 				4E26E4C02AC16C9400CB3329 /* SnapKit */,
-				4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */,
 			);
 			productName = Kaminari;
 			productReference = 4E26E4982AC166B800CB3329 /* Kaminari.app */;
@@ -435,11 +432,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
-		};
-		4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
