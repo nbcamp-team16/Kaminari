@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "gifu",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/kaishin/Gifu.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "e051504ce6fff6530d72c5c5454c139f51bff9c9"
+      }
+    },
+    {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SnapKit/SnapKit.git",

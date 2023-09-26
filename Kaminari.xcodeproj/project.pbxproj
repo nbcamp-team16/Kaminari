@@ -19,13 +19,18 @@
 		4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4BB2AC169C600CB3329 /* TabBarController.swift */; };
 		4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */; };
 		4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C02AC16C9400CB3329 /* SnapKit */; };
-		4E26E4C32AC16C9400CB3329 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */; };
 		4E26E4C52AC197D900CB3329 /* CurrentWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4C42AC197D900CB3329 /* CurrentWeatherCell.swift */; };
 		4E26E4C72AC197F200CB3329 /* CurrentTimelyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4C62AC197F200CB3329 /* CurrentTimelyCell.swift */; };
 		4E26E4C92AC1993700CB3329 /* CurrentThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4C82AC1993600CB3329 /* CurrentThumbnailCell.swift */; };
 		4E26E4CB2AC1C72100CB3329 /* CurrentWeatherMockup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4CA2AC1C72100CB3329 /* CurrentWeatherMockup.swift */; };
 		4E26E4CD2AC1D7D400CB3329 /* SectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4CC2AC1D7D400CB3329 /* SectionItem.swift */; };
 		4E26E4CF2AC1D8B200CB3329 /* CustomCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4CE2AC1D8B200CB3329 /* CustomCollectionView.swift */; };
+		4E6EDC602AC27E6A0003420F /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6EDC5F2AC27E6A0003420F /* CustomLabel.swift */; };
+		4E6EDC622AC282360003420F /* CustomStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6EDC612AC282360003420F /* CustomStackView.swift */; };
+		4E6EDC642AC283250003420F /* CustomImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6EDC632AC283250003420F /* CustomImageView.swift */; };
+		4E6EDC6C2AC2D8690003420F /* Gifu in Frameworks */ = {isa = PBXBuildFile; productRef = 4E6EDC6B2AC2D8690003420F /* Gifu */; };
+		4E6EDC6E2AC2D89D0003420F /* rain.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4E6EDC6D2AC2D89D0003420F /* rain.gif */; };
+		4E6EDC702AC2DD890003420F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6EDC6F2AC2DD890003420F /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +53,11 @@
 		4E26E4CA2AC1C72100CB3329 /* CurrentWeatherMockup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherMockup.swift; sourceTree = "<group>"; };
 		4E26E4CC2AC1D7D400CB3329 /* SectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionItem.swift; sourceTree = "<group>"; };
 		4E26E4CE2AC1D8B200CB3329 /* CustomCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionView.swift; sourceTree = "<group>"; };
+		4E6EDC5F2AC27E6A0003420F /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
+		4E6EDC612AC282360003420F /* CustomStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomStackView.swift; sourceTree = "<group>"; };
+		4E6EDC632AC283250003420F /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
+		4E6EDC6D2AC2D89D0003420F /* rain.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = rain.gif; sourceTree = "<group>"; };
+		4E6EDC6F2AC2DD890003420F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,7 +66,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */,
-				4E26E4C32AC16C9400CB3329 /* SnapKit-Dynamic in Frameworks */,
+				4E6EDC6C2AC2D8690003420F /* Gifu in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,10 +94,12 @@
 			children = (
 				4E26E49B2AC166B800CB3329 /* AppDelegate.swift */,
 				4E26E49D2AC166B800CB3329 /* SceneDelegate.swift */,
+				4E6EDC6F2AC2DD890003420F /* Extensions.swift */,
 				4E26E4AF2AC1676700CB3329 /* Model */,
 				4E26E4B02AC1676F00CB3329 /* View */,
 				4E26E4B12AC1677B00CB3329 /* Controller */,
 				4E26E4A42AC166BB00CB3329 /* Assets.xcassets */,
+				4E6EDC6D2AC2D89D0003420F /* rain.gif */,
 				4E26E4A62AC166BB00CB3329 /* LaunchScreen.storyboard */,
 				4E26E4A92AC166BB00CB3329 /* Info.plist */,
 			);
@@ -108,6 +120,9 @@
 			children = (
 				4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */,
 				4E26E4CE2AC1D8B200CB3329 /* CustomCollectionView.swift */,
+				4E6EDC5F2AC27E6A0003420F /* CustomLabel.swift */,
+				4E6EDC632AC283250003420F /* CustomImageView.swift */,
+				4E6EDC612AC282360003420F /* CustomStackView.swift */,
 				4E26E4B22AC167A800CB3329 /* Cell */,
 			);
 			path = View;
@@ -154,7 +169,7 @@
 			name = Kaminari;
 			packageProductDependencies = (
 				4E26E4C02AC16C9400CB3329 /* SnapKit */,
-				4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */,
+				4E6EDC6B2AC2D8690003420F /* Gifu */,
 			);
 			productName = Kaminari;
 			productReference = 4E26E4982AC166B800CB3329 /* Kaminari.app */;
@@ -186,6 +201,7 @@
 			mainGroup = 4E26E48F2AC166B800CB3329;
 			packageReferences = (
 				4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu" */,
 			);
 			productRefGroup = 4E26E4992AC166B800CB3329 /* Products */;
 			projectDirPath = "";
@@ -202,6 +218,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E26E4A82AC166BB00CB3329 /* LaunchScreen.storyboard in Resources */,
+				4E6EDC6E2AC2D89D0003420F /* rain.gif in Resources */,
 				4E26E4A52AC166BB00CB3329 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -214,12 +231,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E26E4B62AC167F300CB3329 /* SearchViewController.swift in Sources */,
+				4E6EDC642AC283250003420F /* CustomImageView.swift in Sources */,
 				4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */,
 				4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */,
 				4E26E4C72AC197F200CB3329 /* CurrentTimelyCell.swift in Sources */,
 				4E26E4CB2AC1C72100CB3329 /* CurrentWeatherMockup.swift in Sources */,
 				4E26E4A02AC166B800CB3329 /* CurrentViewController.swift in Sources */,
+				4E6EDC702AC2DD890003420F /* Extensions.swift in Sources */,
 				4E26E4B82AC1681600CB3329 /* RegionViewController.swift in Sources */,
+				4E6EDC602AC27E6A0003420F /* CustomLabel.swift in Sources */,
+				4E6EDC622AC282360003420F /* CustomStackView.swift in Sources */,
 				4E26E4B42AC167DC00CB3329 /* WeeklyViewController.swift in Sources */,
 				4E26E4C92AC1993700CB3329 /* CurrentThumbnailCell.swift in Sources */,
 				4E26E4CF2AC1D8B200CB3329 /* CustomCollectionView.swift in Sources */,
@@ -452,6 +473,14 @@
 				minimumVersion = 5.6.0;
 			};
 		};
+		4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/kaishin/Gifu.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -460,10 +489,10 @@
 			package = 4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
 		};
-		4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */ = {
+		4E6EDC6B2AC2D8690003420F /* Gifu */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */;
-			productName = "SnapKit-Dynamic";
+			package = 4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu" */;
+			productName = Gifu;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

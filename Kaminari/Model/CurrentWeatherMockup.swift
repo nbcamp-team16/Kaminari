@@ -16,7 +16,7 @@ struct CurrentWeatherMockup: Hashable {
 
 extension CurrentWeatherMockup {
     static let weatherList: [CurrentWeatherMockup] = [
-        CurrentWeatherMockup(location: "대구광역시", temperature: 21, weather: "이슬비", weatherIcon: "cloudy"),
+        CurrentWeatherMockup(location: "대구광역시", temperature: 23, weather: "흐림: ☁️", weatherIcon: "cloud"),
     ]
 }
 

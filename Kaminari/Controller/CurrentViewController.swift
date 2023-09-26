@@ -8,6 +8,10 @@
 import SnapKit
 import UIKit
 
+// To-Do
+// 1. 상단 navigationBarButtonItem 추가 - 돋보기, 새로고침
+// 2. 셀에 값 넣기
+
 class CurrentViewController: UIViewController {
     var collectionView = CustomCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
@@ -73,24 +77,23 @@ extension CurrentViewController {
                     
                 section.interGroupSpacing = 0
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                section.contentInsets = self.collectionView.configureContentInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+                section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
                     
             } else if sectionKind == .currentTimelyWeatherList {
                 let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.2), heightDimension: .fractionalHeight(1.0))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
-                item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+                item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 2, bottom: 5, trailing: 2)
                     
-                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.68), heightDimension: .fractionalHeight(0.3))
+                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.68), heightDimension: .fractionalHeight(0.2))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                     
                 section = NSCollectionLayoutSection(group: group)
                     
                 section.interGroupSpacing = 0
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                section.contentInsets = self.collectionView.configureContentInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+                section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 7, bottom: 5, trailing: 2)
                   
             } else if sectionKind == .currentWeatherList {
-                // 초롱이
                 let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
                 item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
@@ -100,7 +103,8 @@ extension CurrentViewController {
                 section = NSCollectionLayoutSection(group: group)
 
                 section.interGroupSpacing = 0
-                section.contentInsets = self.collectionView.configureContentInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
+                section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+                
             } else {
                 fatalError("Unknown section!")
             }
@@ -116,7 +120,12 @@ extension CurrentViewController {
             switch section {
             case .currentThumbnailWeatherList:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrentThumbnailCell", for: indexPath) as? CurrentThumbnailCell else { preconditionFailure() }
-                cell.backgroundColor = .systemRed
+                let item = CurrentWeatherMockup.weatherList[indexPath.row]
+                cell.setupUI()
+                cell.currentCityNameLabel.text = item.location
+                cell.currentTemperatureLabel.text = "\(item.temperature)°C"
+                cell.layer.cornerRadius = 10
+                cell.layer.masksToBounds = true
                 return cell
                 
             case .currentTimelyWeatherList:
@@ -126,6 +135,7 @@ extension CurrentViewController {
                 
             case .currentWeatherList:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrentWeatherCell", for: indexPath) as? CurrentWeatherCell else { preconditionFailure() }
+                cell.layer.cornerRadius = 10
                 cell.backgroundColor = .systemGreen
                 return cell
             }
