@@ -12,6 +12,9 @@ import UIKit
 // 1. 상단 navigationBarButtonItem 추가 - 돋보기, 새로고침
 // 2. 셀에 값 넣기
 
+// 5명 -> 개발자 계정 -> Weather Kit
+//
+
 class CurrentViewController: UIViewController {
     var collectionView = CustomCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
@@ -47,10 +50,12 @@ extension CurrentViewController {
 extension CurrentViewController {
     func configureCollectionView() {
         view.addSubview(self.collectionView)
+        self.collectionView.showsVerticalScrollIndicator = false
         self.collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.bottom.equalTo(view.safeAreaLayoutGuide).inset(10)
-            make.leading.trailing.equalToSuperview()
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().inset(15)
         }
     }
     
@@ -70,28 +75,28 @@ extension CurrentViewController {
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
                 item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
                 
-                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(0.6))
+                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.6))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                    
+
                 section = NSCollectionLayoutSection(group: group)
                     
-                section.interGroupSpacing = 0
+                section.interGroupSpacing = 10
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+                section.contentInsets = self.collectionView.configureContentInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
                     
             } else if sectionKind == .currentTimelyWeatherList {
-                let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.2), heightDimension: .fractionalHeight(1.0))
+                let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.2), heightDimension: .fractionalHeight(0.5))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
                 item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
                     
-                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.2))
+                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                    
+
                 section = NSCollectionLayoutSection(group: group)
                     
                 section.interGroupSpacing = 0
                 section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 10)
+                section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
                   
             } else if sectionKind == .currentWeatherList {
                 let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
@@ -103,7 +108,7 @@ extension CurrentViewController {
                 section = NSCollectionLayoutSection(group: group)
 
                 section.interGroupSpacing = 0
-                section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+                section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
                 
             } else {
                 fatalError("Unknown section!")
