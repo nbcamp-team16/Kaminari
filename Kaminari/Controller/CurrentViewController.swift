@@ -12,8 +12,8 @@ class CurrentViewController: UIViewController {
     var collectionView = CustomCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 
     var currentThumbnailWeatherList: [CurrentWeatherMockup] = CurrentWeatherMockup.weatherList
-    var currentTimelyWeatherList: [CurrentWeatherMockup] = CurrentWeatherMockup.weatherList
-    var currentWeatherList: [CurrentWeatherMockup] = CurrentWeatherMockup.weatherList
+    var currentTimelyWeatherList: [CurrentTimelyWeatherMockup] = CurrentTimelyWeatherMockup.weatherList
+    var currentWeatherList: [CurrentWeathersMockup] = CurrentWeathersMockup.weatherList
         
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     
@@ -65,8 +65,7 @@ extension CurrentViewController {
                 let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
                 item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-                    
-//                let groupHeight = NSCollectionLayoutDimension.absolute(150)
+                
                 let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(0.6))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                     
@@ -77,12 +76,11 @@ extension CurrentViewController {
                 section.contentInsets = self.collectionView.configureContentInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
                     
             } else if sectionKind == .currentTimelyWeatherList {
-                let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.2), heightDimension: .fractionalHeight(1.0))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
                 item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
                     
-//                let groupHeight = NSCollectionLayoutDimension.absolute(150)
-                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(0.3))
+                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.68), heightDimension: .fractionalHeight(0.3))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                     
                 section = NSCollectionLayoutSection(group: group)
@@ -92,20 +90,17 @@ extension CurrentViewController {
                 section.contentInsets = self.collectionView.configureContentInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
                   
             } else if sectionKind == .currentWeatherList {
+                // 초롱이
                 let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
                 item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-                    
-                let groupHeight = NSCollectionLayoutDimension.absolute(150)
-                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.95), heightDimension: .fractionalHeight(0.8))
-                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-                    
+                
+                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
+                let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
                 section = NSCollectionLayoutSection(group: group)
-                    
+
                 section.interGroupSpacing = 0
-                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
-                section.contentInsets = self.collectionView.configureContentInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-                    
+                section.contentInsets = self.collectionView.configureContentInsets(top: 0, leading: 10, bottom: 0, trailing: 10)
             } else {
                 fatalError("Unknown section!")
             }
@@ -143,19 +138,19 @@ extension CurrentViewController {
         snapshot.appendSections(sections)
 
         let currentThumbnailItem = self.currentThumbnailWeatherList.map { Item(currentThumbnailWeatherList: $0) }
-        var firstSnapshot = NSDiffableDataSourceSectionSnapshot<Item>()
-        firstSnapshot.append(currentThumbnailItem)
+        var currentThumbnailSnapshot = NSDiffableDataSourceSectionSnapshot<Item>()
+        currentThumbnailSnapshot.append(currentThumbnailItem)
                 
         let currentTimelyItems = self.currentTimelyWeatherList.map { Item(currentTimelyWeatherList: $0) }
-        var secondSnapshot = NSDiffableDataSourceSectionSnapshot<Item>()
-        secondSnapshot.append(currentTimelyItems)
+        var currentTimelySnapshot = NSDiffableDataSourceSectionSnapshot<Item>()
+        currentTimelySnapshot.append(currentTimelyItems)
                 
         let currentWeatherItems = self.currentWeatherList.map { Item(currentWeatherList: $0) }
-        var thirdSnapshot = NSDiffableDataSourceSectionSnapshot<Item>()
-        thirdSnapshot.append(currentWeatherItems)
+        var currentWeatherSnapshot = NSDiffableDataSourceSectionSnapshot<Item>()
+        currentWeatherSnapshot.append(currentWeatherItems)
                 
-        self.dataSource.apply(firstSnapshot, to: .currentThumbnailWeatherList, animatingDifferences: false)
-        self.dataSource.apply(secondSnapshot, to: .currentTimelyWeatherList, animatingDifferences: false)
-        self.dataSource.apply(thirdSnapshot, to: .currentWeatherList, animatingDifferences: false)
+        self.dataSource.apply(currentThumbnailSnapshot, to: .currentThumbnailWeatherList, animatingDifferences: false)
+        self.dataSource.apply(currentTimelySnapshot, to: .currentTimelyWeatherList, animatingDifferences: false)
+        self.dataSource.apply(currentWeatherSnapshot, to: .currentWeatherList, animatingDifferences: false)
     }
 }

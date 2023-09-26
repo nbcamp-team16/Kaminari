@@ -21,10 +21,10 @@ enum Section: Int, Hashable, CaseIterable {
 
 struct Item: Hashable {
     var currentThumbnailWeatherList: CurrentWeatherMockup?
-    var currentTimelyWeatherList: CurrentWeatherMockup?
-    var currentWeatherList: CurrentWeatherMockup?
+    var currentTimelyWeatherList: CurrentTimelyWeatherMockup?
+    var currentWeatherList: CurrentWeathersMockup?
 
-    init(currentThumbnailWeatherList: CurrentWeatherMockup? = nil, currentTimelyWeatherList: CurrentWeatherMockup? = nil, currentWeatherList: CurrentWeatherMockup? = nil) {
+    init(currentThumbnailWeatherList: CurrentWeatherMockup? = nil, currentTimelyWeatherList: CurrentTimelyWeatherMockup? = nil, currentWeatherList: CurrentWeathersMockup? = nil) {
         self.currentThumbnailWeatherList = currentThumbnailWeatherList
         self.currentTimelyWeatherList = currentTimelyWeatherList
         self.currentWeatherList = currentWeatherList
