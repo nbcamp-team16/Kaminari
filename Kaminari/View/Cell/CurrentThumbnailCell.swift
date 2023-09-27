@@ -170,3 +170,11 @@ extension CurrentThumbnailCell {
         currentTemperatureLabel.setupLabelColor(color: .white)
     }
 }
+
+extension CurrentThumbnailCell {
+    func setupShadow(color: CGColor, opacity: Float, radius: CGFloat) {
+        layer.shadowColor = color
+        layer.shadowOpacity = opacity
+        layer.shadowRadius = radius
+    }
+}

@@ -37,11 +37,13 @@ extension CurrentViewController {
 extension CurrentViewController {
     func setupUI() {
         view.backgroundColor = .systemBackground
+        registerCollectionViewCell()
+        registerCollectionViewHeader()
         self.configureCollectionView()
         self.collectionView.collectionViewLayout = self.createLayout()
         createDataSource()
+        createSupplementaryView()
         applySnapshot()
-        registerCollectionViewCell()
         setupBarButtonItem()
     }
 }
@@ -75,6 +77,10 @@ extension CurrentViewController {
         self.collectionView.register(CurrentWeatherCell.self, forCellWithReuseIdentifier: CurrentWeatherCell.identifier)
     }
     
+    func registerCollectionViewHeader() {
+        self.collectionView.register(CustomCollectionHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionHeaderView.identifier)
+    }
+    
     func createLayout() -> UICollectionViewLayout {
         let sectionProvider = { (sectionIndex: Int, _: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
             guard let sectionKind = Section(rawValue: sectionIndex) else { return nil }
@@ -91,7 +97,6 @@ extension CurrentViewController {
                 section = NSCollectionLayoutSection(group: group)
                     
                 section.interGroupSpacing = 10
-                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
                 section.contentInsets = self.collectionView.configureContentInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
                     
             } else if sectionKind == .currentTimelyWeatherList {
@@ -101,13 +106,16 @@ extension CurrentViewController {
                     
                 let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(200))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-
+                
                 section = NSCollectionLayoutSection(group: group)
-                    
-                section.interGroupSpacing = 0
-                section.orthogonalScrollingBehavior = .continuousGroupLeadingBoundary
+                section.interGroupSpacing = 10
+                section.orthogonalScrollingBehavior = .continuous
                 section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
-                  
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                section.boundarySupplementaryItems = [header]
+                
             } else if sectionKind == .currentWeatherList {
                 let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
@@ -117,8 +125,12 @@ extension CurrentViewController {
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
                 section = NSCollectionLayoutSection(group: group)
 
-                section.interGroupSpacing = 0
+                section.interGroupSpacing = 10
                 section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
+                
+                let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
+                let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
+                section.boundarySupplementaryItems = [header]
                 
             } else {
                 fatalError("Unknown section!")
@@ -134,7 +146,7 @@ extension CurrentViewController {
             
             switch section {
             case .currentThumbnailWeatherList:
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrentThumbnailCell", for: indexPath) as? CurrentThumbnailCell else { preconditionFailure() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentThumbnailCell.identifier, for: indexPath) as? CurrentThumbnailCell else { preconditionFailure() }
                 let item = CurrentWeatherMockup.weatherList[indexPath.row]
                 cell.setupUI()
                 cell.currentCityNameLabel.text = item.location
@@ -144,8 +156,9 @@ extension CurrentViewController {
                 return cell
                 
             case .currentTimelyWeatherList:
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrentTimelyCell", for: indexPath) as? CurrentTimelyCell else { preconditionFailure() }
-//                guard let headerCell = collectionView.dequeueReusableSupplementaryView(ofKind: <#T##String#>, withReuseIdentifier: <#T##String#>, for: <#T##IndexPath#>) as? else { preconditionFailure() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentTimelyCell.identifier, for: indexPath) as? CurrentTimelyCell else { preconditionFailure() }
+                guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionHeaderView.identifier, for: indexPath) as? CustomCollectionHeaderView else { return UICollectionViewCell() }
+                header.setupTotalUI(title: "시간별 예보")
                 let item = CurrentTimelyWeatherMockup.weatherList[indexPath.row]
                 cell.setupUI()
                 cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
@@ -160,7 +173,9 @@ extension CurrentViewController {
                 return cell
                 
             case .currentWeatherList:
-                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CurrentWeatherCell", for: indexPath) as? CurrentWeatherCell else { preconditionFailure() }
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentWeatherCell.identifier, for: indexPath) as? CurrentWeatherCell else { preconditionFailure() }
+                guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionHeaderView.identifier, for: indexPath) as? CustomCollectionHeaderView else { return UICollectionViewCell() }
+                header.setupTotalUI(title: "실시간 기상 정보")
                 let item = CurrentWeathersMockup.weatherList[indexPath.row]
                 cell.setupUI()
                 cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
@@ -174,6 +189,13 @@ extension CurrentViewController {
                 cell.layer.borderWidth = 0.5
                 return cell
             }
+        }
+    }
+    
+    func createSupplementaryView() {
+        self.dataSource.supplementaryViewProvider = { (collectionView, _, indexPath) in
+            guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionHeaderView.identifier, for: indexPath) as? CustomCollectionHeaderView else { return nil }
+            return header
         }
     }
         
