@@ -9,11 +9,9 @@ import SnapKit
 import UIKit
 
 // To-Do
-// 1. 상단 navigationBarButtonItem 추가 - 돋보기, 새로고침
-// 2. 셀에 값 넣기
+// 1. 상단 navigationBarButtonItem 추가 - 돋보기
 
 // 5명 -> 개발자 계정 -> Weather Kit
-//
 
 class CurrentViewController: UIViewController {
     var collectionView = CustomCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -44,6 +42,18 @@ extension CurrentViewController {
         createDataSource()
         applySnapshot()
         registerCollectionViewCell()
+        setupBarButtonItem()
+    }
+}
+
+extension CurrentViewController {
+    func setupBarButtonItem() {
+        let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(self.tappedResearchButton(_:)))
+        navigationItem.rightBarButtonItem = barButtonItem
+    }
+    
+    @objc func tappedResearchButton(_ sender: UIBarButtonItem) {
+        print("### \(#function)")
     }
 }
 
