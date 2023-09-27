@@ -30,7 +30,7 @@ class WeeklyTableViewCell: UITableViewCell {
     let lowerTempLabel = CustomLabel()
     
     let progressBar: UIProgressView = {
-        let progressBar = UIProgressView()
+        let progressBar = UIProgressView(frame: CGRect(x: 0, y: 0, width: 126, height: 10))
         return progressBar
     }()
     
@@ -39,7 +39,7 @@ class WeeklyTableViewCell: UITableViewCell {
     let cellStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.distribution = .equalSpacing
+        stackView.distribution = .equalCentering
         stackView.spacing = 8
         return stackView
     }()
@@ -57,23 +57,36 @@ extension WeeklyTableViewCell {
 
 extension WeeklyTableViewCell {
     func setupStackView() {
-        dateLabel.configure(text: "월", fontSize: 18, font: .semibold)
+        dateLabel.setupLabelUI(fontColor: .white)
         iconImageView.image = UIImage(systemName: "sun.max")
+        iconImageView.tintColor = .white
         lowerTempLabel.configure(text: "20º", fontSize: 18, font: .regular)
+        lowerTempLabel.setupLabelUI(fontColor: .white)
         higherTempLabel.configure(text: "30º", fontSize: 18, font: .regular)
+        higherTempLabel.setupLabelUI(fontColor: .white)
         
         [dateLabel, iconImageView, lowerTempLabel, progressBar, higherTempLabel].forEach { cellStackView.addArrangedSubview($0) }
         contentView.addSubview(cellStackView)
         
         cellStackView.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(15)
-            make.right.equalToSuperview().offset(-15)
+            make.left.right.equalToSuperview().inset(15)
             make.centerY.equalToSuperview()
-            make.height.equalTo(62)
-        }
-        
-        iconImageView.snp.makeConstraints { make in
-            make.height.width.equalTo(36)
         }
     }
+}
+
+extension WeeklyTableViewCell {
+    func setDateLabel(_ index: Int, _ date: Date) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEEEE"
+        dateFormatter.locale = Locale(identifier: "ko")
+        let convertStr = dateFormatter.string(from: date)
+        if index == 0 {
+            dateLabel.configure(text: "오늘", fontSize: 18, font: .semibold)
+        } else {
+            dateLabel.configure(text: convertStr, fontSize: 18, font: .semibold)
+        }
+    }
+    
+    func setProgressBar(){}
 }

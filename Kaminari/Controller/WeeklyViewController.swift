@@ -9,6 +9,8 @@ import SnapKit
 import UIKit
 
 class WeeklyViewController: UIViewController {
+    let date = Date()
+
     var cityName: String = "현재 위치"
     var currentTemp: Int = 24
     var weatherSummury: String = "대체로 흐림"
@@ -85,16 +87,14 @@ private extension WeeklyViewController {
 
         line.snp.makeConstraints { make in
             make.top.equalTo(tableTitle.snp.bottom).offset(8)
-            make.left.equalToSuperview().offset(23)
-            make.right.equalToSuperview().offset(-23)
+            make.left.right.equalToSuperview().inset(23)
             make.height.equalTo(1)
         }
 
         weeklyTable.snp.makeConstraints { make in
-            make.left.equalToSuperview().offset(22)
-            make.right.equalToSuperview().offset(-23)
+            make.left.right.equalToSuperview().inset(22)
             make.top.equalTo(line.snp.bottom).offset(17)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-17)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-32)
         }
     }
 }
@@ -104,15 +104,20 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
         weeklyTable.dataSource = self
         weeklyTable.delegate = self
         weeklyTable.isScrollEnabled = false
+        weeklyTable.rowHeight = UITableView.automaticDimension
         weeklyTable.register(WeeklyTableViewCell.self, forCellReuseIdentifier: "cell")
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 5
+        return 10
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = weeklyTable.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        let cell = weeklyTable.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! WeeklyTableViewCell
+
+        let nextDate = Calendar.current.date(byAdding: .day, value: indexPath.row, to: date)
+        cell.setDateLabel(indexPath.row, nextDate!)
+
         return cell
     }
 
