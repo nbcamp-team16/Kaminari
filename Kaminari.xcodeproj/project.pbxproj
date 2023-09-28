@@ -20,6 +20,8 @@
 		4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */; };
 		4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C02AC16C9400CB3329 /* SnapKit */; };
 		4E26E4C32AC16C9400CB3329 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C22AC16C9400CB3329 /* SnapKit-Dynamic */; };
+		DCA523722AC50435005501A5 /* SearchTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */; };
+		DCA523742AC5048D005501A5 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		4E26E4B92AC1685000CB3329 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		4E26E4BB2AC169C600CB3329 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableHeaderView.swift; sourceTree = "<group>"; };
+		DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -92,8 +96,10 @@
 		4E26E4B02AC1676F00CB3329 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */,
 				4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */,
 				4E26E4B22AC167A800CB3329 /* Cell */,
+				DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -195,9 +201,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCA523722AC50435005501A5 /* SearchTableHeaderView.swift in Sources */,
 				4E26E4B62AC167F300CB3329 /* SearchViewController.swift in Sources */,
 				4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */,
 				4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */,
+				DCA523742AC5048D005501A5 /* SearchTableViewCell.swift in Sources */,
 				4E26E4A02AC166B800CB3329 /* CurrentViewController.swift in Sources */,
 				4E26E4B82AC1681600CB3329 /* RegionViewController.swift in Sources */,
 				4E26E4B42AC167DC00CB3329 /* WeeklyViewController.swift in Sources */,
