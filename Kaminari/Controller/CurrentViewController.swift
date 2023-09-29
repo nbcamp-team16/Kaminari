@@ -193,12 +193,11 @@ extension CurrentViewController {
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentTimelyCell.identifier, for: indexPath) as? CurrentTimelyCell else { preconditionFailure() }
                 guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionHeaderView.identifier, for: indexPath) as? CustomCollectionHeaderView else { return UICollectionViewCell() }
                 header.setupTotalUI(title: "시간별 예보")
-                let item = CurrentTimelyWeatherMockup.weatherList[indexPath.row]
                 cell.setupUI()
                 cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
-                cell.timeLabel.text = item.time
-                cell.weatherIconImageView.image = UIImage(systemName: item.weatherIcon)
-                cell.temperatureLabel.text = item.temperature
+                cell.timeLabel.text = WeatherManager.shared.hourlyForecastTime(indexPath: indexPath.row).formatted(.dateTime.hour())
+                cell.weatherIconImageView.image = UIImage(systemName: WeatherManager.shared.hourlyForecastSymbol(indexPath: indexPath.row))
+                cell.temperatureLabel.text = WeatherManager.shared.hourlyForecastTemperature(indexPath: indexPath.row)
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
                 cell.backgroundColor = .systemBackground
@@ -213,6 +212,7 @@ extension CurrentViewController {
                 let item = CurrentWeathersMockup.weatherList[indexPath.row]
                 cell.setupUI()
                 cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
+                print("&&& \(type(of: WeatherManager.shared.weather?.hourlyForecast.forecast))")
                 cell.currentWeatherLabel.text = item.title
                 cell.currentTemperatureLabel.text = item.temperature
                 cell.currentDescriptionLabel.text = item.description

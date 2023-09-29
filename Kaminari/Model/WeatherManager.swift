@@ -15,7 +15,7 @@ class WeatherManager {
     var weather: Weather?
 
     var symbol: String {
-        weather?.currentWeather.symbolName ?? "xmark"
+        weather?.currentWeather.symbolName ?? "sunmax"
     }
 
     var temp: String {
@@ -24,6 +24,26 @@ class WeatherManager {
 
         let convert = Int(temp?.converted(to: .celsius).value ?? 0)
         return "\(convert)°C"
+    }
+
+    func hourlyForecastTime(indexPath: Int) -> Date {
+        let result = weather?.hourlyForecast.forecast[indexPath].date ?? Date()
+        return result
+    }
+
+    func hourlyForecastSymbol(indexPath: Int) -> String {
+        let result = weather?.hourlyForecast.forecast[indexPath].symbolName ?? "sun.max"
+        return result
+    }
+
+    func hourlyForecastTemperature(indexPath: Int) -> String {
+        guard let result = weather?.hourlyForecast.forecast[indexPath].temperature.value else { return "0" }
+        return "\(Int(result))°C"
+    }
+    
+    func hourlyForecastTitle(indexPath: Int) -> String {
+        let result = weather?.hourlyForecast.forecast[indexPath].condition
+        return result?.rawValue ?? ""
     }
 
     func getWeather(latitude: Double, longitude: Double) async {
