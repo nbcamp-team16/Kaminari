@@ -74,7 +74,6 @@
 			children = (
 				4E26E49B2AC166B800CB3329 /* AppDelegate.swift */,
 				4E26E49D2AC166B800CB3329 /* SceneDelegate.swift */,
-				4E26E4AF2AC1676700CB3329 /* Model */,
 				4E26E4B02AC1676F00CB3329 /* View */,
 				4E26E4B12AC1677B00CB3329 /* Controller */,
 				4E26E4A42AC166BB00CB3329 /* Assets.xcassets */,
@@ -84,19 +83,11 @@
 			path = Kaminari;
 			sourceTree = "<group>";
 		};
-		4E26E4AF2AC1676700CB3329 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		4E26E4B02AC1676F00CB3329 /* View */ = {
 			isa = PBXGroup;
 			children = (
 				4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */,
 				1DC10FBC2AC2665200EA7D1E /* CustomLabel.swift */,
-				4E26E4B22AC167A800CB3329 /* Cell */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -113,13 +104,6 @@
 				1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		4E26E4B22AC167A800CB3329 /* Cell */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Cell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -352,7 +336,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4MN45GZSDT;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Kaminari/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -380,7 +364,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4MN45GZSDT;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Kaminari/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

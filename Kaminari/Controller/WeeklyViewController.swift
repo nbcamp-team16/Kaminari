@@ -7,6 +7,7 @@
 
 import SnapKit
 import UIKit
+import WeatherKit
 
 class WeeklyViewController: UIViewController {
     let date = Date()

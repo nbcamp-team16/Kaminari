@@ -87,6 +87,4 @@ extension WeeklyTableViewCell {
             dateLabel.configure(text: convertStr, fontSize: 18, font: .semibold)
         }
     }
-    
-    func setProgressBar(){}
 }
