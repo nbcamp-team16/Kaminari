@@ -13,161 +13,124 @@ class CurrentThumbnailCell: UICollectionViewCell {
     static let identifier = "CurrentThumbnailCell"
 
     var superStackView = CustomStackView(frame: .zero)
+    var bottomHStackView = CustomStackView(frame: .zero)
+    var bottomVStackView = CustomStackView(frame: .zero)
 
-    var topTagView = UIView(frame: .zero)
-    var bottomTagView = UIView(frame: .zero)
+    var topSuperView = UIView(frame: .zero)
+    var bottomSuperView = UIView(frame: .zero)
 
-    var dateLabel = CustomLabel(frame: .zero)
+    var currentDateLabel = CustomLabel(frame: .zero)
     var currentCityNameLabel = CustomLabel(frame: .zero)
-    var currentWeatherLabel = CustomLabel(frame: .zero)
     var currentTemperatureLabel = CustomLabel(frame: .zero)
 
-    var currentWeatherGIFImage = GIFImageView(frame: .zero)
     var currentWeatherIconImage = CustomImageView(frame: .zero)
-
-    var refreshButton = CustomButton(frame: .zero)
 }
-
-// MARK: - UI
 
 extension CurrentThumbnailCell {
     func setupUI() {
-        setupGIFImageView()
-        setupTagView()
-        setupBottomTagViewUI()
-    }
-
-    func configureCell(data: CurrentWeatherMockup, size: CGFloat, font: UIFont.Weight) {
-        currentCityNameLabel.text = data.location
-        currentCityNameLabel.font = .systemFont(ofSize: size, weight: font)
-
-        currentWeatherLabel.text = data.weather
-        currentWeatherLabel.font = .systemFont(ofSize: size, weight: font)
-
-        currentWeatherGIFImage.image = UIImage(systemName: data.weatherIcon)
-        currentWeatherGIFImage.backgroundColor = .systemBlue
-
-        currentTemperatureLabel.text = "\(data.temperature)°C"
-        currentTemperatureLabel.font = .systemFont(ofSize: size + 5, weight: font)
-    }
-}
-
-// MARK: - GIF ImagView
-
-extension CurrentThumbnailCell {
-    func setupGIFImageView() {
-        contentView.addSubview(currentWeatherGIFImage)
-        currentWeatherGIFImage.animate(withGIFNamed: "rain")
-        currentWeatherGIFImage.startAnimatingGIF()
-        currentWeatherGIFImage.contentMode = .scaleToFill
-        currentWeatherGIFImage.snp.makeConstraints { make in
-            make.top.leading.equalToSuperview()
-            make.bottom.equalToSuperview().inset(80)
-            make.centerX.equalToSuperview()
-        }
-    }
-}
-
-// MARK: - TagView
-
-extension CurrentThumbnailCell {
-    func setupTagView() {
-        currentWeatherGIFImage.addSubview(topTagView)
-        topTagView.backgroundColor = UIColor(hexCode: "2ec4b6", alpha: 1)
-        topTagView.layer.cornerRadius = 10
-        topTagView.layer.maskedCorners = [.layerMaxXMaxYCorner]
-        topTagView.layer.masksToBounds = true
-        topTagView.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview()
-            make.width.equalTo(120)
-            make.height.equalTo(50)
-        }
-
-        contentView.addSubview(bottomTagView)
-        bottomTagView.backgroundColor = UIColor(hexCode: "2ec4b6", alpha: 1)
-        bottomTagView.snp.makeConstraints { make in
-            make.centerX.leading.bottom.equalToSuperview()
-            make.height.equalTo(80)
-        }
-
-        setupDateLabel()
-    }
-
-    func setupDateLabel() {
-        topTagView.addSubview(dateLabel)
-        dateLabel.text = "TODAY"
-        dateLabel.textColor = .white
-        dateLabel.snp.makeConstraints { make in
-            make.centerX.centerY.equalToSuperview()
-        }
-    }
-}
-
-// MARK: - BottomTag Setting UI
-
-extension CurrentThumbnailCell {
-    func setupBottomTagViewUI() {
-        setupWeatherIconImageView()
-        setupRefreshButton()
         setupSuperStackView()
-        setupCityNameLabel()
-        setupTemperatureLabel()
+        setupTopView()
+        setupBottomView()
     }
+}
 
-    func setupWeatherIconImageView() {
-        bottomTagView.addSubview(currentWeatherIconImage)
-        currentWeatherIconImage.contentMode = .center
-        currentWeatherIconImage.image = UIImage(systemName: "cloud.rain")
-        currentWeatherIconImage.layer.cornerRadius = 10
-        currentWeatherIconImage.backgroundColor = UIColor(hexCode: "cbf3f0", alpha: 1)
-        currentWeatherIconImage.tintColor = UIColor(hexCode: "2ec4b6", alpha: 1)
-        currentWeatherIconImage.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.top.equalToSuperview().inset(15)
-            make.leading.equalToSuperview().inset(15)
-            make.width.equalTo(currentWeatherIconImage.snp.height)
-        }
-    }
-
-    func setupRefreshButton() {
-        bottomTagView.addSubview(refreshButton)
-        refreshButton.setButtonImageView(imageName: "arrow.clockwise")
-        refreshButton.setupButtonUI(cornerValue: 10, background: UIColor(hexCode: "ff9f1c"), fontColor: .white)
-        refreshButton.tintColor = .white
-        refreshButton.layer.masksToBounds = true
-        refreshButton.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalToSuperview().inset(15)
-            make.top.equalToSuperview().inset(15)
-            make.width.equalTo(refreshButton.snp.height)
-        }
-    }
-
+extension CurrentThumbnailCell {
     func setupSuperStackView() {
-        bottomTagView.addSubview(superStackView)
-        superStackView.configure(axis: .horizontal, alignment: .center, distribution: .fillEqually, spacing: 0)
-        [currentCityNameLabel, currentTemperatureLabel].forEach {
+        contentView.addSubview(superStackView)
+        superStackView.configure(axis: .vertical, alignment: .fill, distribution: .fillProportionally, spacing: 0)
+        [topSuperView, bottomSuperView].forEach {
             superStackView.addArrangedSubview($0)
         }
 
         superStackView.snp.makeConstraints { make in
-            make.leading.equalTo(currentWeatherIconImage.snp.trailing).offset(15)
-            make.centerY.equalToSuperview()
-            make.top.equalToSuperview().inset(15)
-            make.trailing.equalTo(refreshButton.snp.leading).inset(-15)
+            make.top.bottom.leading.trailing.equalToSuperview()
         }
     }
 
-    func setupCityNameLabel() {
-        currentCityNameLabel.textAlignment = .center
-        currentCityNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
-        currentCityNameLabel.setupLabelColor(color: .white)
+    func setupTopView() {
+        topSuperView.addSubview(currentWeatherIconImage)
+        topSuperView.snp.makeConstraints { make in
+            make.height.equalTo(150)
+        }
+
+        setupWeatherIcon()
     }
 
-    func setupTemperatureLabel() {
-        currentTemperatureLabel.textAlignment = .center
-        currentTemperatureLabel.font = .systemFont(ofSize: 20, weight: .bold)
-        currentTemperatureLabel.setupLabelColor(color: .white)
+    func setupBottomView() {
+        bottomSuperView.snp.makeConstraints { make in
+            make.height.equalTo(100)
+        }
+
+        setupBottomHStackView()
+        setupBottomVStackView()
+    }
+}
+
+extension CurrentThumbnailCell {
+    func setupBottomHStackView() {
+        bottomSuperView.addSubview(bottomHStackView)
+        bottomSuperView.backgroundColor = UIColor(hexCode: "2ec4b6")
+        bottomHStackView.configure(axis: .horizontal, alignment: .fill, distribution: .fillProportionally, spacing: 0)
+        [bottomVStackView, currentTemperatureLabel].forEach {
+            bottomHStackView.addArrangedSubview($0)
+        }
+
+        bottomHStackView.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview().inset(10)
+        }
+
+        setupTemperature()
+    }
+
+    func setupBottomVStackView() {
+        bottomHStackView.addSubview(bottomVStackView)
+        bottomVStackView.configure(axis: .vertical, alignment: .leading, distribution: .fillProportionally, spacing: 0)
+        [currentDateLabel, currentCityNameLabel].forEach {
+            bottomVStackView.addArrangedSubview($0)
+        }
+
+        bottomVStackView.snp.makeConstraints { make in
+            make.height.equalToSuperview()
+            make.width.width.equalTo(150)
+        }
+
+        setupDateLabel()
+        setupCityLabel()
+    }
+}
+
+extension CurrentThumbnailCell {
+    func setupWeatherIcon() {
+        currentWeatherIconImage.contentMode = .scaleAspectFit
+        currentWeatherIconImage.tintColor = .label
+        currentWeatherIconImage.snp.makeConstraints { make in
+            make.top.bottom.leading.trailing.equalToSuperview().inset(5)
+        }
+    }
+
+    func setupDateLabel() {
+        currentDateLabel.text = "현재날씨"
+        currentDateLabel.setupLabelColor(color: .label)
+        currentDateLabel.font = .systemFont(ofSize: 18, weight: .bold)
+        currentDateLabel.snp.makeConstraints { make in
+            make.height.equalTo(30)
+        }
+    }
+
+    func setupCityLabel() {
+        currentCityNameLabel.setupLabelColor(color: .label)
+        currentCityNameLabel.font = .systemFont(ofSize: 30, weight: .semibold)
+        currentCityNameLabel.snp.makeConstraints { make in
+            make.height.equalTo(120)
+        }
+    }
+
+    func setupTemperature() {
+        currentTemperatureLabel.setupLabelColor(color: .label)
+        currentTemperatureLabel.font = .systemFont(ofSize: 40, weight: .bold)
+        currentTemperatureLabel.snp.makeConstraints { make in
+            make.width.equalTo(100)
+        }
     }
 }
 
