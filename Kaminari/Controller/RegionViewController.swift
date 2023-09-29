@@ -8,7 +8,6 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     var locationManager = CLLocationManager()
     var mapView: MKMapView!
     
-    // 초기화 버튼
     lazy var refreshButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
@@ -36,7 +35,7 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             make.edges.equalToSuperview()
         }
         
-        addCustomPin() // 마커 추가하기
+        addCustomPins() // 마커 추가하기
         
         view.addSubview(refreshButton)
         
@@ -55,7 +54,7 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
             annotationView?.canShowCallout = false
             annotationView?.image = customImage
-            annotationView?.frame.size = CGSize(width: 50, height: 50)
+            annotationView?.frame.size = CGSize(width: 20, height: 20)
         } else {
             annotationView?.annotation = annotation
         }
@@ -63,23 +62,27 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         return annotationView
     }
 
-    private func addCustomPin() {
-        let pinCoordinate =
-            CLLocationCoordinate2D(latitude: 37.541, longitude: 126.986)
-        
-        let pinAnnotation =
-            MKPointAnnotation()
-        
-        pinAnnotation.coordinate =
-            pinCoordinate
-        
-        pinAnnotation.title =
-            "서울"
-        
-        // 맵뷰에 마커 추가하기
-        mapView.addAnnotation(pinAnnotation)
+    private func addCustomPins() {
+        let pinCoordinates: [CLLocationCoordinate2D] = [
+            CLLocationCoordinate2D(latitude: 37.577535, longitude: 126.9779692),
+            CLLocationCoordinate2D(latitude: 37.4562557, longitude: 126.7052062),
+            CLLocationCoordinate2D(latitude: 36.3504119, longitude: 127.3845475),
+            CLLocationCoordinate2D(latitude: 35.1795543, longitude: 129.0756416),
+            CLLocationCoordinate2D(latitude: 35.8714354, longitude: 128.601445),
+            CLLocationCoordinate2D(latitude: 35.1595454, longitude: 126.8526012),
+            CLLocationCoordinate2D(latitude: 35.5383773, longitude: 129.31133596)
+        ]
+
+        let pinTitles = ["서울", "인천", "대전", "부산", "대구", "광주", "울산"]
+
+        for (index, coordinate) in pinCoordinates.enumerated() {
+            let pinAnnotation = MKPointAnnotation()
+            pinAnnotation.coordinate = coordinate
+            pinAnnotation.title = pinTitles[index]
+            mapView.addAnnotation(pinAnnotation)
+        }
     }
-    
+
     func current() {
         refreshButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(5)
