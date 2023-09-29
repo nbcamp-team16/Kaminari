@@ -21,10 +21,6 @@ final class CustomButton: UIButton {
         self.titleLabel?.font = .systemFont(ofSize: fontSize, weight: font)
     }
     
-    func setButtonImageView(imageName: String) {
-        self.setImage(UIImage(systemName: imageName), for: .normal)
-    }
-    
     func setupButtonUI(cornerValue: CGFloat, background: UIColor, fontColor: UIColor) {
         self.layer.cornerRadius = cornerValue
         self.backgroundColor = background
