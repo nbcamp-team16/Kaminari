@@ -18,6 +18,7 @@ class CurrentViewController: UIViewController {
     var longtitude: Double?
     
     var collectionView = CustomCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    let refreshControl = UIRefreshControl()
     var gifImageView = GIFImageView(frame: .zero)
     
     var currentThumbnailWeatherList: [CurrentWeatherMockup] = CurrentWeatherMockup.weatherList
@@ -57,12 +58,15 @@ extension CurrentViewController {
         setupBarButtonItem()
         configureMapData()
         cofigunreGifView()
+        
+        setupRefreshControl()
     }
 }
 
 extension CurrentViewController {
     func setupBarButtonItem() {
         let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(self.tappedResearchButton))
+        barButtonItem.tintColor = .systemBackground
         navigationItem.rightBarButtonItem = barButtonItem
     }
     
@@ -291,5 +295,24 @@ extension CurrentViewController {
         self.longtitude = coor?.longitude
 
         print("### 현재 위도 경도 : \(MapManager.shared.latitude) : \(MapManager.shared.longitude)")
+    }
+}
+
+extension CurrentViewController {
+    func setupRefreshControl() {
+        self.collectionView.refreshControl = self.refreshControl
+
+        self.refreshControl.addTarget(self, action: #selector(self.refreshCollectionView), for: .valueChanged)
+
+        self.refreshControl.tintColor = .systemBackground
+        self.refreshControl.attributedTitle = NSAttributedString(string: "당겨서 새로고침")
+    }
+
+    @objc private func refreshCollectionView() {
+        print("### 새로고침")
+        self.fetchData()
+
+        self.collectionView.reloadData()
+        self.refreshControl.endRefreshing()
     }
 }
