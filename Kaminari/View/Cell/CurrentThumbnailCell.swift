@@ -160,13 +160,13 @@ extension CurrentThumbnailCell {
 
     func setupCityNameLabel() {
         currentCityNameLabel.textAlignment = .center
-        currentCityNameLabel.font = .systemFont(ofSize: 22, weight: .bold)
+        currentCityNameLabel.font = .systemFont(ofSize: 20, weight: .bold)
         currentCityNameLabel.setupLabelColor(color: .white)
     }
 
     func setupTemperatureLabel() {
         currentTemperatureLabel.textAlignment = .center
-        currentTemperatureLabel.font = .systemFont(ofSize: 22, weight: .bold)
+        currentTemperatureLabel.font = .systemFont(ofSize: 20, weight: .bold)
         currentTemperatureLabel.setupLabelColor(color: .white)
     }
 }

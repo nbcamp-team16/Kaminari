@@ -5,17 +5,20 @@
 //  Created by (^ㅗ^)7 iMac on 2023/09/25.
 //
 
+import CoreLocation
+import Gifu
 import SnapKit
 import UIKit
-
-// To-Do
-// 1. 상단 navigationBarButtonItem 추가 - 돋보기
-
-// 5명 -> 개발자 계정 -> Weather Kit
+import WeatherKit
 
 class CurrentViewController: UIViewController {
+    var weather: Weather?
+    var locationManager = MapManager.locationManager
+    var latitude: Double?
+    var longtitude: Double?
+    
     var collectionView = CustomCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-
+    
     var currentThumbnailWeatherList: [CurrentWeatherMockup] = CurrentWeatherMockup.weatherList
     var currentTimelyWeatherList: [CurrentTimelyWeatherMockup] = CurrentTimelyWeatherMockup.weatherList
     var currentWeatherList: [CurrentWeathersMockup] = CurrentWeathersMockup.weatherList
@@ -30,7 +33,12 @@ class CurrentViewController: UIViewController {
 extension CurrentViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        print("### \(self.weather?.currentWeather.temperature)")
         self.setupUI()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        fetchData()
     }
 }
 
@@ -45,23 +53,26 @@ extension CurrentViewController {
         createSupplementaryView()
         applySnapshot()
         setupBarButtonItem()
+        configureMapData()
     }
 }
 
 extension CurrentViewController {
     func setupBarButtonItem() {
-        let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(self.tappedResearchButton(_:)))
+        let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(self.tappedResearchButton))
         navigationItem.rightBarButtonItem = barButtonItem
     }
     
     @objc func tappedResearchButton(_ sender: UIBarButtonItem) {
-        print("### \(#function)")
+        self.collectionView.reloadData()
+        print("### 해피해피해피해피해피해피해피해피해피해피해피해피해피해피해피해피해피")
     }
 }
 
 extension CurrentViewController {
     func configureCollectionView() {
         view.addSubview(self.collectionView)
+        self.collectionView.backgroundColor = .clear
         self.collectionView.showsVerticalScrollIndicator = false
         self.collectionView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
@@ -108,7 +119,7 @@ extension CurrentViewController {
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
                 
                 section = NSCollectionLayoutSection(group: group)
-                section.interGroupSpacing = 10
+                section.interGroupSpacing = 0
                 section.orthogonalScrollingBehavior = .continuous
                 section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
                 
@@ -150,7 +161,7 @@ extension CurrentViewController {
                 let item = CurrentWeatherMockup.weatherList[indexPath.row]
                 cell.setupUI()
                 cell.currentCityNameLabel.text = item.location
-                cell.currentTemperatureLabel.text = "\(item.temperature)°C"
+                cell.currentTemperatureLabel.text = "\(WeatherManager.shared.temp)"
                 cell.layer.cornerRadius = 10
                 cell.layer.masksToBounds = true
                 return cell
@@ -219,5 +230,47 @@ extension CurrentViewController {
         self.dataSource.apply(currentThumbnailSnapshot, to: .currentThumbnailWeatherList, animatingDifferences: false)
         self.dataSource.apply(currentTimelySnapshot, to: .currentTimelyWeatherList, animatingDifferences: false)
         self.dataSource.apply(currentWeatherSnapshot, to: .currentWeatherList, animatingDifferences: false)
+    }
+}
+
+extension CurrentViewController {
+    func fetchData() {
+        Task {
+            await WeatherManager.loadData(latitude: self.latitude ?? 0, longitude: self.longtitude ?? 0) { [weak self] in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            }
+        }
+    }
+
+    func configureMapData() {
+        // 포그라운드일 때 위치 추적 권한 요청
+        self.locationManager.requestWhenInUseAuthorization()
+
+        // 배터리에 맞게 권장되는 최적의 정확도
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+
+        // 사용자에게 허용 받기 alert 띄우기
+        self.locationManager.requestWhenInUseAuthorization()
+
+        // 아이폰 설정에서의 위치 서비스가 켜진 상태라면
+        DispatchQueue.main.async {
+            if CLLocationManager.locationServicesEnabled() {
+                print("위치 서비스 On 상태")
+                self.locationManager.startUpdatingLocation() // 위치 정보 받아오기 시작
+                print(self.locationManager.location?.coordinate)
+            } else {
+                print("위치 서비스 Off 상태")
+            }
+        }
+
+        // 위,경도 가져오기
+        let coor = self.locationManager.location?.coordinate
+        self.latitude = coor?.latitude
+        self.longtitude = coor?.longitude
+
+        print("### 현재 위도 경도 : \(MapManager.shared.latitude) : \(MapManager.shared.longitude)")
     }
 }

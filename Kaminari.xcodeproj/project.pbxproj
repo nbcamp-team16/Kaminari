@@ -33,11 +33,14 @@
 		4E6EDC6C2AC2D8690003420F /* Gifu in Frameworks */ = {isa = PBXBuildFile; productRef = 4E6EDC6B2AC2D8690003420F /* Gifu */; };
 		4E6EDC6E2AC2D89D0003420F /* rain.gif in Resources */ = {isa = PBXBuildFile; fileRef = 4E6EDC6D2AC2D89D0003420F /* rain.gif */; };
 		4E6EDC702AC2DD890003420F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6EDC6F2AC2DD890003420F /* Extensions.swift */; };
+		4E9CA8952AC69653009BC666 /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9CA8932AC69652009BC666 /* WeatherManager.swift */; };
+		4E9CA8962AC69653009BC666 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9CA8942AC69653009BC666 /* MapManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionHeaderView.swift; sourceTree = "<group>"; };
 		4E10865F2AC3B73000D1FB31 /* CustomCollectionFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionFooterView.swift; sourceTree = "<group>"; };
+		4E1086612AC404C600D1FB31 /* Kaminari.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kaminari.entitlements; sourceTree = "<group>"; };
 		4E26E4982AC166B800CB3329 /* Kaminari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kaminari.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E26E49B2AC166B800CB3329 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4E26E49D2AC166B800CB3329 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -62,6 +65,8 @@
 		4E6EDC632AC283250003420F /* CustomImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomImageView.swift; sourceTree = "<group>"; };
 		4E6EDC6D2AC2D89D0003420F /* rain.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = rain.gif; sourceTree = "<group>"; };
 		4E6EDC6F2AC2DD890003420F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		4E9CA8932AC69652009BC666 /* WeatherManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
+		4E9CA8942AC69653009BC666 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +115,7 @@
 		4E26E49A2AC166B800CB3329 /* Kaminari */ = {
 			isa = PBXGroup;
 			children = (
+				4E1086612AC404C600D1FB31 /* Kaminari.entitlements */,
 				4E26E49B2AC166B800CB3329 /* AppDelegate.swift */,
 				4E26E49D2AC166B800CB3329 /* SceneDelegate.swift */,
 				4E6EDC6F2AC2DD890003420F /* Extensions.swift */,
@@ -129,6 +135,8 @@
 			children = (
 				4E26E4CA2AC1C72100CB3329 /* CurrentWeatherMockup.swift */,
 				4E26E4CC2AC1D7D400CB3329 /* SectionItem.swift */,
+				4E9CA8942AC69653009BC666 /* MapManager.swift */,
+				4E9CA8932AC69652009BC666 /* WeatherManager.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -250,6 +258,7 @@
 				4E6EDC642AC283250003420F /* CustomImageView.swift in Sources */,
 				4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */,
 				4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */,
+				4E9CA8952AC69653009BC666 /* WeatherManager.swift in Sources */,
 				4E26E4C72AC197F200CB3329 /* CurrentTimelyCell.swift in Sources */,
 				4E26E4CB2AC1C72100CB3329 /* CurrentWeatherMockup.swift in Sources */,
 				4E26E4A02AC166B800CB3329 /* CurrentViewController.swift in Sources */,
@@ -264,6 +273,7 @@
 				4E26E49E2AC166B800CB3329 /* SceneDelegate.swift in Sources */,
 				4E26E4BA2AC1685000CB3329 /* DetailViewController.swift in Sources */,
 				4E26E4CD2AC1D7D400CB3329 /* SectionItem.swift in Sources */,
+				4E9CA8962AC69653009BC666 /* MapManager.swift in Sources */,
 				4E26E4C52AC197D900CB3329 /* CurrentWeatherCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -406,6 +416,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Kaminari/Kaminari.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4MN45GZSDT;
@@ -415,13 +426,13 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Junwoo.Momo8282.Kaminari;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Junwoo.Kaminari;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -434,6 +445,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Kaminari/Kaminari.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4MN45GZSDT;
@@ -443,13 +455,13 @@
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.Junwoo.Momo8282.Kaminari;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Junwoo.Kaminari;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
