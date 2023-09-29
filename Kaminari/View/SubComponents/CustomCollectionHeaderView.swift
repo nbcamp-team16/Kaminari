@@ -34,7 +34,7 @@ extension CustomCollectionHeaderView {
         addSubview(titleLabel)
         titleLabel.text = title
         titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
-        titleLabel.setupLabelColor(color: .black)
+        titleLabel.setupLabelColor(color: .systemBackground)
 
         titleLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -44,7 +44,7 @@ extension CustomCollectionHeaderView {
 
     func setupLineView() {
         addSubview(lineView)
-        lineView.backgroundColor = .black
+        lineView.backgroundColor = .systemBackground
 
         lineView.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(5)

@@ -18,6 +18,7 @@ class CurrentViewController: UIViewController {
     var longtitude: Double?
     
     var collectionView = CustomCollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    var gifImageView = GIFImageView(frame: .zero)
     
     var currentThumbnailWeatherList: [CurrentWeatherMockup] = CurrentWeatherMockup.weatherList
     var currentTimelyWeatherList: [CurrentTimelyWeatherMockup] = CurrentTimelyWeatherMockup.weatherList
@@ -33,7 +34,6 @@ class CurrentViewController: UIViewController {
 extension CurrentViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("### \(self.weather?.currentWeather.temperature)")
         self.setupUI()
     }
 
@@ -49,11 +49,14 @@ extension CurrentViewController {
         registerCollectionViewHeader()
         self.configureCollectionView()
         self.collectionView.collectionViewLayout = self.createLayout()
+        
         createDataSource()
         createSupplementaryView()
         applySnapshot()
+        
         setupBarButtonItem()
         configureMapData()
+        cofigunreGifView()
     }
 }
 
@@ -70,6 +73,18 @@ extension CurrentViewController {
 }
 
 extension CurrentViewController {
+    func cofigunreGifView() {
+        view.insertSubview(self.gifImageView, at: 0)
+        self.gifImageView.animate(withGIFNamed: "rain")
+        self.gifImageView.startAnimatingGIF()
+        self.gifImageView.contentMode = .scaleToFill
+        
+        self.gifImageView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-10)
+        }
+    }
+    
     func configureCollectionView() {
         view.addSubview(self.collectionView)
         self.collectionView.backgroundColor = .clear
@@ -158,12 +173,16 @@ extension CurrentViewController {
             switch section {
             case .currentThumbnailWeatherList:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentThumbnailCell.identifier, for: indexPath) as? CurrentThumbnailCell else { preconditionFailure() }
-                let item = CurrentWeatherMockup.weatherList[indexPath.row]
                 cell.setupUI()
-                cell.currentCityNameLabel.text = item.location
-                cell.currentTemperatureLabel.text = "\(WeatherManager.shared.temp)"
-                cell.layer.cornerRadius = 10
+                cell.currentWeatherIconImage.image = UIImage(systemName: WeatherManager.shared.symbol)
+                cell.currentTemperatureLabel.text = WeatherManager.shared.temp
+                cell.currentCityNameLabel.text = "대구광역시"
                 cell.layer.masksToBounds = true
+                cell.layer.shadowOffset = CGSize(width: 2, height: 2)
+                cell.layer.cornerRadius = 10
+                cell.backgroundColor = .systemBackground
+                cell.layer.borderColor = UIColor.systemBackground.cgColor
+                cell.layer.borderWidth = 0.5
                 return cell
                 
             case .currentTimelyWeatherList:
@@ -178,8 +197,8 @@ extension CurrentViewController {
                 cell.temperatureLabel.text = item.temperature
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
-                cell.backgroundColor = .white
-                cell.layer.borderColor = UIColor.systemGray6.cgColor
+                cell.backgroundColor = .systemBackground
+                cell.layer.borderColor = UIColor.systemBackground.cgColor
                 cell.layer.borderWidth = 0.5
                 return cell
                 
@@ -195,8 +214,8 @@ extension CurrentViewController {
                 cell.currentDescriptionLabel.text = item.description
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
-                cell.backgroundColor = .white
-                cell.layer.borderColor = UIColor.systemGray6.cgColor
+                cell.backgroundColor = .systemBackground
+                cell.layer.borderColor = UIColor.black.cgColor
                 cell.layer.borderWidth = 0.5
                 return cell
             }
