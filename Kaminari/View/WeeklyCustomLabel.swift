@@ -7,7 +7,7 @@
 
 import UIKit
 
-class CustomLabel: UILabel {
+class WeeklyCustomLabel: UILabel {
     override init(frame: CGRect) {
         super.init(frame: frame)
     }

@@ -16,9 +16,9 @@ class WeeklyViewController: UIViewController {
     var currentTemp: Int = 24
     var weatherSummury: String = "대체로 흐림"
 
-    let cityNameLabel = CustomLabel()
-    let detailLabel = CustomLabel()
-    let tableTitle = CustomLabel()
+    let cityNameLabel = WeeklyCustomLabel()
+    let detailLabel = WeeklyCustomLabel()
+    let tableTitle = WeeklyCustomLabel()
 
     let line: UIView = {
         let line = UIView()
