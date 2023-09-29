@@ -3,9 +3,11 @@ import MapKit
 import SnapKit
 import UIKit
 
-class RegionViewController: UIViewController, CLLocationManagerDelegate {
+class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+    let customImage = UIImage(named: "Image")
     var locationManager = CLLocationManager()
     var mapView: MKMapView!
+    
     // 초기화 버튼
     lazy var refreshButton: UIButton = {
         let button = UIButton(type: .system)
@@ -27,6 +29,7 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate {
         locationManager.delegate = self
         
         mapView = MKMapView()
+        mapView.delegate = self
         view.addSubview(mapView)
         
         mapView.snp.makeConstraints { make in
@@ -39,7 +42,27 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate {
         
         current()
     }
-    
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if annotation is MKUserLocation {
+            return nil
+        }
+
+        let reuseIdentifier = "customPin"
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
+
+        if annotationView == nil {
+            annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
+            annotationView?.canShowCallout = false
+            annotationView?.image = customImage
+            annotationView?.frame.size = CGSize(width: 50, height: 50)
+        } else {
+            annotationView?.annotation = annotation
+        }
+
+        return annotationView
+    }
+
     private func addCustomPin() {
         let pinCoordinate =
             CLLocationCoordinate2D(latitude: 37.541, longitude: 126.986)
@@ -52,9 +75,6 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate {
         
         pinAnnotation.title =
             "서울"
-        
-        pinAnnotation.subtitle =
-            "선릉로"
         
         // 맵뷰에 마커 추가하기
         mapView.addAnnotation(pinAnnotation)
