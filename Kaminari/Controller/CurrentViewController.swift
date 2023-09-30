@@ -212,7 +212,7 @@ extension CurrentViewController {
                 let item = CurrentWeathersMockup.weatherList[indexPath.row]
                 cell.setupUI()
                 cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
-                print("&&& \(type(of: WeatherManager.shared.weather?.hourlyForecast.forecast))")
+                print("&&& \(WeatherManager.shared.weather?.hourlyForecast.forecast.first)")
                 cell.currentWeatherLabel.text = item.title
                 cell.currentTemperatureLabel.text = item.temperature
                 cell.currentDescriptionLabel.text = item.description
