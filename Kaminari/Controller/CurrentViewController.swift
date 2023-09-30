@@ -55,6 +55,7 @@ extension CurrentViewController {
         createSupplementaryView()
         applySnapshot()
         
+        
         setupBarButtonItem()
         configureMapData()
         cofigunreGifView()
