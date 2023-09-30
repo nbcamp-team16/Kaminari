@@ -11,6 +11,7 @@
 		1DC10FBD2AC2665200EA7D1E /* WeeklyCustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */; };
 		4E10865E2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */; };
 		4E1086602AC3B73000D1FB31 /* CustomCollectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E10865F2AC3B73000D1FB31 /* CustomCollectionFooterView.swift */; };
+		1DC10FBD2AC2665200EA7D1E /* CustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC10FBC2AC2665200EA7D1E /* CustomLabel.swift */; };
 		4E26E49C2AC166B800CB3329 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E49B2AC166B800CB3329 /* AppDelegate.swift */; };
 		4E26E49E2AC166B800CB3329 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E49D2AC166B800CB3329 /* SceneDelegate.swift */; };
 		4E26E4A02AC166B800CB3329 /* CurrentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E49F2AC166B800CB3329 /* CurrentViewController.swift */; };
@@ -46,6 +47,7 @@
 		4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionHeaderView.swift; sourceTree = "<group>"; };
 		4E10865F2AC3B73000D1FB31 /* CustomCollectionFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionFooterView.swift; sourceTree = "<group>"; };
 		4E1086612AC404C600D1FB31 /* Kaminari.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kaminari.entitlements; sourceTree = "<group>"; };
+		1DC10FBC2AC2665200EA7D1E /* CustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLabel.swift; sourceTree = "<group>"; };
 		4E26E4982AC166B800CB3329 /* Kaminari.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Kaminari.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E26E49B2AC166B800CB3329 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4E26E49D2AC166B800CB3329 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -154,6 +156,8 @@
 				4E10865C2AC3B6DC00D1FB31 /* SubComponents */,
 				4E26E4B22AC167A800CB3329 /* Cell */,
 				1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */,
+				4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */,
+				1DC10FBC2AC2665200EA7D1E /* CustomLabel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -268,7 +272,7 @@
 				4E6EDC642AC283250003420F /* CustomImageView.swift in Sources */,
 				1DC10FBB2AC17C9300EA7D1E /* WeeklyTableViewCell.swift in Sources */,
 				4E26E4B62AC167F300CB3329 /* SearchViewController.swift in Sources */,
-				1DC10FBD2AC2665200EA7D1E /* WeeklyCustomLabel.swift in Sources */,
+				1DC10FBD2AC2665200EA7D1E /* CustomLabel.swift in Sources */,
 				4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */,
 				DCA523742AC5048D005501A5 /* SearchTableViewCell.swift in Sources */,
 				4E9CA8952AC69653009BC666 /* WeatherManager.swift in Sources */,

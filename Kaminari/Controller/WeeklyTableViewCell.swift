@@ -20,21 +20,21 @@ class WeeklyTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    let dateLabel = WeeklyCustomLabel()
+    let dateLabel = CustomLabel()
     
     let iconImageView: UIImageView = {
         let imageView = UIImageView()
         return imageView
     }()
     
-    let lowerTempLabel = WeeklyCustomLabel()
+    let lowerTempLabel = CustomLabel()
     
     let progressBar: UIProgressView = {
         let progressBar = UIProgressView(frame: CGRect(x: 0, y: 0, width: 126, height: 10))
         return progressBar
     }()
     
-    let higherTempLabel = WeeklyCustomLabel()
+    let higherTempLabel = CustomLabel()
     
     let cellStackView: UIStackView = {
         let stackView = UIStackView()
