@@ -103,8 +103,8 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
                 make.top.equalTo(view.safeAreaLayoutGuide)
                 make.leading.equalToSuperview()
                 make.trailing.equalToSuperview()
-                make.bottom.equalTo(view.safeAreaLayoutGuide).inset(25)
-                // 하단 25
+                make.bottom.equalTo(view.safeAreaLayoutGuide).inset(20)
+                // 하단 20 tarbar를 보이게 하기 위해 띄워준다
             }
         }
     }
