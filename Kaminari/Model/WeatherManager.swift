@@ -40,7 +40,7 @@ class WeatherManager {
         guard let result = weather?.hourlyForecast.forecast[indexPath].temperature.value else { return "0" }
         return "\(Int(result))°C"
     }
-    
+
     func hourlyForecastTitle(indexPath: Int) -> String {
         let result = weather?.hourlyForecast.forecast[indexPath].condition
         return result?.rawValue ?? ""
@@ -63,4 +63,10 @@ class WeatherManager {
             completion()
         }
     }
+}
+
+extension WeatherManager {
+    static let thumbnailList = WeatherManager.shared.weather?.currentWeather
+    static let hourlyList = WeatherManager.shared.weather?.hourlyForecast
+    static let dailyList = WeatherManager.shared.weather?.dailyForecast
 }

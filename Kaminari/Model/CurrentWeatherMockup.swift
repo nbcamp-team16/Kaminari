@@ -40,6 +40,18 @@ extension CurrentTimelyWeatherMockup {
         CurrentTimelyWeatherMockup(time: "7시", weatherIcon: "cloud.rain", temperature: "21°C"),
 
         CurrentTimelyWeatherMockup(time: "8시", weatherIcon: "cloud.rain", temperature: "21°C"),
+        CurrentTimelyWeatherMockup(time: "9시", weatherIcon: "cloud.rain", temperature: "21°C"),
+        CurrentTimelyWeatherMockup(time: "10시", weatherIcon: "cloud.rain", temperature: "21°C"),
+
+        CurrentTimelyWeatherMockup(time: "11시", weatherIcon: "cloud.rain", temperature: "21°C"),
+
+        CurrentTimelyWeatherMockup(time: "12시", weatherIcon: "cloud.rain", temperature: "21°C"),
+
+        CurrentTimelyWeatherMockup(time: "13시", weatherIcon: "cloud.rain", temperature: "21°C"),
+
+        CurrentTimelyWeatherMockup(time: "14시", weatherIcon: "cloud.rain", temperature: "21°C"),
+
+        CurrentTimelyWeatherMockup(time: "15시", weatherIcon: "cloud.rain", temperature: "21°C"),
     ]
 }
 
