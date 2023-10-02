@@ -31,6 +31,7 @@ class WeeklyTableViewCell: UITableViewCell {
     
     let progressBar: UIProgressView = {
         let progressBar = UIProgressView(frame: CGRect(x: 0, y: 0, width: 126, height: 10))
+        progressBar.trackTintColor = .lightGray
         return progressBar
     }()
     
@@ -58,11 +59,9 @@ extension WeeklyTableViewCell {
 extension WeeklyTableViewCell {
     func setupStackView() {
         dateLabel.setupLabelUI(fontColor: .white)
-        iconImageView.image = UIImage(systemName: "sun.max")
+        
         iconImageView.tintColor = .white
-        lowerTempLabel.configure(text: "20º", fontSize: 18, font: .regular)
         lowerTempLabel.setupLabelUI(fontColor: .white)
-        higherTempLabel.configure(text: "30º", fontSize: 18, font: .regular)
         higherTempLabel.setupLabelUI(fontColor: .white)
         
         [dateLabel, iconImageView, lowerTempLabel, progressBar, higherTempLabel].forEach { cellStackView.addArrangedSubview($0) }
@@ -87,4 +86,22 @@ extension WeeklyTableViewCell {
             dateLabel.configure(text: convertStr, fontSize: 18, font: .semibold)
         }
     }
+    
+    func setTemperature(_ index: Int) {
+        let lowerTemp = WeatherManager.shared.weather?.dailyForecast.forecast[index].lowTemperature
+        let higherTemp = WeatherManager.shared.weather?.dailyForecast.forecast[index].highTemperature
+        
+        lowerTempLabel.configure(text: "\(Int(lowerTemp?.value ?? 0))º", fontSize: 18, font: .regular)
+        higherTempLabel.configure(text: "\(Int(higherTemp?.value ?? 0))º", fontSize: 18, font: .regular)
+    }
+    
+    func setIconImage(_ index: Int) {
+        let symbolName = WeatherManager.shared.weather?.dailyForecast.forecast[index].symbolName
+        iconImageView.image = UIImage(systemName: symbolName ?? "sun.max")
+    }
+    
+    func setProgressBar(_ index: Int) {
+        
+    }
+    
 }
