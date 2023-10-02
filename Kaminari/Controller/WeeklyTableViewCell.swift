@@ -30,8 +30,9 @@ class WeeklyTableViewCell: UITableViewCell {
     let lowerTempLabel = WeeklyCustomLabel()
     
     let progressBar: UIProgressView = {
-        let progressBar = UIProgressView(frame: CGRect(x: 0, y: 0, width: 126, height: 10))
+        let progressBar = UIProgressView()
         progressBar.trackTintColor = .lightGray
+        progressBar.progress = 0.1
         return progressBar
     }()
     
@@ -41,7 +42,7 @@ class WeeklyTableViewCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .equalCentering
-        stackView.spacing = 8
+        stackView.spacing = 5
         return stackView
     }()
 }
@@ -100,8 +101,5 @@ extension WeeklyTableViewCell {
         iconImageView.image = UIImage(systemName: symbolName ?? "sun.max")
     }
     
-    func setProgressBar(_ index: Int) {
-        
-    }
-    
+    func setProgressBar(_ index: Int) {}
 }
