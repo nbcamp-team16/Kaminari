@@ -35,6 +35,7 @@
 		4E6EDC702AC2DD890003420F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6EDC6F2AC2DD890003420F /* Extensions.swift */; };
 		4E9CA8952AC69653009BC666 /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9CA8932AC69652009BC666 /* WeatherManager.swift */; };
 		4E9CA8962AC69653009BC666 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9CA8942AC69653009BC666 /* MapManager.swift */; };
+		E799C64D2ACACF3100495059 /* WeathermapCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E799C64C2ACACF3100495059 /* WeathermapCity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,6 +68,7 @@
 		4E6EDC6F2AC2DD890003420F /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		4E9CA8932AC69652009BC666 /* WeatherManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
 		4E9CA8942AC69653009BC666 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
+		E799C64C2ACACF3100495059 /* WeathermapCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeathermapCity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -156,6 +158,7 @@
 				4E26E4BB2AC169C600CB3329 /* TabBarController.swift */,
 				4E26E49F2AC166B800CB3329 /* CurrentViewController.swift */,
 				4E26E4B32AC167DC00CB3329 /* WeeklyViewController.swift */,
+				E799C64C2ACACF3100495059 /* WeathermapCity.swift */,
 				4E26E4B72AC1681600CB3329 /* RegionViewController.swift */,
 				4E26E4B52AC167F300CB3329 /* SearchViewController.swift */,
 				4E26E4B92AC1685000CB3329 /* DetailViewController.swift */,
@@ -266,6 +269,7 @@
 				4E26E4B82AC1681600CB3329 /* RegionViewController.swift in Sources */,
 				4E6EDC602AC27E6A0003420F /* CustomLabel.swift in Sources */,
 				4E6EDC622AC282360003420F /* CustomStackView.swift in Sources */,
+				E799C64D2ACACF3100495059 /* WeathermapCity.swift in Sources */,
 				4E26E4B42AC167DC00CB3329 /* WeeklyViewController.swift in Sources */,
 				4E26E4C92AC1993700CB3329 /* CurrentThumbnailCell.swift in Sources */,
 				4E26E4CF2AC1D8B200CB3329 /* CustomCollectionView.swift in Sources */,

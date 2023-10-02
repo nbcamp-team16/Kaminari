@@ -11,17 +11,17 @@ import WeatherKit
 
 class WeatherManager {
     static let shared = WeatherManager()
-
+    
+    var weathers: [City: Weather] = [:]
     var weather: Weather?
-
     var symbol: String {
         weather?.currentWeather.symbolName ?? "sunmax"
     }
-
+    
     var temp: String {
         let temp =
             weather?.currentWeather.temperature
-
+    
         let convert = Int(temp?.converted(to: .celsius).value ?? 0)
         return "\(convert)°C"
     }
@@ -30,41 +30,42 @@ class WeatherManager {
         let result = weather?.hourlyForecast.forecast[indexPath].date ?? Date()
         return result
     }
-
+    
     func hourlyForecastSymbol(indexPath: Int) -> String {
         let result = weather?.hourlyForecast.forecast[indexPath].symbolName ?? "sun.max"
         return result
     }
-
+    
     func hourlyForecastTemperature(indexPath: Int) -> String {
         guard let result = weather?.hourlyForecast.forecast[indexPath].temperature.value else { return "0" }
         return "\(Int(result))°C"
     }
-
+    
     func hourlyForecastTitle(indexPath: Int) -> String {
         let result = weather?.hourlyForecast.forecast[indexPath].condition
         return result?.rawValue ?? ""
     }
-
-    func getWeather(latitude: Double, longitude: Double) async {
+    
+    func getWeather(city: City) async {
         do {
-            weather = try await Task.detached(priority: .userInitiated) {
-                return try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude)) // Coordinates for Apple Park just as example coordinates
-
+            weathers[city] = try await Task.detached(priority: .userInitiated) {
+                try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude)) // Coordinates for Apple Park just as example coordinates
+                
             }.value
         } catch {
             fatalError("\(error)")
         }
     }
 
-    static func loadData(latitude: Double, longitude: Double, completion: @escaping () -> Void) {
+    //
+    static func loadData(city: City, completion: @escaping () -> Void) {
         Task {
-            await WeatherManager.shared.getWeather(latitude: latitude, longitude: longitude)
+            await WeatherManager.shared.getWeather(city: city)
             completion()
         }
     }
 }
-
+    
 extension WeatherManager {
     static let thumbnailList = WeatherManager.shared.weather?.currentWeather
     static let hourlyList = WeatherManager.shared.weather?.hourlyForecast

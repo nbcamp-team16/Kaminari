@@ -171,7 +171,7 @@ extension CurrentViewController {
     }
     
     func createDataSource() {
-        self.dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: self.collectionView) { (collectionView, indexPath, _) -> UICollectionViewCell? in
+        self.dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: self.collectionView) { collectionView, indexPath, _ -> UICollectionViewCell? in
             guard let section = Section(rawValue: indexPath.section) else { fatalError() }
             
             switch section {
@@ -227,7 +227,7 @@ extension CurrentViewController {
     }
     
     func createSupplementaryView() {
-        self.dataSource.supplementaryViewProvider = { (collectionView, _, indexPath) in
+        self.dataSource.supplementaryViewProvider = { collectionView, _, indexPath in
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionHeaderView.identifier, for: indexPath) as? CustomCollectionHeaderView else { return nil }
             return header
         }
@@ -259,7 +259,7 @@ extension CurrentViewController {
 extension CurrentViewController {
     func fetchData() {
         Task {
-            await WeatherManager.loadData(latitude: self.latitude ?? 0, longitude: self.longtitude ?? 0) { [weak self] in
+            await WeatherManager.loadData(city: City.seoul) { [weak self] in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
