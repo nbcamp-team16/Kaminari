@@ -51,25 +51,6 @@ class WeatherManager {
         let result = weather?.hourlyForecast.forecast[indexPath].condition
         return result?.rawValue ?? ""
     }
-    
-    func getWeather(city: City) async {
-        do {
-            weathers[city] = try await Task.detached(priority: .userInitiated) {
-                try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude)) // Coordinates for Apple Park just as example coordinates
-                
-            }.value
-        } catch {
-            fatalError("\(error)")
-        }
-    }
-
-    //
-    static func loadData(city: City, completion: @escaping () -> Void) {
-        Task {
-            await WeatherManager.shared.getWeather(city: city)
-            completion()
-        }
-    }
 
     func getWeather(latitude: Double, longitude: Double) async {
         do {
@@ -85,6 +66,25 @@ class WeatherManager {
     static func loadData(latitude: Double, longitude: Double, completion: @escaping () -> Void) {
         Task {
             await WeatherManager.shared.getWeather(latitude: latitude, longitude: longitude)
+            completion()
+        }
+    }
+
+    func getWeather(city: City) async {
+        do {
+            weathers[city] = try await Task.detached(priority: .userInitiated) {
+                try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude)) // Coordinates for Apple Park just as example coordinates
+                
+            }.value
+        } catch {
+            fatalError("\(error)")
+        }
+    }
+
+    //
+    static func loadData(city: City, completion: @escaping () -> Void) {
+        Task {
+            await WeatherManager.shared.getWeather(city: city)
             completion()
         }
     }

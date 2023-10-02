@@ -10,12 +10,12 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     var weather: Weather?
     var locationManager = CLLocationManager()
     var mapView: MKMapView!
-    var count = 0
-    lazy var refreshButton: UIButton = {
+//    var count = 0
+    lazy var myLocationButton: UIButton = {
         let button = UIButton(type: .system)
         button.tintColor = .white
-        button.setImage(UIImage(systemName: "arrow.clockwise"), for: .normal)
-
+        button.setImage(UIImage(systemName: "location"), for: .normal)
+        button.addTarget(self, action: #selector(centerMapOnUserLocation), for: .touchUpInside)
         return button
     }()
 
@@ -26,35 +26,33 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        refreshButton.addTarget(self, action: #selector(resetMap(_:)), for: .touchUpInside)
         locationManager.delegate = self
 
         mapView = MKMapView()
 
         mapView.delegate = self
-
+        mapView.showsUserLocation = true
+        mapView.setUserTrackingMode(.follow, animated: true)
         view.addSubview(mapView)
 
         mapView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
 
-        addCustomPins() // 마커 추가하기
-        print(count)
-
-        view.addSubview(refreshButton)
+        view.addSubview(myLocationButton)
+        view.bringSubviewToFront(myLocationButton)
 
         current()
+        addCustomPins() // 마커 추가하기
         fetchData(latitude: 37.577535, longitude: 126.9779692)
     }
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        if annotation is MKUserLocation { // MKannotaionView 설정
+        if annotation is MKUserLocation {
             return nil
         }
 
         let reuseIdentifier = "customPin"
-
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
 
         guard let targetCity = WeatherManager.shared.getCity(latitude: annotation.coordinate.latitude,
@@ -66,21 +64,20 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
 
         if annotationView == nil {
             let currentWeather = WeatherManager.shared.weathers[targetCity]?.currentWeather
+            let symbolName = currentWeather?.symbolName
 
-            // annotationView 가 없으면 새로 생성하거나 있으면 업데이트 한다.
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
-            //            annotationView?.canShowCallout = false
-            annotationView?.image = UIImage(systemName: currentWeather?.symbolName ?? "sun.max")
-            print("###", currentWeather?.symbolName)
-            //            annotationView?.annotation?.title = currentWeather?.temperature ?? "°C"
-            //            annotationView?.annotation?.title = currentWeather?.temperature ?? 0
+            annotationView?.image = UIImage(systemName: symbolName ?? "sun.max")
             annotationView?.frame.size = CGSize(width: 20, height: 20)
-            // 이미지의 사이즈를 조정한다.
         } else {
             annotationView?.annotation = annotation
         }
 
         return annotationView
+    }
+
+    func setUserTrackingMode(mode: MKUserTrackingMode, animated: Bool) {
+        // Your code to set the user tracking mode goes here
     }
 
     private func addCustomPins() {
@@ -114,14 +111,14 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
 
 //            print("위도: \(index.latitude), 경도: \(index.longitude)")
 
-            count += 1
+//            count += 1
 
 //            pinAnnotation.title = manager?.temperature.description
 
             mapView.addAnnotation(pinAnnotation)
         }
 
-        print(count)
+//        print(count)
 //        for (index, coordinate) in pinCoordinates.enumerated() {
 //            // 좌표, 제목 활용 반복문 사용한다.
 //            let pinAnnotation = MKPointAnnotation()
@@ -155,22 +152,24 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     }
 
     func current() {
-        refreshButton.snp.makeConstraints { make in
-            mapView.snp.makeConstraints { make in
-                make.top.equalTo(view.safeAreaLayoutGuide)
-                make.leading.equalToSuperview()
-                make.trailing.equalToSuperview()
-                make.bottom.equalTo(view.safeAreaLayoutGuide).inset(10)
-                // 하단 10 tarbar를 보이게 하기 위해 띄워준다
-            }
+        myLocationButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().inset(-50)
+            make.bottom.equalToSuperview().inset(20)
+        }
+
+        mapView.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide).inset(10)
         }
     }
 
-    @objc func resetMap(_ sender: UIButton) {
-        let markerCoordinate = CLLocationCoordinate2D(latitude: 37.541, longitude: 126.986)
-
-        let region = MKCoordinateRegion(center: markerCoordinate, latitudinalMeters: 1000, longitudinalMeters: 1000)
-
-        mapView.setRegion(region, animated: true)
+    @objc func centerMapOnUserLocation() {
+        // 사용자의 현재 위치로 지도를 이동하는 함수
+        if let userLocation = locationManager.location?.coordinate {
+            let region = MKCoordinateRegion(center: userLocation, latitudinalMeters: 1000, longitudinalMeters: 1000)
+            mapView.setRegion(region, animated: true)
+        }
     }
 }

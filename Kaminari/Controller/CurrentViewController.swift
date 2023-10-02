@@ -268,17 +268,6 @@ extension CurrentViewController {
         }
     }
 
-    func MapfetchData() {
-        Task {
-            await WeatherManager.loadData(city: City.seoul) { [weak self] in
-                guard let self = self else { return }
-                DispatchQueue.main.async {
-                    self.collectionView.reloadData()
-                }
-            }
-        }
-    }
-
     func configureMapData() {
         // 포그라운드일 때 위치 추적 권한 요청
         self.locationManager.requestWhenInUseAuthorization()
