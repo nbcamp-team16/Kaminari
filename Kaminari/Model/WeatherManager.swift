@@ -14,17 +14,17 @@ class WeatherManager {
 
     var weather: Weather?
 
-    let dailyWeatherList: [String?] = [
-        WeatherManager.shared.weather?.dailyForecast.forecast[1].condition.rawValue,
-        WeatherManager.shared.weather?.dailyForecast.forecast[1].highTemperature.value.formatted(),
-        WeatherManager.shared.weather?.dailyForecast.forecast[1].lowTemperature.value.formatted(),
-        WeatherManager.shared.weather?.dailyForecast.forecast[1].sun.sunrise?.formatted(),
-        WeatherManager.shared.weather?.dailyForecast.forecast[1].sun.sunset?.formatted(),
-        WeatherManager.shared.weather?.dailyForecast.forecast[1].uvIndex.value.formatted(),
-        WeatherManager.shared.weather?.dailyForecast.forecast[1].wind.speed.formatted(),
-    ]
+//    let dailyWeatherList: [Any] = [
+//        WeatherManager.shared.weather?.dailyForecast.forecast[1].condition,
+//        WeatherManager.shared.weather?.dailyForecast.forecast[1].highTemperature.value,
+//        WeatherManager.shared.weather?.dailyForecast.forecast[1].lowTemperature.value,
+//        WeatherManager.shared.weather?.dailyForecast.forecast[1].sun.sunrise,
+//        WeatherManager.shared.weather?.dailyForecast.forecast[1].sun.sunset,
+//        WeatherManager.shared.weather?.dailyForecast.forecast[1].uvIndex.value,
+//        WeatherManager.shared.weather?.dailyForecast.forecast[1].wind.speed,
+//    ]
 //
-//    let dailyTitleList: [String] = ["기후", "최고 온도", "최저 온도", "일출", "일몰", "자외선 지수", "바람"]
+    let dailyTitleList: [String] = ["기후", "최고 온도", "최저 온도", "일출", "일몰", "자외선 지수", "바람"]
 
     var symbol: String {
         weather?.currentWeather.symbolName ?? "sunmax"
@@ -38,17 +38,17 @@ class WeatherManager {
     }
 
     func hourlyForecastTime(indexPath: Int) -> Date {
-        let result = weather?.hourlyForecast.forecast[indexPath + 18].date ?? Date()
+        let result = weather?.hourlyForecast.forecast[indexPath + 21].date ?? Date()
         return result
     }
 
     func hourlyForecastSymbol(indexPath: Int) -> String {
-        let result = weather?.hourlyForecast.forecast[indexPath + 18].symbolName ?? "sun.max"
+        let result = weather?.hourlyForecast.forecast[indexPath + 21].symbolName ?? "sun.max"
         return result
     }
 
     func hourlyForecastTemperature(indexPath: Int) -> String {
-        guard let result = weather?.hourlyForecast.forecast[indexPath + 18].temperature.value else { return "0" }
+        guard let result = weather?.hourlyForecast.forecast[indexPath + 21].temperature.value else { return "0" }
         return "\(Int(result))°C"
     }
 

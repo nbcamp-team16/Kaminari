@@ -52,7 +52,7 @@ extension CurrentWeatherCell {
         currentTemperatureLabel.font = .systemFont(ofSize: 22, weight: .bold)
         currentTemperatureLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().inset(5)
-            make.height.equalTo(60)
+            make.height.equalTo(80)
         }
     }
 

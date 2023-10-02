@@ -26,6 +26,7 @@ class CurrentViewController: UIViewController {
     var currentDailyWeatherList: [CurrentDailyWeather] = CurrentDailyWeather.weatherList
         
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
+    var tempArray: [Any]?
     
     deinit {
         print("### ViewController deinitialized")
@@ -40,6 +41,7 @@ extension CurrentViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         fetchData()
+        print("&&& \(self.tempArray)")
     }
 }
 
@@ -209,11 +211,12 @@ extension CurrentViewController {
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentWeatherCell.identifier, for: indexPath) as? CurrentWeatherCell else { preconditionFailure() }
                 guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionHeaderView.identifier, for: indexPath) as? CustomCollectionHeaderView else { return UICollectionViewCell() }
                 header.setupTotalUI(title: "실시간 기상 정보")
-                let item = WeatherManager.shared.dailyWeatherList[indexPath.row]
+                let item = self.tempArray?[indexPath.row]
+                let titleItem = WeatherManager.shared.dailyTitleList[indexPath.row]
                 cell.setupUI()
                 cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
-                cell.currentWeatherLabel.text = item
-                cell.currentTemperatureLabel.text = "Description"
+                cell.currentWeatherLabel.text = titleItem
+                cell.currentTemperatureLabel.text = "\(item ?? "n/a")"
                 cell.currentDescriptionLabel.text = "item.description"
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
@@ -260,8 +263,16 @@ extension CurrentViewController {
         Task {
             await WeatherManager.loadData(latitude: self.latitude ?? 0, longitude: self.longtitude ?? 0) { [weak self] in
                 guard let self = self else { return }
-                let item = WeatherManager.shared.weather?.dailyForecast.forecast
-                print("&&& \(item)")
+                self.tempArray = []
+                let item = WeatherManager.shared.weather?.dailyForecast.forecast[1]
+                self.tempArray?.append(item?.condition.rawValue ?? "n/a")
+                self.tempArray?.append(addUnit(value: item?.highTemperature.value ?? 0))
+                self.tempArray?.append(addUnit(value: item?.lowTemperature.value ?? 0))
+                self.tempArray?.append(self.formattedDate(date: item?.sun.sunrise ?? Date()))
+                self.tempArray?.append(self.formattedDate(date: item?.sun.sunset ?? Date()))
+                self.tempArray?.append(item?.uvIndex.value.formatted() ?? "n/a")
+                self.tempArray?.append(item?.wind.speed.value ?? 0)
+                print("&&& \(self.tempArray)")
                 
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
@@ -269,7 +280,7 @@ extension CurrentViewController {
             }
         }
     }
-
+    
     func configureMapData() {
         // 포그라운드일 때 위치 추적 권한 요청
         self.locationManager.requestWhenInUseAuthorization()
@@ -316,5 +327,20 @@ extension CurrentViewController {
 
         self.collectionView.reloadData()
         self.refreshControl.endRefreshing()
+    }
+}
+
+extension CurrentViewController {
+    func addUnit(value: Double) -> String {
+        let result = value
+        return "\(result)°C"
+    }
+    
+    func formattedDate(date: Date) -> String {
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "a hh:mm"
+    
+        let resultTime = dateformatter.string(from: date)
+        return resultTime
     }
 }
