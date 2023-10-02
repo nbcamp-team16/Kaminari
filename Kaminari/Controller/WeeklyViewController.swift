@@ -142,7 +142,6 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
         cell.setDateLabel(indexPath.row, nextDate!)
         cell.setIconImage(indexPath.row)
         cell.setTemperature(indexPath.row)
-        print(cell.bounds.height)
         return cell
     }
 

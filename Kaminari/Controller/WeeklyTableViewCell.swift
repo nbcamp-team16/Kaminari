@@ -28,21 +28,22 @@ class WeeklyTableViewCell: UITableViewCell {
     }()
     
     let lowerTempLabel = WeeklyCustomLabel()
-    
-    let progressBar: UIProgressView = {
-        let progressBar = UIProgressView()
-        progressBar.trackTintColor = .lightGray
-        progressBar.progress = 0.1
-        return progressBar
-    }()
+    let slashLabel = WeeklyCustomLabel()
+//    let progressBar: UIProgressView = {
+//        let progressBar = UIProgressView()
+//        progressBar.trackTintColor = .lightGray
+//        progressBar.progressTintColor = .systemBlue
+//        progressBar.progress = 0.1
+//        return progressBar
+//    }()
     
     let higherTempLabel = WeeklyCustomLabel()
     
-    let cellStackView: UIStackView = {
+    let labelStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .horizontal
-        stackView.distribution = .equalCentering
-        stackView.spacing = 5
+        stackView.distribution = .equalSpacing
+        stackView.spacing = 15
         return stackView
     }()
 }
@@ -63,14 +64,25 @@ extension WeeklyTableViewCell {
         
         iconImageView.tintColor = .white
         lowerTempLabel.setupLabelUI(fontColor: .white)
+        slashLabel.setupLabelUI(fontColor: .white)
         higherTempLabel.setupLabelUI(fontColor: .white)
         
-        [dateLabel, iconImageView, lowerTempLabel, progressBar, higherTempLabel].forEach { cellStackView.addArrangedSubview($0) }
-        contentView.addSubview(cellStackView)
+        [lowerTempLabel, slashLabel, higherTempLabel].forEach { labelStackView.addArrangedSubview($0) }
+        [dateLabel, iconImageView, labelStackView].forEach { contentView.addSubview($0) }
         
-        cellStackView.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(15)
+        dateLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
+            make.left.equalTo(20)
+        }
+        
+        iconImageView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview().offset(-50)
+        }
+        labelStackView.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.right.equalToSuperview().offset(-20)
+            
         }
     }
 }
@@ -93,6 +105,7 @@ extension WeeklyTableViewCell {
         let higherTemp = WeatherManager.shared.weather?.dailyForecast.forecast[index].highTemperature
         
         lowerTempLabel.configure(text: "\(Int(lowerTemp?.value ?? 0))º", fontSize: 18, font: .regular)
+        slashLabel.configure(text: "/", fontSize: 18, font: .regular)
         higherTempLabel.configure(text: "\(Int(higherTemp?.value ?? 0))º", fontSize: 18, font: .regular)
     }
     
@@ -100,6 +113,4 @@ extension WeeklyTableViewCell {
         let symbolName = WeatherManager.shared.weather?.dailyForecast.forecast[index].symbolName
         iconImageView.image = UIImage(systemName: symbolName ?? "sun.max")
     }
-    
-    func setProgressBar(_ index: Int) {}
 }
