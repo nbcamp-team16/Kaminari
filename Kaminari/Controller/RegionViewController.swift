@@ -30,7 +30,9 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         locationManager.delegate = self
 
         mapView = MKMapView()
+
         mapView.delegate = self
+
         view.addSubview(mapView)
 
         mapView.snp.makeConstraints { make in
@@ -46,16 +48,25 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         fetchData(latitude: 37.577535, longitude: 126.9779692)
     }
 
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView?
-    { print("###", annotation)
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation { // MKannotaionView 설정
             return nil
         }
+
         let reuseIdentifier = "customPin"
+
         var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
 
+        guard let targetCity = WeatherManager.shared.getCity(latitude: annotation.coordinate.latitude,
+                                                             longitude: annotation.coordinate.longitude)
+        else {
+            print("NO Result")
+            return nil
+        }
+
         if annotationView == nil {
-            let currentWeather = WeatherManager.shared.weather?.currentWeather
+            let currentWeather = WeatherManager.shared.weathers[targetCity]?.currentWeather
+
             // annotationView 가 없으면 새로 생성하거나 있으면 업데이트 한다.
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
             //            annotationView?.canShowCallout = false
@@ -73,34 +84,42 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     }
 
     private func addCustomPins() {
-        let pinCoordinates: [CLLocationCoordinate2D] = [
-            CLLocationCoordinate2D(latitude: 37.577535, longitude: 126.9779692),
-            // 서울
-            CLLocationCoordinate2D(latitude: 37.4562557, longitude: 126.7052062),
-            // 인천
-            CLLocationCoordinate2D(latitude: 36.3504119, longitude: 127.3845475),
-            // 대전
-            CLLocationCoordinate2D(latitude: 35.1795543, longitude: 129.0756416),
-            // 부산
-            CLLocationCoordinate2D(latitude: 35.8714354, longitude: 128.601445),
-            // 대구
-            CLLocationCoordinate2D(latitude: 35.1595454, longitude: 126.8526012),
-            // 광주
-            CLLocationCoordinate2D(latitude: 35.5383773, longitude: 129.31133596)
-            // 울산
-        ]
-//
-//        let pinTitles = ["서울", "인천", "대전", "부산", "대구", "광주", "울산"]
-//        pinCoordinates.forEach { index in
+//        let pinCoordinates: [CLLocationCoordinate2D] = [
+//            CLLocationCoordinate2D(latitude: 37.577535, longitude: 126.9779692),
+//            // 서울
+//            CLLocationCoordinate2D(latitude: 37.4562557, longitude: 126.7052062),
+//            // 인천
+//            CLLocationCoordinate2D(latitude: 36.3504119, longitude: 127.3845475),
+//            // 대전
+//            CLLocationCoordinate2D(latitude: 35.1795543, longitude: 129.0756416),
+//            // 부산
+//            CLLocationCoordinate2D(latitude: 35.8714354, longitude: 128.601445),
+//            // 대구
+//            CLLocationCoordinate2D(latitude: 35.1595454, longitude: 126.8526012),
+//            // 광주
+//            CLLocationCoordinate2D(latitude: 35.5383773, longitude: 129.31133596)
+//            // 울산
+//        ]
+
+        let pinCoordinates = City.allCases.map { $0.pinCoordinates }
+
+        pinCoordinates.forEach { pin in
+
 //            let manager = WeatherManager.shared.weather?.currentWeather
-//            let pinAnnotation = MKPointAnnotation()
-//            pinAnnotation.coordinate.latitude = index.latitude
-//            pinAnnotation.coordinate.longitude = index.longitude
+
+            let pinAnnotation = MKPointAnnotation()
+
+            pinAnnotation.coordinate.latitude = pin.latitude
+            pinAnnotation.coordinate.longitude = pin.longitude
+
 //            print("위도: \(index.latitude), 경도: \(index.longitude)")
-//            count += 1
+
+            count += 1
+
 //            pinAnnotation.title = manager?.temperature.description
-//            mapView.addAnnotation(pinAnnotation)
-//        }
+
+            mapView.addAnnotation(pinAnnotation)
+        }
 
         print(count)
 //        for (index, coordinate) in pinCoordinates.enumerated() {

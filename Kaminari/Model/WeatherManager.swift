@@ -13,7 +13,9 @@ class WeatherManager {
     static let shared = WeatherManager()
     
     var weathers: [City: Weather] = [:]
+  
     var weather: Weather?
+  
     var symbol: String {
         weather?.currentWeather.symbolName ?? "sunmax"
     }
@@ -24,6 +26,10 @@ class WeatherManager {
     
         let convert = Int(temp?.converted(to: .celsius).value ?? 0)
         return "\(convert)°C"
+    }
+  
+    func getCity(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> City? {
+        return City.allCases.first { ($0.pinCoordinates.latitude == latitude) && ($0.pinCoordinates.longitude == longitude) }
     }
 
     func hourlyForecastTime(indexPath: Int) -> Date {
@@ -64,8 +70,26 @@ class WeatherManager {
             completion()
         }
     }
+
+    func getWeather(latitude: Double, longitude: Double) async {
+        do {
+            weather = try await Task.detached(priority: .userInitiated) {
+                try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude)) // Coordinates for Apple Park just as example coordinates
+
+            }.value
+        } catch {
+            fatalError("\(error)")
+        }
+    }
+
+    static func loadData(latitude: Double, longitude: Double, completion: @escaping () -> Void) {
+        Task {
+            await WeatherManager.shared.getWeather(latitude: latitude, longitude: longitude)
+            completion()
+        }
+    }
 }
-    
+
 extension WeatherManager {
     static let thumbnailList = WeatherManager.shared.weather?.currentWeather
     static let hourlyList = WeatherManager.shared.weather?.hourlyForecast
