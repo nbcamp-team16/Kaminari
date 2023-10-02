@@ -259,6 +259,17 @@ extension CurrentViewController {
 extension CurrentViewController {
     func fetchData() {
         Task {
+            await WeatherManager.loadData(latitude: self.latitude ?? 0, longitude: self.longtitude ?? 0) { [weak self] in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.collectionView.reloadData()
+                }
+            }
+        }
+    }
+
+    func MapfetchData() {
+        Task {
             await WeatherManager.loadData(city: City.seoul) { [weak self] in
                 guard let self = self else { return }
                 DispatchQueue.main.async {
