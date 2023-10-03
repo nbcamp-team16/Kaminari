@@ -28,6 +28,7 @@ class WeeklyTableViewCell: UITableViewCell {
     }()
     
     let lowerTempLabel = WeeklyCustomLabel()
+
     let slashLabel = WeeklyCustomLabel()
 //    let progressBar: UIProgressView = {
 //        let progressBar = UIProgressView()
@@ -82,7 +83,6 @@ extension WeeklyTableViewCell {
         labelStackView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.right.equalToSuperview().offset(-20)
-            
         }
     }
 }
@@ -99,7 +99,7 @@ extension WeeklyTableViewCell {
             dateLabel.configure(text: convertStr, fontSize: 18, font: .semibold)
         }
     }
-    
+
     func setTemperature(_ index: Int) {
         let lowerTemp = WeatherManager.shared.weather?.dailyForecast.forecast[index].lowTemperature
         let higherTemp = WeatherManager.shared.weather?.dailyForecast.forecast[index].highTemperature

@@ -7,12 +7,12 @@
 
 import SnapKit
 import UIKit
+import WeatherKit
 
 class WeeklyViewController: UIViewController {
     let date = Date()
 
     var cityName: String = "현재 위치"
-
     let sampleLatitude = 37.26
     let sampleLongitude = 127.03
 
@@ -142,6 +142,7 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
         cell.setDateLabel(indexPath.row, nextDate!)
         cell.setIconImage(indexPath.row)
         cell.setTemperature(indexPath.row)
+
         return cell
     }
 
