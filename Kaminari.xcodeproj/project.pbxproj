@@ -38,6 +38,8 @@
 		4E9CA8962AC69653009BC666 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9CA8942AC69653009BC666 /* MapManager.swift */; };
 		DCA523722AC50435005501A5 /* SearchTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */; };
 		DCA523742AC5048D005501A5 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */; };
+		FBDF2C3B2AC9591F000407B7 /* SearchRegionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */; };
+		FBDF2C3E2AC95934000407B7 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = FBDF2C3D2AC95934000407B7 /* Then */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,6 +75,7 @@
 		4E9CA8942AC69653009BC666 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableHeaderView.swift; sourceTree = "<group>"; };
 		DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRegionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */,
+				FBDF2C3E2AC95934000407B7 /* Then in Frameworks */,
 				4E6EDC6C2AC2D8690003420F /* Gifu in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -168,6 +172,7 @@
 				4E26E4B52AC167F300CB3329 /* SearchViewController.swift */,
 				4E26E4B92AC1685000CB3329 /* DetailViewController.swift */,
 				1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */,
+				FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -201,6 +206,7 @@
 			packageProductDependencies = (
 				4E26E4C02AC16C9400CB3329 /* SnapKit */,
 				4E6EDC6B2AC2D8690003420F /* Gifu */,
+				FBDF2C3D2AC95934000407B7 /* Then */,
 			);
 			productName = Kaminari;
 			productReference = 4E26E4982AC166B800CB3329 /* Kaminari.app */;
@@ -233,6 +239,7 @@
 			packageReferences = (
 				4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu" */,
+				FBDF2C3C2AC95934000407B7 /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = 4E26E4992AC166B800CB3329 /* Products */;
 			projectDirPath = "";
@@ -285,6 +292,7 @@
 				4E26E49C2AC166B800CB3329 /* AppDelegate.swift in Sources */,
 				4E26E49E2AC166B800CB3329 /* SceneDelegate.swift in Sources */,
 				4E26E4BA2AC1685000CB3329 /* DetailViewController.swift in Sources */,
+				FBDF2C3B2AC9591F000407B7 /* SearchRegionViewController.swift in Sources */,
 				4E26E4CD2AC1D7D400CB3329 /* SectionItem.swift in Sources */,
 				4E9CA8962AC69653009BC666 /* MapManager.swift in Sources */,
 				4E26E4C52AC197D900CB3329 /* CurrentWeatherCell.swift in Sources */,
@@ -522,6 +530,14 @@
 				kind = branch;
 			};
 		};
+		FBDF2C3C2AC95934000407B7 /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -534,6 +550,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu" */;
 			productName = Gifu;
+		};
+		FBDF2C3D2AC95934000407B7 /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FBDF2C3C2AC95934000407B7 /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
