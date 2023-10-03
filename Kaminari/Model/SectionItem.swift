@@ -8,25 +8,25 @@
 import Foundation
 
 enum Section: Int, Hashable, CaseIterable {
-    case currentThumbnailWeatherList, currentTimelyWeatherList, currentWeatherList
+    case currentThumbnailWeatherList, currentHourlyWeatherList, currentDailyWeatherList
 
     var description: String {
         switch self {
         case .currentThumbnailWeatherList: return "currentThumbnailWeatherList"
-        case .currentTimelyWeatherList: return "currentTimelyWeatherList"
-        case .currentWeatherList: return "currentWeatherList"
+        case .currentHourlyWeatherList: return "currentHourlyWeatherList"
+        case .currentDailyWeatherList: return "currentDailyWeatherList"
         }
     }
 }
 
 struct Item: Hashable {
-    var currentThumbnailWeatherList: CurrentWeatherMockup?
-    var currentTimelyWeatherList: CurrentTimelyWeatherMockup?
-    var currentWeatherList: CurrentWeathersMockup?
+    var currentThumbnailWeatherList: CurrentWeather?
+    var currentHourlyWeatherList: CurrentHourlyWeather?
+    var currentDailyWeatherList: CurrentDailyWeather?
 
-    init(currentThumbnailWeatherList: CurrentWeatherMockup? = nil, currentTimelyWeatherList: CurrentTimelyWeatherMockup? = nil, currentWeatherList: CurrentWeathersMockup? = nil) {
+    init(currentThumbnailWeatherList: CurrentWeather? = nil, currentHourlyWeatherList: CurrentHourlyWeather? = nil, currentDailyWeatherList: CurrentDailyWeather? = nil) {
         self.currentThumbnailWeatherList = currentThumbnailWeatherList
-        self.currentTimelyWeatherList = currentTimelyWeatherList
-        self.currentWeatherList = currentWeatherList
+        self.currentHourlyWeatherList = currentHourlyWeatherList
+        self.currentDailyWeatherList = currentDailyWeatherList
     }
 }
