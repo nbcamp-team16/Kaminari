@@ -151,4 +151,15 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         present(DetailViewController(), animated: true)
     }
+<<<<<<< HEAD
+=======
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 60
+        } else {
+            return (weeklyTable.bounds.height - 60) / 9
+        }
+    }
+>>>>>>> 19b4d39 (tableview cell 크기 조절)
 }
