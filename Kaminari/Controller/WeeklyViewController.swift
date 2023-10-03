@@ -13,8 +13,8 @@ class WeeklyViewController: UIViewController {
     let date = Date()
 
     var cityName: String = "현재 위치"
-    let sampleLatitude = 37.26
-    let sampleLongitude = 127.03
+    let sampleLatitude = MapManager.shared.latitude
+    let sampleLongitude = MapManager.shared.longitude
 
     let cityNameLabel = WeeklyCustomLabel()
     let detailLabel = WeeklyCustomLabel()
@@ -22,14 +22,14 @@ class WeeklyViewController: UIViewController {
 
     let line: UIView = {
         let line = UIView()
-        line.backgroundColor = .white
+        line.backgroundColor = .label
         return line
     }()
 
     let weeklyTable: UITableView = {
         let table = UITableView()
         table.layer.cornerRadius = 15
-        table.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.17)
+        table.backgroundColor = .table
         return table
     }()
 
@@ -45,12 +45,15 @@ extension WeeklyViewController {
         setupTable()
         setupBarButtonItem()
     }
-
+    
     func viewWillAppear(_ animated: Bool) async {
         super.viewWillAppear(animated)
-        await WeatherManager.shared.getWeather(latitude: sampleLatitude, longitude: sampleLongitude)
+        await WeatherManager.loadData(latitude: sampleLatitude ?? 0, longitude: sampleLongitude ?? 0) { [weak self] in
+            guard let self = self else { return }
+        }
     }
 }
+
 
 extension WeeklyViewController {
     func setupBarButtonItem() {
@@ -66,10 +69,9 @@ extension WeeklyViewController {
 
 private extension WeeklyViewController {
     func configureUI() {
-        view.backgroundColor = UIColor(red: 108.0/255.0, green: 202.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        view.backgroundColor = .systemBackground
         setupLabels()
         configureTable()
-        print("----------\(WeatherManager.shared.weather?.currentWeather.temperature.value)")
     }
 
     func setupLabels() {
@@ -80,9 +82,9 @@ private extension WeeklyViewController {
         detailLabel.configure(text: "\(currentTemp)º | \(weatherSummury)", fontSize: 20, font: .regular)
         tableTitle.configure(text: "주간 예보", fontSize: 18, font: .regular)
 
-        cityNameLabel.setupLabelUI(fontColor: .white)
-        detailLabel.setupLabelUI(fontColor: .white)
-        tableTitle.setupLabelUI(fontColor: .white)
+        cityNameLabel.setupLabelUI(fontColor: .label)
+        detailLabel.setupLabelUI(fontColor: .label)
+        tableTitle.setupLabelUI(fontColor: .label)
 
         [cityNameLabel, detailLabel, tableTitle].forEach {
             view.addSubview($0)

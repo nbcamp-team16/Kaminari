@@ -37,12 +37,14 @@
 		4E6EDC702AC2DD890003420F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E6EDC6F2AC2DD890003420F /* Extensions.swift */; };
 		4E9CA8952AC69653009BC666 /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9CA8932AC69652009BC666 /* WeatherManager.swift */; };
 		4E9CA8962AC69653009BC666 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9CA8942AC69653009BC666 /* MapManager.swift */; };
-
 		DCA523722AC50435005501A5 /* SearchTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */; };
 		DCA523742AC5048D005501A5 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */; };
+		E799C64D2ACACF3100495059 /* WeathermapCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E799C64C2ACACF3100495059 /* WeathermapCity.swift */; };
 		FBDF2C3B2AC9591F000407B7 /* SearchRegionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */; };
 		FBDF2C3E2AC95934000407B7 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = FBDF2C3D2AC95934000407B7 /* Then */; };
-		E799C64D2ACACF3100495059 /* WeathermapCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E799C64C2ACACF3100495059 /* WeathermapCity.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
 		1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomButton.swift; path = ../../../../../../Downloads/CustomButton.swift; sourceTree = "<group>"; };
 		1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyTableViewCell.swift; sourceTree = "<group>"; };
 		1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCustomLabel.swift; sourceTree = "<group>"; };
@@ -76,9 +78,8 @@
 		4E9CA8942AC69653009BC666 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableHeaderView.swift; sourceTree = "<group>"; };
 		DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
-		FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRegionViewController.swift; sourceTree = "<group>"; };
 		E799C64C2ACACF3100495059 /* WeathermapCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeathermapCity.swift; sourceTree = "<group>"; };
-
+		FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRegionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,14 +99,12 @@
 		4E10865C2AC3B6DC00D1FB31 /* SubComponents */ = {
 			isa = PBXGroup;
 			children = (
-
 				1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */,
 				4E26E4CE2AC1D8B200CB3329 /* CustomCollectionView.swift */,
 				4E6EDC5F2AC27E6A0003420F /* CustomLabel.swift */,
 				4E6EDC632AC283250003420F /* CustomImageView.swift */,
 				4E6EDC612AC282360003420F /* CustomStackView.swift */,
 				4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */,
-				1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */,
 				4E10865F2AC3B73000D1FB31 /* CustomCollectionFooterView.swift */,
 			);
 			path = SubComponents;
@@ -178,9 +177,7 @@
 				4E26E4B72AC1681600CB3329 /* RegionViewController.swift */,
 				4E26E4B52AC167F300CB3329 /* SearchViewController.swift */,
 				4E26E4B92AC1685000CB3329 /* DetailViewController.swift */,
-				1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */,
 				FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */,
-
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -188,6 +185,7 @@
 		4E26E4B22AC167A800CB3329 /* Cell */ = {
 			isa = PBXGroup;
 			children = (
+				1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */,
 				4E26E4C82AC1993600CB3329 /* CurrentThumbnailCell.swift */,
 				4E26E4C62AC197F200CB3329 /* CurrentTimelyCell.swift */,
 				4E26E4C42AC197D900CB3329 /* CurrentWeatherCell.swift */,
@@ -287,7 +285,6 @@
 				1DC10FBD2AC2665200EA7D1E /* WeeklyCustomLabel.swift in Sources */,
 				4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */,
 				DCA523742AC5048D005501A5 /* SearchTableViewCell.swift in Sources */,
-
 				4E9CA8952AC69653009BC666 /* WeatherManager.swift in Sources */,
 				4E26E4C72AC197F200CB3329 /* CurrentTimelyCell.swift in Sources */,
 				4E26E4CB2AC1C72100CB3329 /* CurrentWeatherMockup.swift in Sources */,
