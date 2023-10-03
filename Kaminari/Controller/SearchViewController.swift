@@ -4,33 +4,30 @@
 
 import SnapKit
 import UIKit
+import MapKit
 import Foundation
 
 let defaults = UserDefaults.standard // Userdefaults로 섭씨, 화씨 설정
 let defaultUnit = ["tempUnit": "섭씨"] // 기본값
 
 // dummy
-let weather1 = Weather(temp: 25, cityName: "인천광역시", weather: .cloudyABit, maxTemp: 27, minTemp: 18)
-let weather2 = Weather(temp: -4, cityName: "서울광역시", weather: .snowy, maxTemp: 3, minTemp: -8)
-let weather3 = Weather(temp: 13, cityName: "광주광역시", weather: .rainy, maxTemp: 17, minTemp: 8)
-let weather4 = Weather(temp: 33, cityName: "대구광역시", weather: .sunny, maxTemp: 34, minTemp: 27)
-let weather5 = Weather(temp: 15, cityName: "제주특별시", weather: .thunder, maxTemp: 21, minTemp: 11)
-let weather6 = Weather(temp: 15, cityName: "울산광역시", weather: .thunder, maxTemp: 21, minTemp: 11)
+let weather1 = WeatherInfo(temp: 25, cityName: "인천광역시", weather: .cloudyABit, maxTemp: 27, minTemp: 18)
+let weather2 = WeatherInfo(temp: -4, cityName: "서울광역시", weather: .snowy, maxTemp: 3, minTemp: -8)
+let weather3 = WeatherInfo(temp: 13, cityName: "광주광역시", weather: .rainy, maxTemp: 17, minTemp: 8)
+let weather4 = WeatherInfo(temp: 33, cityName: "대구광역시", weather: .sunny, maxTemp: 34, minTemp: 27)
+let weather5 = WeatherInfo(temp: 15, cityName: "제주특별시", weather: .thunder, maxTemp: 21, minTemp: 11)
+let weather6 = WeatherInfo(temp: 15, cityName: "울산광역시", weather: .thunder, maxTemp: 21, minTemp: 11)
 
 let data = [weather1, weather2, weather3, weather4, weather5, weather6]
+let dummy = ["부평", "을지로", "왕십리", "을왕리", "울산"]
 
 class SearchViewController: UITableViewController {
-
     override func viewDidLoad() {
         super.viewDidLoad()
         defaults.register(defaults: defaultUnit)
         navBar()
-
-
+        
         view.backgroundColor = .systemBackground
-
-        // header of footer 등록
-        tableView.register(SearchTableHeader.self, forHeaderFooterViewReuseIdentifier: "searchTableHeader")
 
         // register cell
         tableView.register(SearchTableViewCell.self, forCellReuseIdentifier: SearchTableViewCell.identifier)
@@ -44,31 +41,50 @@ class SearchViewController: UITableViewController {
 
        // 탭 바 없애기
         tabBarController?.tabBar.isHidden = true
+        
+        // dark mode
+        view.window?.overrideUserInterfaceStyle = .dark
     }
 
     override func viewWillAppear(_ animated: Bool) {
         tableView.reloadData()
+        view.window?.overrideUserInterfaceStyle = .dark
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         tabBarController?.tabBar.isHidden = false
+        self.navigationController?.navigationBar.backgroundColor = .clear
+        self.navigationController?.navigationBar.prefersLargeTitles = false
+        view.window?.overrideUserInterfaceStyle = .unspecified
     }
 
    func navBar() {
-        let menuButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
-        menuButton.showsMenuAsPrimaryAction = true
-        menuButton.menu = setMenu()
-        menuButton.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
+       let menuButton = UIButton(frame: CGRect(x: 0, y: 0, width: 30, height: 30))
+       menuButton.showsMenuAsPrimaryAction = true
+       menuButton.menu = setMenu()
+       menuButton.setImage(UIImage(systemName: "ellipsis.circle"), for: .normal)
 
-        let barButton = UIBarButtonItem(customView: menuButton)
-        barButton.setBackgroundImage(UIImage(systemName: "ellipsis.circle"), for: .normal, barMetrics: UIBarMetrics.default)
+       let barButton = UIBarButtonItem(customView: menuButton)
+       barButton.setBackgroundImage(UIImage(systemName: "ellipsis.circle"), for: .normal, barMetrics: UIBarMetrics.default)
 
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-        self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
-        self.navigationController?.navigationBar.shadowImage = UIImage()
-        self.navigationItem.rightBarButtonItem = barButton
-        self.navigationItem.title = "검색"
-        self.navigationController?.navigationBar.tintColor = .black
+       self.navigationController?.navigationBar.prefersLargeTitles = true
+       self.navigationController?.navigationItem.largeTitleDisplayMode = .automatic
+       self.navigationController?.navigationBar.backgroundColor = .systemBackground
+       self.navigationController?.navigationBar.shadowImage = UIImage()
+       self.navigationItem.rightBarButtonItem = barButton
+       
+       let searchController = UISearchController(searchResultsController: SearchRegionViewController())
+       searchController.searchResultsUpdater = searchController.searchResultsController as? SearchRegionViewController
+       
+       self.navigationItem.searchController = searchController
+    
+       self.navigationItem.searchController?.searchBar.placeholder = "도시 또는 공항 검색"
+       self.navigationItem.searchController?.navigationItem.titleView = searchController.searchBar
+       self.navigationItem.hidesSearchBarWhenScrolling = false
+       self.navigationItem.searchController?.obscuresBackgroundDuringPresentation = true
+       
+       self.navigationItem.title = "검색"
+       self.navigationController?.navigationBar.tintColor = .label
     }
 
     @objc func setMenu() -> UIMenu {
@@ -88,15 +104,6 @@ class SearchViewController: UITableViewController {
 }
             
 extension SearchViewController {
-    // section header 높이 설정
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {60}
-
-    // section header 반환
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = tableView.dequeueReusableHeaderFooterView(withIdentifier:
-                           "searchTableHeader") as! SearchTableHeader
-        return view
-    }
 
     override func numberOfSections(in tableView: UITableView) -> Int {1}
 
@@ -153,7 +160,7 @@ struct WeatherInfoForWeatherCase {
     }
 }
 
-struct Weather {
+struct WeatherInfo {
     var temp: Int
     var cityName: String
     var weather: WeatherCase
@@ -174,7 +181,7 @@ func connectBoolWithString(weather: String, weatherImgName: String, backgroundIm
 }
 
 
-func setWeatherUI(weatherCase: WeatherCase, needString: Bool, needBackImg: Bool, needWeatherImg: Bool, weatherInfo: Weather) -> WeatherInfoForWeatherCase {
+func setWeatherUI(weatherCase: WeatherCase, needString: Bool, needBackImg: Bool, needWeatherImg: Bool, weatherInfo: WeatherInfo) -> WeatherInfoForWeatherCase {
     switch weatherCase {
     case .cloudyABit:
         return connectBoolWithString(weather: "약간 흐림", weatherImgName: "cloudy_a_bit", backgroundImgName: "back_cloudy_a_bit", needString, needBackImg, needWeatherImg)
@@ -188,3 +195,4 @@ func setWeatherUI(weatherCase: WeatherCase, needString: Bool, needBackImg: Bool,
         return connectBoolWithString(weather: "낙뢰", weatherImgName: "thunder", backgroundImgName: "back_thunder", needString, needBackImg, needWeatherImg)
     }
 }
+
