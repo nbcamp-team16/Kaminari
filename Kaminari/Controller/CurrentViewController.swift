@@ -173,7 +173,7 @@ extension CurrentViewController {
     }
     
     func createDataSource() {
-        self.dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: self.collectionView) { (collectionView, indexPath, _) -> UICollectionViewCell? in
+        self.dataSource = UICollectionViewDiffableDataSource<Section, Item>(collectionView: self.collectionView) { collectionView, indexPath, _ -> UICollectionViewCell? in
             guard let section = Section(rawValue: indexPath.section) else { fatalError() }
             
             switch section {
@@ -230,7 +230,7 @@ extension CurrentViewController {
     }
     
     func createSupplementaryView() {
-        self.dataSource.supplementaryViewProvider = { (collectionView, _, indexPath) in
+        self.dataSource.supplementaryViewProvider = { collectionView, _, indexPath in
             guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionHeaderView.identifier, for: indexPath) as? CustomCollectionHeaderView else { return nil }
             return header
         }
