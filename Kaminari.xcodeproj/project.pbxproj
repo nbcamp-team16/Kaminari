@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D6A1BC02AC7010F00CAFDDA /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */; };
+		1DC10FBB2AC17C9300EA7D1E /* WeeklyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */; };
+		1DC10FBD2AC2665200EA7D1E /* WeeklyCustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */; };
 		4E10865E2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */; };
 		4E1086602AC3B73000D1FB31 /* CustomCollectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E10865F2AC3B73000D1FB31 /* CustomCollectionFooterView.swift */; };
 		4E26E49C2AC166B800CB3329 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E49B2AC166B800CB3329 /* AppDelegate.swift */; };
@@ -19,7 +22,6 @@
 		4E26E4B82AC1681600CB3329 /* RegionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4B72AC1681600CB3329 /* RegionViewController.swift */; };
 		4E26E4BA2AC1685000CB3329 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4B92AC1685000CB3329 /* DetailViewController.swift */; };
 		4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4BB2AC169C600CB3329 /* TabBarController.swift */; };
-		4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */; };
 		4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4E26E4C02AC16C9400CB3329 /* SnapKit */; };
 		4E26E4C52AC197D900CB3329 /* CurrentWeatherCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4C42AC197D900CB3329 /* CurrentWeatherCell.swift */; };
 		4E26E4C72AC197F200CB3329 /* CurrentTimelyCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E4C62AC197F200CB3329 /* CurrentTimelyCell.swift */; };
@@ -39,6 +41,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomButton.swift; path = ../../../../../../Downloads/CustomButton.swift; sourceTree = "<group>"; };
+		1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyTableViewCell.swift; sourceTree = "<group>"; };
+		1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCustomLabel.swift; sourceTree = "<group>"; };
 		4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionHeaderView.swift; sourceTree = "<group>"; };
 		4E10865F2AC3B73000D1FB31 /* CustomCollectionFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionFooterView.swift; sourceTree = "<group>"; };
 		4E1086612AC404C600D1FB31 /* Kaminari.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kaminari.entitlements; sourceTree = "<group>"; };
@@ -54,7 +59,6 @@
 		4E26E4B72AC1681600CB3329 /* RegionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionViewController.swift; sourceTree = "<group>"; };
 		4E26E4B92AC1685000CB3329 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		4E26E4BB2AC169C600CB3329 /* TabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
-		4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		4E26E4C42AC197D900CB3329 /* CurrentWeatherCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCell.swift; sourceTree = "<group>"; };
 		4E26E4C62AC197F200CB3329 /* CurrentTimelyCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentTimelyCell.swift; sourceTree = "<group>"; };
 		4E26E4C82AC1993600CB3329 /* CurrentThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentThumbnailCell.swift; sourceTree = "<group>"; };
@@ -87,12 +91,13 @@
 		4E10865C2AC3B6DC00D1FB31 /* SubComponents */ = {
 			isa = PBXGroup;
 			children = (
-				4E26E4BD2AC16B0700CB3329 /* CustomButton.swift */,
+				1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */,
 				4E26E4CE2AC1D8B200CB3329 /* CustomCollectionView.swift */,
 				4E6EDC5F2AC27E6A0003420F /* CustomLabel.swift */,
 				4E6EDC632AC283250003420F /* CustomImageView.swift */,
 				4E6EDC612AC282360003420F /* CustomStackView.swift */,
 				4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */,
+				1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */,
 				4E10865F2AC3B73000D1FB31 /* CustomCollectionFooterView.swift */,
 			);
 			path = SubComponents;
@@ -162,6 +167,7 @@
 				4E26E4B72AC1681600CB3329 /* RegionViewController.swift */,
 				4E26E4B52AC167F300CB3329 /* SearchViewController.swift */,
 				4E26E4B92AC1685000CB3329 /* DetailViewController.swift */,
+				1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -255,12 +261,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1D6A1BC02AC7010F00CAFDDA /* CustomButton.swift in Sources */,
 				4E1086602AC3B73000D1FB31 /* CustomCollectionFooterView.swift in Sources */,
 				4E10865E2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift in Sources */,
 				4E26E4B62AC167F300CB3329 /* SearchViewController.swift in Sources */,
 				4E6EDC642AC283250003420F /* CustomImageView.swift in Sources */,
+				1DC10FBB2AC17C9300EA7D1E /* WeeklyTableViewCell.swift in Sources */,
+				4E26E4B62AC167F300CB3329 /* SearchViewController.swift in Sources */,
+				1DC10FBD2AC2665200EA7D1E /* WeeklyCustomLabel.swift in Sources */,
 				4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */,
-				4E26E4BE2AC16B0700CB3329 /* CustomButton.swift in Sources */,
 				4E9CA8952AC69653009BC666 /* WeatherManager.swift in Sources */,
 				4E26E4C72AC197F200CB3329 /* CurrentTimelyCell.swift in Sources */,
 				4E26E4CB2AC1C72100CB3329 /* CurrentWeatherMockup.swift in Sources */,
@@ -423,7 +432,7 @@
 				CODE_SIGN_ENTITLEMENTS = Kaminari/Kaminari.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4MN45GZSDT;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Kaminari/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -452,7 +461,7 @@
 				CODE_SIGN_ENTITLEMENTS = Kaminari/Kaminari.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 4MN45GZSDT;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Kaminari/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
