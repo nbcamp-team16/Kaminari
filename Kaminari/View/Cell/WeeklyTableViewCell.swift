@@ -61,12 +61,12 @@ extension WeeklyTableViewCell {
 
 extension WeeklyTableViewCell {
     func setupStackView() {
-        dateLabel.setupLabelUI(fontColor: .white)
+        dateLabel.setupLabelUI(fontColor: .label)
         
-        iconImageView.tintColor = .white
-        lowerTempLabel.setupLabelUI(fontColor: .white)
-        slashLabel.setupLabelUI(fontColor: .white)
-        higherTempLabel.setupLabelUI(fontColor: .white)
+        iconImageView.tintColor = .label
+        lowerTempLabel.setupLabelUI(fontColor: .label)
+        slashLabel.setupLabelUI(fontColor: .label)
+        higherTempLabel.setupLabelUI(fontColor: .label)
         
         [lowerTempLabel, slashLabel, higherTempLabel].forEach { labelStackView.addArrangedSubview($0) }
         [dateLabel, iconImageView, labelStackView].forEach { contentView.addSubview($0) }
