@@ -28,6 +28,8 @@ class CurrentViewController: UIViewController {
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
     var tempArray: [Any]?
     
+    let serarchVC = SearchViewController()
+    
     deinit {
         print("### ViewController deinitialized")
     }
@@ -41,7 +43,6 @@ extension CurrentViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         fetchData()
-        print("&&& \(self.tempArray)")
     }
 }
 
@@ -73,7 +74,7 @@ extension CurrentViewController {
     }
     
     @objc func tappedResearchButton(_ sender: UIBarButtonItem) {
-        self.collectionView.reloadData()
+        navigationController?.pushViewController(self.serarchVC, animated: true)
     }
 }
 
