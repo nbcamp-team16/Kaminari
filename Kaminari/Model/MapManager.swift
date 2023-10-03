@@ -7,6 +7,8 @@
 
 import CoreLocation
 import Foundation
+import UIKit
+import WeatherKit
 
 class MapManager {
     static let shared = MapManager()
