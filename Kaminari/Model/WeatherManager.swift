@@ -15,7 +15,9 @@ class WeatherManager {
     var weathers: [City: Weather] = [:]
   
     var weather: Weather?
-  
+
+    let dailyTitleList: [String] = ["기후", "최고 온도", "최저 온도", "일출", "일몰", "자외선 지수", "바람"]
+
     var symbol: String {
         weather?.currentWeather.symbolName ?? "sunmax"
     }
@@ -23,7 +25,7 @@ class WeatherManager {
     var temp: String {
         let temp =
             weather?.currentWeather.temperature
-    
+
         let convert = Int(temp?.converted(to: .celsius).value ?? 0)
         return "\(convert)°C"
     }
@@ -33,17 +35,17 @@ class WeatherManager {
     }
 
     func hourlyForecastTime(indexPath: Int) -> Date {
-        let result = weather?.hourlyForecast.forecast[indexPath].date ?? Date()
+        let result = weather?.hourlyForecast.forecast[indexPath + 21].date ?? Date()
         return result
     }
     
     func hourlyForecastSymbol(indexPath: Int) -> String {
-        let result = weather?.hourlyForecast.forecast[indexPath].symbolName ?? "sun.max"
+        let result = weather?.hourlyForecast.forecast[indexPath + 21].symbolName ?? "sun.max"
         return result
     }
     
     func hourlyForecastTemperature(indexPath: Int) -> String {
-        guard let result = weather?.hourlyForecast.forecast[indexPath].temperature.value else { return "0" }
+        guard let result = weather?.hourlyForecast.forecast[indexPath + 21].temperature.value else { return "0" }
         return "\(Int(result))°C"
     }
     
@@ -55,8 +57,8 @@ class WeatherManager {
     func getWeather(latitude: Double, longitude: Double) async {
         do {
             weather = try await Task.detached(priority: .userInitiated) {
-                try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude)) // Coordinates for Apple Park just as example coordinates
-
+                try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
+                return try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
             }.value
         } catch {
             fatalError("\(error)")
@@ -88,10 +90,4 @@ class WeatherManager {
             completion()
         }
     }
-}
-
-extension WeatherManager {
-    static let thumbnailList = WeatherManager.shared.weather?.currentWeather
-    static let hourlyList = WeatherManager.shared.weather?.hourlyForecast
-    static let dailyList = WeatherManager.shared.weather?.dailyForecast
 }

@@ -47,7 +47,7 @@
 /* Begin PBXFileReference section */
 		1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomButton.swift; path = ../../../../../../Downloads/CustomButton.swift; sourceTree = "<group>"; };
 		1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyTableViewCell.swift; sourceTree = "<group>"; };
-		1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyCustomLabel.swift; sourceTree = "<group>"; };
+		1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeeklyCustomLabel.swift; path = ../WeeklyCustomLabel.swift; sourceTree = "<group>"; };
 		4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionHeaderView.swift; sourceTree = "<group>"; };
 		4E10865F2AC3B73000D1FB31 /* CustomCollectionFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionFooterView.swift; sourceTree = "<group>"; };
 		4E1086612AC404C600D1FB31 /* Kaminari.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Kaminari.entitlements; sourceTree = "<group>"; };
@@ -99,6 +99,7 @@
 		4E10865C2AC3B6DC00D1FB31 /* SubComponents */ = {
 			isa = PBXGroup;
 			children = (
+				1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */,
 				1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */,
 				4E26E4CE2AC1D8B200CB3329 /* CustomCollectionView.swift */,
 				4E6EDC5F2AC27E6A0003420F /* CustomLabel.swift */,
@@ -162,7 +163,6 @@
 				DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */,
 				4E10865C2AC3B6DC00D1FB31 /* SubComponents */,
 				4E26E4B22AC167A800CB3329 /* Cell */,
-				1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";

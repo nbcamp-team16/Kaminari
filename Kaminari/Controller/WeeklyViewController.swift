@@ -10,6 +10,7 @@ import UIKit
 import WeatherKit
 
 class WeeklyViewController: UIViewController {
+    let serarchVC = SearchViewController()
     let date = Date()
 
     var cityName: String = "현재 위치"
@@ -45,7 +46,7 @@ extension WeeklyViewController {
         setupTable()
         setupBarButtonItem()
     }
-    
+
     func viewWillAppear(_ animated: Bool) async {
         super.viewWillAppear(animated)
         await WeatherManager.loadData(latitude: sampleLatitude ?? 0, longitude: sampleLongitude ?? 0) { [weak self] in
@@ -54,16 +55,15 @@ extension WeeklyViewController {
     }
 }
 
-
 extension WeeklyViewController {
     func setupBarButtonItem() {
         let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(tappedResearchButton))
-        barButtonItem.tintColor = .systemBackground
+        barButtonItem.tintColor = .label
         navigationItem.rightBarButtonItem = barButtonItem
     }
 
     @objc func tappedResearchButton(_ sender: UIBarButtonItem) {
-        weeklyTable.reloadData()
+        navigationController?.pushViewController(serarchVC, animated: true)
     }
 }
 
@@ -119,7 +119,7 @@ private extension WeeklyViewController {
         weeklyTable.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(22)
             make.top.equalTo(line.snp.bottom).offset(17)
-            make.height.equalTo(440)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
     }
 }
@@ -150,5 +150,13 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         present(DetailViewController(), animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 50
+        } else {
+            return (weeklyTable.bounds.height - 50) / 9
+        }
     }
 }

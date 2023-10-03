@@ -21,11 +21,14 @@ class CurrentViewController: UIViewController {
     let refreshControl = UIRefreshControl()
     var gifImageView = GIFImageView(frame: .zero)
     
-    var currentThumbnailWeatherList: [CurrentWeatherMockup] = CurrentWeatherMockup.weatherList
-    var currentTimelyWeatherList: [CurrentTimelyWeatherMockup] = CurrentTimelyWeatherMockup.weatherList
-    var currentWeatherList: [CurrentWeathersMockup] = CurrentWeathersMockup.weatherList
+    var currentThumbnailWeatherList: [CurrentWeather] = CurrentWeather.weatherList
+    var currentHourlyWeatherList: [CurrentHourlyWeather] = CurrentHourlyWeather.weatherList
+    var currentDailyWeatherList: [CurrentDailyWeather] = CurrentDailyWeather.weatherList
         
     var dataSource: UICollectionViewDiffableDataSource<Section, Item>!
+    var tempArray: [Any]?
+    
+    let serarchVC = SearchViewController()
     
     deinit {
         print("### ViewController deinitialized")
@@ -71,8 +74,7 @@ extension CurrentViewController {
     }
     
     @objc func tappedResearchButton(_ sender: UIBarButtonItem) {
-        self.collectionView.reloadData()
-        print("### 해피해피해피해피해피해피해피해피해피해피해피해피해피해피해피해피해피")
+        navigationController?.pushViewController(self.serarchVC, animated: true)
     }
 }
 
@@ -129,7 +131,7 @@ extension CurrentViewController {
                 section.interGroupSpacing = 10
                 section.contentInsets = self.collectionView.configureContentInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
                     
-            } else if sectionKind == .currentTimelyWeatherList {
+            } else if sectionKind == .currentHourlyWeatherList {
                 let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(0.2), heightDimension: .fractionalHeight(0.5))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
                 item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
@@ -146,7 +148,7 @@ extension CurrentViewController {
                 let header = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: headerSize, elementKind: UICollectionView.elementKindSectionHeader, alignment: .top)
                 section.boundarySupplementaryItems = [header]
                 
-            } else if sectionKind == .currentWeatherList {
+            } else if sectionKind == .currentDailyWeatherList {
                 let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
                 item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
@@ -177,6 +179,7 @@ extension CurrentViewController {
             switch section {
             case .currentThumbnailWeatherList:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentThumbnailCell.identifier, for: indexPath) as? CurrentThumbnailCell else { preconditionFailure() }
+                let item = CurrentWeather.weatherList[indexPath.row]
                 cell.setupUI()
                 cell.currentWeatherIconImage.image = UIImage(systemName: WeatherManager.shared.symbol)
                 cell.currentTemperatureLabel.text = WeatherManager.shared.temp
@@ -189,7 +192,7 @@ extension CurrentViewController {
                 cell.layer.borderWidth = 0.5
                 return cell
                 
-            case .currentTimelyWeatherList:
+            case .currentHourlyWeatherList:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentTimelyCell.identifier, for: indexPath) as? CurrentTimelyCell else { preconditionFailure() }
                 guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionHeaderView.identifier, for: indexPath) as? CustomCollectionHeaderView else { return UICollectionViewCell() }
                 header.setupTotalUI(title: "시간별 예보")
@@ -205,17 +208,17 @@ extension CurrentViewController {
                 cell.layer.borderWidth = 0.5
                 return cell
                 
-            case .currentWeatherList:
+            case .currentDailyWeatherList:
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentWeatherCell.identifier, for: indexPath) as? CurrentWeatherCell else { preconditionFailure() }
                 guard let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: CustomCollectionHeaderView.identifier, for: indexPath) as? CustomCollectionHeaderView else { return UICollectionViewCell() }
                 header.setupTotalUI(title: "실시간 기상 정보")
-                let item = CurrentWeathersMockup.weatherList[indexPath.row]
+                let item = self.tempArray?[indexPath.row]
+                let titleItem = WeatherManager.shared.dailyTitleList[indexPath.row]
                 cell.setupUI()
                 cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
-                print("&&& \(WeatherManager.shared.weather?.hourlyForecast.forecast.first)")
-                cell.currentWeatherLabel.text = item.title
-                cell.currentTemperatureLabel.text = item.temperature
-                cell.currentDescriptionLabel.text = item.description
+                cell.currentWeatherLabel.text = titleItem
+                cell.currentTemperatureLabel.text = "\(item ?? "n/a")"
+                cell.currentDescriptionLabel.text = "item.description"
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
                 cell.backgroundColor = .systemBackground
@@ -242,17 +245,17 @@ extension CurrentViewController {
         var currentThumbnailSnapshot = NSDiffableDataSourceSectionSnapshot<Item>()
         currentThumbnailSnapshot.append(currentThumbnailItem)
                 
-        let currentTimelyItems = self.currentTimelyWeatherList.map { Item(currentTimelyWeatherList: $0) }
+        let currentTimelyItems = self.currentHourlyWeatherList.map { Item(currentHourlyWeatherList: $0) }
         var currentTimelySnapshot = NSDiffableDataSourceSectionSnapshot<Item>()
         currentTimelySnapshot.append(currentTimelyItems)
                 
-        let currentWeatherItems = self.currentWeatherList.map { Item(currentWeatherList: $0) }
+        let currentWeatherItems = self.currentDailyWeatherList.map { Item(currentDailyWeatherList: $0) }
         var currentWeatherSnapshot = NSDiffableDataSourceSectionSnapshot<Item>()
         currentWeatherSnapshot.append(currentWeatherItems)
                 
         self.dataSource.apply(currentThumbnailSnapshot, to: .currentThumbnailWeatherList, animatingDifferences: false)
-        self.dataSource.apply(currentTimelySnapshot, to: .currentTimelyWeatherList, animatingDifferences: false)
-        self.dataSource.apply(currentWeatherSnapshot, to: .currentWeatherList, animatingDifferences: false)
+        self.dataSource.apply(currentTimelySnapshot, to: .currentHourlyWeatherList, animatingDifferences: false)
+        self.dataSource.apply(currentWeatherSnapshot, to: .currentDailyWeatherList, animatingDifferences: false)
     }
 }
 
@@ -261,13 +264,24 @@ extension CurrentViewController {
         Task {
             await WeatherManager.loadData(latitude: self.latitude ?? 0, longitude: self.longtitude ?? 0) { [weak self] in
                 guard let self = self else { return }
+                self.tempArray = []
+                let item = WeatherManager.shared.weather?.dailyForecast.forecast[1]
+                self.tempArray?.append(item?.condition.rawValue ?? "n/a")
+                self.tempArray?.append(addUnit(value: item?.highTemperature.value ?? 0))
+                self.tempArray?.append(addUnit(value: item?.lowTemperature.value ?? 0))
+                self.tempArray?.append(self.formattedDate(date: item?.sun.sunrise ?? Date()))
+                self.tempArray?.append(self.formattedDate(date: item?.sun.sunset ?? Date()))
+                self.tempArray?.append(item?.uvIndex.value.formatted() ?? "n/a")
+                self.tempArray?.append(item?.wind.speed.value ?? 0)
+                print("&&& \(self.tempArray)")
+                
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
             }
         }
     }
-
+    
     func configureMapData() {
         // 포그라운드일 때 위치 추적 권한 요청
         self.locationManager.requestWhenInUseAuthorization()
@@ -314,5 +328,20 @@ extension CurrentViewController {
 
         self.collectionView.reloadData()
         self.refreshControl.endRefreshing()
+    }
+}
+
+extension CurrentViewController {
+    func addUnit(value: Double) -> String {
+        let result = value
+        return "\(result)°C"
+    }
+    
+    func formattedDate(date: Date) -> String {
+        let dateformatter = DateFormatter()
+        dateformatter.dateFormat = "a hh:mm"
+    
+        let resultTime = dateformatter.string(from: date)
+        return resultTime
     }
 }

@@ -30,13 +30,6 @@ class WeeklyTableViewCell: UITableViewCell {
     let lowerTempLabel = WeeklyCustomLabel()
 
     let slashLabel = WeeklyCustomLabel()
-//    let progressBar: UIProgressView = {
-//        let progressBar = UIProgressView()
-//        progressBar.trackTintColor = .lightGray
-//        progressBar.progressTintColor = .systemBlue
-//        progressBar.progress = 0.1
-//        return progressBar
-//    }()
     
     let higherTempLabel = WeeklyCustomLabel()
     
