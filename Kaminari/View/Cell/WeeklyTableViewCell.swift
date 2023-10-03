@@ -87,7 +87,7 @@ extension WeeklyTableViewCell {
         dateFormatter.locale = Locale(identifier: "ko")
         let convertStr = dateFormatter.string(from: date)
         if index == 0 {
-            dateLabel.configure(text: "오늘", fontSize: 18, font: .semibold)
+            dateLabel.configure(text: "오늘", fontSize: 22, font: .bold)
         } else {
             dateLabel.configure(text: convertStr, fontSize: 18, font: .semibold)
         }
@@ -100,10 +100,20 @@ extension WeeklyTableViewCell {
         lowerTempLabel.configure(text: "\(Int(lowerTemp?.value ?? 0))º", fontSize: 18, font: .regular)
         slashLabel.configure(text: "/", fontSize: 18, font: .regular)
         higherTempLabel.configure(text: "\(Int(higherTemp?.value ?? 0))º", fontSize: 18, font: .regular)
+        
+        if index == 0 {
+            lowerTempLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+            slashLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+            higherTempLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        }
     }
     
     func setIconImage(_ index: Int) {
         let symbolName = WeatherManager.shared.weather?.dailyForecast.forecast[index].symbolName
         iconImageView.image = UIImage(systemName: symbolName ?? "sun.max")
+        if index == 0 {
+            iconImageView.frame.size = CGSize(width: 100, height: 100)
+            iconImageView.contentMode = .scaleAspectFill
+        }
     }
 }

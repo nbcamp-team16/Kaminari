@@ -154,9 +154,9 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 50
+            return 60
         } else {
-            return (weeklyTable.bounds.height - 50) / 9
+            return (weeklyTable.bounds.height - 60) / 9
         }
     }
 }
