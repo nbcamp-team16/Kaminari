@@ -13,8 +13,8 @@ class WeeklyViewController: UIViewController {
     let date = Date()
 
     var cityName: String = "현재 위치"
-    var currentTemp: Int = 24
-    var weatherSummury: String = "대체로 흐림"
+    let sampleLatitude = 37.26
+    let sampleLongitude = 127.03
 
     let cityNameLabel = WeeklyCustomLabel()
     let detailLabel = WeeklyCustomLabel()
@@ -41,19 +41,41 @@ class WeeklyViewController: UIViewController {
 extension WeeklyViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor(red: 108.0/255.0, green: 202.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         configureUI()
         setupTable()
+        setupBarButtonItem()
+    }
+
+    func viewWillAppear(_ animated: Bool) async {
+        super.viewWillAppear(animated)
+        await WeatherManager.shared.getWeather(latitude: sampleLatitude, longitude: sampleLongitude)
+    }
+}
+
+extension WeeklyViewController {
+    func setupBarButtonItem() {
+        let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(tappedResearchButton))
+        barButtonItem.tintColor = .systemBackground
+        navigationItem.rightBarButtonItem = barButtonItem
+    }
+
+    @objc func tappedResearchButton(_ sender: UIBarButtonItem) {
+        weeklyTable.reloadData()
     }
 }
 
 private extension WeeklyViewController {
     func configureUI() {
+        view.backgroundColor = UIColor(red: 108.0/255.0, green: 202.0/255.0, blue: 255.0/255.0, alpha: 1.0)
         setupLabels()
         configureTable()
+        print("----------\(WeatherManager.shared.weather?.currentWeather.temperature.value)")
     }
 
     func setupLabels() {
+        let currentTemp = Int((WeatherManager.shared.weather?.currentWeather.temperature.value)!)
+        let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
+
         cityNameLabel.configure(text: cityName, fontSize: 40, font: .bold)
         detailLabel.configure(text: "\(currentTemp)º | \(weatherSummury)", fontSize: 20, font: .regular)
         tableTitle.configure(text: "주간 예보", fontSize: 18, font: .regular)
@@ -95,7 +117,7 @@ private extension WeeklyViewController {
         weeklyTable.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(22)
             make.top.equalTo(line.snp.bottom).offset(17)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-32)
+            make.height.equalTo(440)
         }
     }
 }
@@ -118,6 +140,8 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
 
         let nextDate = Calendar.current.date(byAdding: .day, value: indexPath.row, to: date)
         cell.setDateLabel(indexPath.row, nextDate!)
+        cell.setIconImage(indexPath.row)
+        cell.setTemperature(indexPath.row)
 
         return cell
     }
