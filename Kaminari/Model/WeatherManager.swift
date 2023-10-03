@@ -14,16 +14,6 @@ class WeatherManager {
 
     var weather: Weather?
 
-//    let dailyWeatherList: [Any] = [
-//        WeatherManager.shared.weather?.dailyForecast.forecast[1].condition,
-//        WeatherManager.shared.weather?.dailyForecast.forecast[1].highTemperature.value,
-//        WeatherManager.shared.weather?.dailyForecast.forecast[1].lowTemperature.value,
-//        WeatherManager.shared.weather?.dailyForecast.forecast[1].sun.sunrise,
-//        WeatherManager.shared.weather?.dailyForecast.forecast[1].sun.sunset,
-//        WeatherManager.shared.weather?.dailyForecast.forecast[1].uvIndex.value,
-//        WeatherManager.shared.weather?.dailyForecast.forecast[1].wind.speed,
-//    ]
-//
     let dailyTitleList: [String] = ["기후", "최고 온도", "최저 온도", "일출", "일몰", "자외선 지수", "바람"]
 
     var symbol: String {
@@ -60,7 +50,7 @@ class WeatherManager {
     func getWeather(latitude: Double, longitude: Double) async {
         do {
             weather = try await Task.detached(priority: .userInitiated) {
-                return try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
+                try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
             }.value
         } catch {
             fatalError("\(error)")
