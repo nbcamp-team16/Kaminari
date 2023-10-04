@@ -390,10 +390,15 @@ extension DetailViewController {
         imageAttachment.image = imageWithDynamicTintColor
         imageAttachment.bounds = CGRect(x: 0, y: -5, width: imageAttachment.image!.size.width * 1.8, height: imageAttachment.image!.size.height * 1.8)
         let attachmentString = NSAttributedString(attachment: imageAttachment)
+
+        let boldTextAttributes: [NSAttributedString.Key: Any] = [.font: UIFont.boldSystemFont(ofSize: 30)]
+        let boldAttributedString = NSAttributedString(string: " 기온", attributes: boldTextAttributes)
+
         let completeText = NSMutableAttributedString(string: "")
         completeText.append(attachmentString)
-        completeText.append(NSAttributedString(string: " 기온"))
+        completeText.append(boldAttributedString)
         titleLabel.attributedText = completeText
+
 
 
         let lowerTempValue = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].lowTemperature.value ?? 0
