@@ -11,9 +11,9 @@ import WeatherKit
 
 class WeatherManager {
     static let shared = WeatherManager()
-    
+
     var weathers: [City: Weather] = [:]
-  
+
     var weather: Weather?
 
     let dailyTitleList: [String] = ["기후", "최고 온도", "최저 온도", "일출", "일몰", "자외선 지수", "바람"]
@@ -21,7 +21,7 @@ class WeatherManager {
     var symbol: String {
         weather?.currentWeather.symbolName ?? "sunmax"
     }
-    
+
     var temp: String {
         let temp =
             weather?.currentWeather.temperature
@@ -29,7 +29,7 @@ class WeatherManager {
         let convert = Int(temp?.converted(to: .celsius).value ?? 0)
         return "\(convert)°C"
     }
-  
+
     func getCity(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> City? {
         return City.allCases.first { ($0.pinCoordinates.latitude == latitude) && ($0.pinCoordinates.longitude == longitude) }
     }
@@ -38,17 +38,17 @@ class WeatherManager {
         let result = weather?.hourlyForecast.forecast[indexPath + 21].date ?? Date()
         return result
     }
-    
+
     func hourlyForecastSymbol(indexPath: Int) -> String {
         let result = weather?.hourlyForecast.forecast[indexPath + 21].symbolName ?? "sun.max"
         return result
     }
-    
+
     func hourlyForecastTemperature(indexPath: Int) -> String {
         guard let result = weather?.hourlyForecast.forecast[indexPath + 21].temperature.value else { return "0" }
         return "\(Int(result))°C"
     }
-    
+
     func hourlyForecastTitle(indexPath: Int) -> String {
         let result = weather?.hourlyForecast.forecast[indexPath].condition
         return result?.rawValue ?? ""
@@ -76,7 +76,7 @@ class WeatherManager {
         do {
             weathers[city] = try await Task.detached(priority: .userInitiated) {
                 try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude)) // Coordinates for Apple Park just as example coordinates
-                
+
             }.value
         } catch {
             fatalError("\(error)")

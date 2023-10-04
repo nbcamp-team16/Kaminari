@@ -274,7 +274,7 @@ extension CurrentViewController {
                 self.tempArray?.append(item?.uvIndex.value.formatted() ?? "n/a")
                 self.tempArray?.append(item?.wind.speed.value ?? 0)
                 print("&&& \(self.tempArray)")
-                
+//                
                 DispatchQueue.main.async {
                     self.collectionView.reloadData()
                 }
