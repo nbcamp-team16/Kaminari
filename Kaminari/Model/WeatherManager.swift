@@ -81,6 +81,7 @@ class WeatherManager {
             weathers[city] = try await Task.detached(priority: .userInitiated) {
                 try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude)) // Coordinates for Apple Park just as example coordinates
                 return try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude))
+
             }.value
         } catch {
             fatalError("\(error)")
