@@ -184,8 +184,6 @@ extension CurrentViewController {
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
                 cell.backgroundColor = .clear
-//                cell.layer.borderColor = UIColor.systemBackground.cgColor
-//                cell.layer.borderWidth = 0.5
                 return cell
                 
             case .currentHourlyWeatherList:
@@ -214,7 +212,6 @@ extension CurrentViewController {
                 cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
                 cell.currentWeatherLabel.text = titleItem
                 cell.currentTemperatureLabel.text = "\(item ?? "n/a")"
-//                cell.currentDescriptionLabel.text = "item.description"
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
                 cell.backgroundColor = .systemBackground
@@ -355,14 +352,6 @@ extension CurrentViewController {
             result = "moon"
         case "moon":
             result = "moon"
-//        case "cloud.snow":
-//            result = "snow"
-//        case "cloud.bolt.rain":
-//            result = "thunderstorm_with_rain"
-//        case "tropicalstorm":
-//            result = "thunderstorm"
-//        case "tornado":
-//            result = "tornado"
         default:
             break
         }

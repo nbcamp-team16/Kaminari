@@ -60,7 +60,7 @@ class WeatherManager {
         do {
             weather = try await Task.detached(priority: .userInitiated) {
 
-                try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude)) // Coordinates for Apple Park just as example coordinates
+                try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
                 return try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
 
             }.value
@@ -79,7 +79,7 @@ class WeatherManager {
     func getWeather(city: City) async {
         do {
             weathers[city] = try await Task.detached(priority: .userInitiated) {
-                try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude)) // Coordinates for Apple Park just as example coordinates
+                try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude))
                 return try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude))
             }.value
         } catch {
@@ -87,7 +87,6 @@ class WeatherManager {
         }
     }
 
-    //
     static func loadData(city: City, completion: @escaping () -> Void) {
         Task {
             await WeatherManager.shared.getWeather(city: city)
