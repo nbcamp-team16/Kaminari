@@ -26,7 +26,7 @@ enum City: CaseIterable {
         case .daejeon:
             return CLLocationCoordinate2D(latitude: 36.3504119, longitude: 127.3845475)
         case .daegu:
-            return CLLocationCoordinate2D(latitude: 35.8714354, longitude: 128.601445)
+            return CLLocationCoordinate2D(latitude: 35.798838, longitude: 128.583052)
         case .gwangju:
             return CLLocationCoordinate2D(latitude: 35.1595454, longitude: 126.8526012)
         case .ulsan:
