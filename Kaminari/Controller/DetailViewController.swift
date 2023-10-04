@@ -10,22 +10,60 @@ import UIKit
 
 // Custom UIView를 상속받는 클래스로서, 라인 그래프를 그리기 위한 클래스
 class LineGraphView: UIView {
-    // data 배열은 그래프에 표시될 데이터 포인트를 포함
-    var data: [CGFloat] = []
-    
+    var data: [CGFloat] = [] {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+
+    private var graphMaxTemperature: CGFloat?
+    private var graphMinTemperature: CGFloat?
+
+    var yAxisLabels: [String] {
+        let fahrenheitToCelsius: (CGFloat) -> CGFloat = { fahrenheit in
+            return (fahrenheit)
+        }
+
+        let minTemp = fahrenheitToCelsius(graphMinTemperature ?? 0)
+        let maxTemp = fahrenheitToCelsius(graphMaxTemperature ?? 0)
+        let midTemp = (minTemp + maxTemp) / 2
+        let labels = ["\(Int(maxTemp))℃", "\(Int(midTemp))℃", "\(Int(minTemp))℃"]
+        
+        print("Y Axis Labels: \(labels)") // 디버깅 로그 추가
+        return labels
+    }
+
+
+
+    func setTemperatureRange(min: CGFloat, max: CGFloat) {
+        self.graphMinTemperature = min
+        self.graphMaxTemperature = max
+        
+        // setNeedsDisplay()를 호출하여 뷰를 다시 그리도록 합니다.
+        setNeedsDisplay()
+    }
+
     // draw 메서드는 UIView가 화면에 그려질 때 호출
-    // 이 메서드 내에서 그래프를 그리기
     override func draw(_ rect: CGRect) {
+        
+        // 기존에 추가된 라벨들을 제거합니다.
+        for subview in self.subviews {
+            if subview is UILabel {
+                subview.removeFromSuperview()
+            }
+        }
+
         let graphBackgroundColor = UIColor(hex: "#34B2F9")
         graphBackgroundColor.setFill() // 그래프의 배경색을 설정
         UIRectFill(rect) // 지정된 색상으로 영역 채우기
         
-        // 데이터가 없다면 그래프를 그릴 필요가 없으므로 반환
-        guard !data.isEmpty else { return }
-        
-        let path = UIBezierPath() // 그래프 라인을 그리기 위한 경로 객체를 생성
-        let scale: CGFloat = rect.height / (data.max() ?? 1) // 그래프의 높이에 대한 스케일을 계산
+        guard !data.isEmpty else { return }  // 데이터가 없다면 그래프를 그릴 필요가 없으므로 반환
 
+        let path = UIBezierPath()
+        let minY = data.min() ?? 0
+        let maxY = data.max() ?? 0
+        let graphHeight = maxY - minY
+        
         // X축 라벨
         let xAxisLabels = ["오전 12시", "오전 6시", "오후 12시", "오후 6시"]
         for (index, labelText) in xAxisLabels.enumerated() {
@@ -39,7 +77,6 @@ class LineGraphView: UIView {
         }
 
         // Y축 라벨
-        let yAxisLabels = ["30℃", "25℃", "20℃", "15℃", "12℃"]
         for (index, labelText) in yAxisLabels.enumerated() {
             let y = rect.height * CGFloat(index) / CGFloat(yAxisLabels.count - 1)
             let label = UILabel(frame: CGRect(x: rect.width + 5, y: y - 10, width: 35, height: 20))
@@ -53,7 +90,23 @@ class LineGraphView: UIView {
         // 데이터 포인트
         for (index, value) in data.enumerated() {
             let x = rect.width * CGFloat(index) / CGFloat(data.count - 1)
-            let y = rect.height - value * scale
+            
+            let paddingFactor: CGFloat = 0.15
+            let paddedHeight = rect.height * (1.0 - 2 * paddingFactor)
+
+            // Y 좌표를 스케일링합니다.
+            let rawNormalizedY = (value - (graphMinTemperature ?? 0)) / ((graphMaxTemperature ?? 0) - (graphMinTemperature ?? 0))
+            let normalizedY = min(max(rawNormalizedY, 0.0), 1.0) // 값을 0과 1 사이로 제한
+            let y = paddedHeight * (1.0 - normalizedY) + rect.height * paddingFactor
+
+            
+            // 디버그 로그 추가
+            print("Data Point Value: \(value)")
+            print("Graph Min Temperature: \(graphMinTemperature ?? 0)")
+            print("Graph Max Temperature: \(graphMaxTemperature ?? 0)")
+            print("Normalized Y: \(normalizedY)")
+            print("Calculated Y Coordinate: \(y)")
+
             let point = CGPoint(x: x, y: y)
             
             if index == 0 {
@@ -67,13 +120,21 @@ class LineGraphView: UIView {
             UIColor.white.setFill()
             circlePath.fill()
         }
+
+
+
+
         
         // 그래프 라인의 스타일을 설정
         path.lineWidth = 2
         UIColor.white.setStroke()
         path.stroke()
     }
+
+
 }
+
+
 
 // UIColor의 확장
 extension UIColor {
@@ -93,6 +154,7 @@ extension UIColor {
 }
 
 class DetailViewController: UIViewController {
+    
     // UI 요소를 선언
     let testButton = CustomButton(frame: .zero) // 커스텀 버튼
     let titleLabel = UILabel() // 타이틀 라벨
@@ -179,7 +241,7 @@ extension DetailViewController {
         dayFormatter.dateFormat = "E"
         
         // 5일간의 날짜 설정 (무료버전은 5일만 된다고 해서 5일로 설정)
-        for i in 0..<5 {
+        for i in 0..<9 {
             let date = Calendar.current.date(byAdding: .day, value: i, to: currentDate)!
             
             let dayLabel = UILabel()
@@ -234,7 +296,6 @@ extension DetailViewController {
             make.centerX.equalToSuperview()
         }
         
-        // 설명 라벨 설정
         // 설명 라벨 설정
         let fontSize1: CGFloat = 36.0
         let fontSize2: CGFloat = 16.0
@@ -327,15 +388,36 @@ extension DetailViewController {
         
         let selectedDateIndex = sender.tag
         let selectedDate = Calendar.current.date(byAdding: .day, value: selectedDateIndex, to: Date())!
-        let isToday = Calendar.current.isDateInToday(selectedDate)
         
+        // 선택된 날짜를 `selectedDateLabel`에 표시
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy년 M월 d일 EEEE"
+        selectedDateLabel.text = dateFormatter.string(from: selectedDate)
+        
+        // 날씨 아이콘 가져오기
+        let symbolName = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].symbolName ?? "sun.max"
+        let imageAttachment = NSTextAttachment()
+        imageAttachment.image = UIImage(systemName: symbolName)
+        imageAttachment.bounds = CGRect(x: 0, y: -5, width: imageAttachment.image!.size.width * 1.5, height: imageAttachment.image!.size.height * 1.5)
+        let attachmentString = NSAttributedString(attachment: imageAttachment)
+        let completeText = NSMutableAttributedString(string: "")
+        completeText.append(attachmentString)
+        completeText.append(NSAttributedString(string: " 기온"))
+        titleLabel.attributedText = completeText
+
         let lowerTempValue = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].lowTemperature.value ?? 0
         let higherTempValue = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].highTemperature.value ?? 0
+        let isToday = Calendar.current.isDateInToday(selectedDate)
         var currentTemp = Int(WeatherManager.shared.weather?.currentWeather.temperature.value ?? 0)
         if !isToday {
             currentTemp = Int((lowerTempValue + higherTempValue) / 2)
         }
-        
+
+        // Y축 범위 조정 로직 추가
+        let adjustedLowerTempValue = lowerTempValue - 3
+        let adjustedHigherTempValue = higherTempValue + 3
+        lineGraphView.setTemperatureRange(min: adjustedLowerTempValue, max: adjustedHigherTempValue)
+
         let string = "\(Int(currentTemp))º \n 최고 \(Int(higherTempValue))º 최저 \(Int(lowerTempValue))º"
         let attributedString = NSMutableAttributedString(string: string)
 
@@ -347,8 +429,15 @@ extension DetailViewController {
         attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 16.0), range: range2)
 
         descriptionLabel.attributedText = attributedString
+
+        // 선택된 날짜의 시간별 기온 데이터 가져오기
+        var hourlyTemperatures: [CGFloat] = []
+        for hourIndex in 0..<24 {
+            let temperatureString = WeatherManager.shared.hourlyForecastTemperature(indexPath: selectedDateIndex * 24 + hourIndex)
+            if let temperature = Double(temperatureString.trimmingCharacters(in: CharacterSet(charactersIn: "°C"))) {
+                hourlyTemperatures.append(CGFloat(temperature))
+            }
+        }
+        lineGraphView.data = hourlyTemperatures
     }
-
-
-
 }
