@@ -1,6 +1,15 @@
 {
   "pins" : [
     {
+      "identity" : "availablehapticfeedback",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/yonat/AvailableHapticFeedback",
+      "state" : {
+        "revision" : "9b2e0d85b532333bcb026b850052575852659d18",
+        "version" : "1.0.4"
+      }
+    },
+    {
       "identity" : "gifu",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kaishin/Gifu.git",
@@ -10,12 +19,30 @@
       }
     },
     {
+      "identity" : "multislider",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/yonat/MultiSlider",
+      "state" : {
+        "revision" : "ce55c0ec06e5fcde1dd8ad9791bd74ccfe4c4032",
+        "version" : "2.1.2"
+      }
+    },
+    {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/SnapKit/SnapKit.git",
       "state" : {
         "revision" : "f222cbdf325885926566172f6f5f06af95473158",
         "version" : "5.6.0"
+      }
+    },
+    {
+      "identity" : "sweeterswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/yonat/SweeterSwift",
+      "state" : {
+        "revision" : "aff918fc4e8cba40c51b1df99766594e3acc4eb1",
+        "version" : "1.2.3"
       }
     },
     {
