@@ -20,7 +20,6 @@ class WeatherManager {
 
     let dailyTitleList: [String] = ["기후", "최고 온도", "최저 온도", "일출", "일몰", "자외선 지수", "바람(m/s)"]
 
-
     var symbol: String {
         weather?.currentWeather.symbolName ?? "sunmax"
     }
