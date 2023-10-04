@@ -5,20 +5,13 @@
 //  Created by 이수현 on 2023/09/25.
 //
 
+import MultiSlider
 import SnapKit
 import UIKit
 
 class WeeklyTableViewCell: UITableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupStackView()
-        self.backgroundColor = .clear
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    let lowerTempList = WeatherManager.shared.weeklyForecastLowerTemp()
+    let higherTempList = WeatherManager.shared.weeklyForcastHigherTemp()
     
     let dateLabel = WeeklyCustomLabel()
     
@@ -29,7 +22,15 @@ class WeeklyTableViewCell: UITableViewCell {
     
     let lowerTempLabel = WeeklyCustomLabel()
 
-    let slashLabel = WeeklyCustomLabel()
+//    let slashLabel = WeeklyCustomLabel()
+    
+    let slider: MultiSlider = {
+        let slider = MultiSlider()
+        slider.orientation = .horizontal
+        slider.tintColor = .darkGray
+        slider.trackWidth = 5
+        return slider
+    }()
     
     let higherTempLabel = WeeklyCustomLabel()
     
@@ -40,6 +41,17 @@ class WeeklyTableViewCell: UITableViewCell {
         stackView.spacing = 15
         return stackView
     }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupStackView()
+        self.backgroundColor = .clear
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension WeeklyTableViewCell {
@@ -58,11 +70,11 @@ extension WeeklyTableViewCell {
         
         iconImageView.tintColor = .label
         lowerTempLabel.setupLabelUI(fontColor: .label)
-        slashLabel.setupLabelUI(fontColor: .label)
+//        slashLabel.setupLabelUI(fontColor: .label)
         higherTempLabel.setupLabelUI(fontColor: .label)
         
-        [lowerTempLabel, slashLabel, higherTempLabel].forEach { labelStackView.addArrangedSubview($0) }
-        [dateLabel, iconImageView, labelStackView].forEach { contentView.addSubview($0) }
+//        [lowerTempLabel, slider, higherTempLabel].forEach { labelStackView.addArrangedSubview($0) }
+        [dateLabel, iconImageView, lowerTempLabel, slider, higherTempLabel].forEach { contentView.addSubview($0) }
         
         dateLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -71,11 +83,7 @@ extension WeeklyTableViewCell {
         
         iconImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.centerX.equalToSuperview().offset(-50)
-        }
-        labelStackView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.right.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview().offset(-65)
         }
     }
 }
@@ -92,18 +100,15 @@ extension WeeklyTableViewCell {
             dateLabel.configure(text: convertStr, fontSize: 18, font: .semibold)
         }
     }
-
+    
     func setTemperature(_ index: Int) {
-        let lowerTemp = WeatherManager.shared.weather?.dailyForecast.forecast[index].lowTemperature
-        let higherTemp = WeatherManager.shared.weather?.dailyForecast.forecast[index].highTemperature
-        
-        lowerTempLabel.configure(text: "\(Int(lowerTemp?.value ?? 0))º", fontSize: 18, font: .regular)
-        slashLabel.configure(text: "/", fontSize: 18, font: .regular)
-        higherTempLabel.configure(text: "\(Int(higherTemp?.value ?? 0))º", fontSize: 18, font: .regular)
+        lowerTempLabel.configure(text: "\(Int(lowerTempList?[index] ?? 0))º", fontSize: 18, font: .regular)
+        //        slashLabel.configure(text: "/", fontSize: 18, font: .regular)
+        higherTempLabel.configure(text: "\(Int(higherTempList?[index] ?? 0))º", fontSize: 18, font: .regular)
         
         if index == 0 {
             lowerTempLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
-            slashLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+            //            slashLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
             higherTempLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
         }
     }
@@ -114,6 +119,43 @@ extension WeeklyTableViewCell {
         if index == 0 {
             iconImageView.frame.size = CGSize(width: 100, height: 100)
             iconImageView.contentMode = .scaleAspectFill
+        }
+    }
+    
+    func setSliderBar(_ index: Int) {}
+    
+    func setSliderLength(_ index: Int) {
+        if index == 0 {
+            higherTempLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.right.equalToSuperview().offset(-12)
+            }
+            slider.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.width.equalTo(100)
+                make.right.equalTo(higherTempLabel.snp.left).offset(-12)
+            }
+            lowerTempLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.right.equalTo(slider.snp.left).offset(-12)
+            }
+            
+            iconImageView.snp.makeConstraints { $0.width.equalTo(40) }
+        } else {
+            higherTempLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.right.equalToSuperview().offset(-20)
+            }
+            slider.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.width.equalTo(90)
+                make.right.equalTo(higherTempLabel.snp.left).offset(-12)
+            }
+            lowerTempLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.right.equalTo(slider.snp.left).offset(-12)
+            }
+            iconImageView.snp.makeConstraints { $0.width.equalTo(25) }
         }
     }
 }

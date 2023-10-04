@@ -75,7 +75,7 @@ private extension WeeklyViewController {
     }
 
     func setupLabels() {
-        let currentTemp = Int((WeatherManager.shared.weather?.currentWeather.temperature.value)!)
+        let currentTemp = Int((WeatherManager.shared.weather?.currentWeather.temperature.value ?? 0))
         let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
 
         cityNameLabel.configure(text: cityName, fontSize: 40, font: .bold)
@@ -144,13 +144,14 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
         cell.setDateLabel(indexPath.row, nextDate!)
         cell.setIconImage(indexPath.row)
         cell.setTemperature(indexPath.row)
+        cell.setSliderLength(indexPath.row)
 
         return cell
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        present(DetailViewController(), animated: true)
-    }
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        present(DetailViewController(), animated: true)
+//    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {

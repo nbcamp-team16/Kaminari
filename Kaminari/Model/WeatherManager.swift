@@ -53,6 +53,16 @@ class WeatherManager {
         let result = weather?.hourlyForecast.forecast[indexPath].condition
         return result?.rawValue ?? ""
     }
+    
+    func weeklyForecastLowerTemp() -> [Double]? {
+        let result = weather?.dailyForecast.forecast.map({$0.lowTemperature.value})
+        return result
+    }
+    
+    func weeklyForcastHigherTemp() -> [Double]? {
+        let result = weather?.dailyForecast.forecast.map({$0.highTemperature.value})
+        return result
+    }
 
     func getWeather(latitude: Double, longitude: Double) async {
         do {
