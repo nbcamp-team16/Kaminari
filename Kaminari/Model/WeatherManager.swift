@@ -16,9 +16,9 @@ class WeatherManager {
 
     var weather: Weather?
 
+    var weatherIndex = TimeManager.shared.getCurrentTime() + 13
 
-
-    let dailyTitleList: [String] = ["기후", "최고 온도", "최저 온도", "일출", "일몰", "자외선 지수", "바람"]
+    let dailyTitleList: [String] = ["기후", "최고 온도", "최저 온도", "일출", "일몰", "자외선 지수", "바람(m/s)"]
 
 
     var symbol: String {
@@ -38,17 +38,17 @@ class WeatherManager {
     }
 
     func hourlyForecastTime(indexPath: Int) -> Date {
-        let result = weather?.hourlyForecast.forecast[indexPath + 21].date ?? Date()
+        let result = weather?.hourlyForecast.forecast[indexPath + weatherIndex].date ?? Date()
         return result
     }
 
     func hourlyForecastSymbol(indexPath: Int) -> String {
-        let result = weather?.hourlyForecast.forecast[indexPath + 21].symbolName ?? "sun.max"
+        let result = weather?.hourlyForecast.forecast[indexPath + weatherIndex].symbolName ?? "sun.max"
         return result
     }
 
     func hourlyForecastTemperature(indexPath: Int) -> String {
-        guard let result = weather?.hourlyForecast.forecast[indexPath + 21].temperature.value else { return "0" }
+        guard let result = weather?.hourlyForecast.forecast[indexPath + weatherIndex].temperature.value else { return "0" }
         return "\(Int(result))°C"
     }
 
