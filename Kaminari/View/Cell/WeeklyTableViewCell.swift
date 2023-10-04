@@ -21,20 +21,18 @@ class WeeklyTableViewCell: UITableViewCell {
     }()
     
     let lowerTempLabel = WeeklyCustomLabel()
-
-//    let slashLabel = WeeklyCustomLabel()
     
-    func gradientLayer(bounds : CGRect) -> CAGradientLayer{
+    func gradientLayer(bounds: CGRect) -> CAGradientLayer {
         let gradient = CAGradientLayer()
         gradient.frame = bounds
         gradient.colors = [UIColor.systemBlue.cgColor, UIColor.green.cgColor, UIColor.yellow.cgColor, UIColor.red.cgColor]
         gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
         gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
-        
+    
         return gradient
     }
     
-    func gradientColor(gradientLayer :CAGradientLayer) -> UIColor? {
+    func gradientColor(gradientLayer: CAGradientLayer) -> UIColor? {
         UIGraphicsBeginImageContextWithOptions(gradientLayer.bounds.size, false, 0.0)
         gradientLayer.render(in: UIGraphicsGetCurrentContext()!)
         let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -57,7 +55,7 @@ class WeeklyTableViewCell: UITableViewCell {
     }()
     
     func setSliderGradient() {
-        let gradient = gradientLayer(bounds: self.bounds)
+        let gradient = gradientLayer(bounds: bounds)
         slider.tintColor = gradientColor(gradientLayer: gradient)
     }
     
@@ -100,10 +98,9 @@ extension WeeklyTableViewCell {
         
         iconImageView.tintColor = .label
         lowerTempLabel.setupLabelUI(fontColor: .label)
-//        slashLabel.setupLabelUI(fontColor: .label)
+
         higherTempLabel.setupLabelUI(fontColor: .label)
         
-//        [lowerTempLabel, slider, higherTempLabel].forEach { labelStackView.addArrangedSubview($0) }
         [dateLabel, iconImageView, lowerTempLabel, slider, higherTempLabel].forEach { contentView.addSubview($0) }
         
         dateLabel.snp.makeConstraints { make in
@@ -117,9 +114,7 @@ extension WeeklyTableViewCell {
         }
     }
     
-    func setSliderLevel() {
-        
-    }
+    func setSliderLevel() {}
 }
 
 extension WeeklyTableViewCell {
@@ -137,13 +132,15 @@ extension WeeklyTableViewCell {
     
     func setTemperature(_ index: Int) {
         lowerTempLabel.configure(text: "\(Int(lowerTempList?[index] ?? 0))º", fontSize: 18, font: .regular)
-        //        slashLabel.configure(text: "/", fontSize: 18, font: .regular)
+        
         higherTempLabel.configure(text: "\(Int(higherTempList?[index] ?? 0))º", fontSize: 18, font: .regular)
         
         if index == 0 {
             lowerTempLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
-            //            slashLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+            lowerTempLabel.setupLabelUI(fontColor: .systemBlue)
+            
             higherTempLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+            higherTempLabel.setupLabelUI(fontColor: .systemRed)
         }
     }
     
@@ -159,8 +156,6 @@ extension WeeklyTableViewCell {
     func setSliderValue(_ index: Int) {
         slider.value = [CGFloat(lowerTempList?[index] ?? 0), CGFloat(higherTempList?[index] ?? 0)]
     }
-    
-
     
     func setSliderLength(_ index: Int) {
         if index == 0 {
@@ -193,8 +188,7 @@ extension WeeklyTableViewCell {
                 make.centerY.equalToSuperview()
                 make.right.equalTo(slider.snp.left).offset(-12)
             }
-            iconImageView.snp.makeConstraints { $0.width.equalTo(25) }
+            iconImageView.snp.makeConstraints { $0.width.height.equalTo(22) }
         }
     }
 }
-
