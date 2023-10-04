@@ -10,6 +10,7 @@ import UIKit
 import WeatherKit
 
 class WeeklyViewController: UIViewController {
+    let serarchVC = SearchViewController()
     let date = Date()
 
     var cityName: String = "현재 위치"
@@ -45,7 +46,7 @@ extension WeeklyViewController {
         setupTable()
         setupBarButtonItem()
     }
-    
+
     func viewWillAppear(_ animated: Bool) async {
         super.viewWillAppear(animated)
         await WeatherManager.loadData(latitude: sampleLatitude ?? 0, longitude: sampleLongitude ?? 0) { [weak self] in
@@ -54,16 +55,15 @@ extension WeeklyViewController {
     }
 }
 
-
 extension WeeklyViewController {
     func setupBarButtonItem() {
         let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(tappedResearchButton))
-        barButtonItem.tintColor = .systemBackground
+        barButtonItem.tintColor = .label
         navigationItem.rightBarButtonItem = barButtonItem
     }
 
     @objc func tappedResearchButton(_ sender: UIBarButtonItem) {
-        weeklyTable.reloadData()
+        navigationController?.pushViewController(serarchVC, animated: true)
     }
 }
 
@@ -75,11 +75,10 @@ private extension WeeklyViewController {
     }
 
     func setupLabels() {
-        let currentTemp = Int((WeatherManager.shared.weather?.currentWeather.temperature.value)!)
         let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
 
         cityNameLabel.configure(text: cityName, fontSize: 40, font: .bold)
-        detailLabel.configure(text: "\(currentTemp)º | \(weatherSummury)", fontSize: 20, font: .regular)
+        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .regular)
         tableTitle.configure(text: "주간 예보", fontSize: 18, font: .regular)
 
         cityNameLabel.setupLabelUI(fontColor: .label)
@@ -119,7 +118,7 @@ private extension WeeklyViewController {
         weeklyTable.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(22)
             make.top.equalTo(line.snp.bottom).offset(17)
-            make.height.equalTo(440)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
     }
 }
@@ -144,6 +143,8 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
         cell.setDateLabel(indexPath.row, nextDate!)
         cell.setIconImage(indexPath.row)
         cell.setTemperature(indexPath.row)
+        cell.setSliderLength(indexPath.row)
+        cell.setSliderValue(indexPath.row)
 
         return cell
     }
@@ -151,8 +152,6 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         present(DetailViewController(), animated: true)
     }
-<<<<<<< HEAD
-=======
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
@@ -161,5 +160,4 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
             return (weeklyTable.bounds.height - 60) / 9
         }
     }
->>>>>>> 19b4d39 (tableview cell 크기 조절)
 }
