@@ -69,6 +69,7 @@ extension CurrentThumbnailCell {
 extension CurrentThumbnailCell {
     func setupBottomHStackView() {
         bottomSuperView.addSubview(bottomHStackView)
+        bottomSuperView.layer.cornerRadius = 10
         bottomSuperView.backgroundColor = UIColor(hexCode: "2ec4b6")
         bottomHStackView.configure(axis: .horizontal, alignment: .fill, distribution: .fillProportionally, spacing: 0)
         [bottomVStackView, currentTemperatureLabel].forEach {
