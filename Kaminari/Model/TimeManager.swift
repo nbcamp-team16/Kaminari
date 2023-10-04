@@ -25,7 +25,7 @@ class TimeManager {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         formatter.timeStyle = .medium
-        formatter.dateFormat = "H"
+        formatter.dateFormat = "hh"
         let result = formatter.string(from: Date())
         return Int(result) ?? 0
     }

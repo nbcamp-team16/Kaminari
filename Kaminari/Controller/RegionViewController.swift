@@ -10,14 +10,7 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     var weather: Weather?
     var locationManager = CLLocationManager()
     var mapView: MKMapView!
-//    var count = 0
-    lazy var myLocationButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.tintColor = .white
-        button.setImage(UIImage(systemName: "location"), for: .normal)
-        button.addTarget(self, action: #selector(centerMapOnUserLocation), for: .touchUpInside)
-        return button
-    }()
+    //    var count = 0
 
     deinit {
         print("### ViewController deinitialized")
@@ -32,20 +25,28 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
 
         mapView.delegate = self
         mapView.showsUserLocation = true
-        mapView.setUserTrackingMode(.follow, animated: true)
+        mapView.userTrackingMode = .follow
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
         view.addSubview(mapView)
 
         mapView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
 
-        view.addSubview(myLocationButton)
-        view.bringSubviewToFront(myLocationButton)
+        Task {
+            await fetchallcitysweather()
 
+            DispatchQueue.main.async {
+                self.addCustomPins()
+                self.fetchData()
+            }
+        }
+
+        mapView.setUserTrackingMode(.follow, animated: true)
         current()
-        addCustomPins() // 마커 추가하기
-        fetchData(latitude: 37.577535, longitude: 126.9779692)
     }
+
+    // fetchData 또는 mapView 순서 문제
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation {
@@ -64,11 +65,14 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
 
         if annotationView == nil {
             let currentWeather = WeatherManager.shared.weathers[targetCity]?.currentWeather
+//            print("###", currentWeather)
             let symbolName = currentWeather?.symbolName
-
+//            print("###", symbolName)
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
             annotationView?.image = UIImage(systemName: symbolName ?? "sun.max")
-            annotationView?.frame.size = CGSize(width: 20, height: 20)
+            annotationView?.frame.size = CGSize(width: 30, height: 30)
+            annotationView?.canShowCallout = false
+
         } else {
             annotationView?.annotation = annotation
         }
@@ -76,47 +80,39 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         return annotationView
     }
 
+//    for city in City.allCases {
+//        if let targetCity = WeatherManager.shared.getCity(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
+//        {
+//            if let currentWeather = WeatherManager.shared.weathers[targetCity]?.currentWeather {
+//                print("City: \(targetCity), Current Weather: \(currentWeather)")
+//            }
+//        } else {
+//            print("\(city)")
+//        }
+//    }
+    // 네트워크 call 하기전에 map을 그리고 있다. 호출 부분 문제 또는 타이밍 문제
+
     func setUserTrackingMode(mode: MKUserTrackingMode, animated: Bool) {
         // Your code to set the user tracking mode goes here
     }
 
-    private func addCustomPins() {
-//        let pinCoordinates: [CLLocationCoordinate2D] = [
-//            CLLocationCoordinate2D(latitude: 37.577535, longitude: 126.9779692),
-//            // 서울
-//            CLLocationCoordinate2D(latitude: 37.4562557, longitude: 126.7052062),
-//            // 인천
-//            CLLocationCoordinate2D(latitude: 36.3504119, longitude: 127.3845475),
-//            // 대전
-//            CLLocationCoordinate2D(latitude: 35.1795543, longitude: 129.0756416),
-//            // 부산
-//            CLLocationCoordinate2D(latitude: 35.8714354, longitude: 128.601445),
-//            // 대구
-//            CLLocationCoordinate2D(latitude: 35.1595454, longitude: 126.8526012),
-//            // 광주
-//            CLLocationCoordinate2D(latitude: 35.5383773, longitude: 129.31133596)
-//            // 울산
-//        ]
-
+    func addCustomPins() {
         let pinCoordinates = City.allCases.map { $0.pinCoordinates }
 
         pinCoordinates.forEach { pin in
-
-//            let manager = WeatherManager.shared.weather?.currentWeather
-
             let pinAnnotation = MKPointAnnotation()
 
             pinAnnotation.coordinate.latitude = pin.latitude
             pinAnnotation.coordinate.longitude = pin.longitude
 
-//            print("위도: \(index.latitude), 경도: \(index.longitude)")
-
-//            count += 1
-
-//            pinAnnotation.title = manager?.temperature.description
+            // 날씨 정보에 따라서 annotation title 변경
+            if let closestCity = City.getCity(latitude: pin.latitude, longitude: pin.longitude),
+               let cityWeatherData = WeatherManager.shared.weathers[closestCity]
+            {}
 
             mapView.addAnnotation(pinAnnotation)
         }
+    }
 
 //        print(count)
 //        for (index, coordinate) in pinCoordinates.enumerated() {
@@ -130,14 +126,15 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
 //            mapView.addAnnotation(pinAnnotation)
 //            // 맵뷰에 객체를 추가하여 보이게 한다.
 //        }
-    }
 
-    func fetchData(latitude: Double, longitude: Double) {
+    func fetchData() {
         City.allCases.forEach { city in
             Task {
                 let pinCoordinates = city.pinCoordinates
+//                print("###", pinCoordinates)
                 await WeatherManager.loadData(city: city) {
-                    let manager = WeatherManager.shared
+                    let manager = WeatherManager.shared.weathers
+//                    print("###", manager)
 
 //                    let currentWeather = WeatherManager.shared.weather?.currentWeather
 //                    manager.weather?.currentWeather.date = currentWeather?.date ?? Date()
@@ -152,11 +149,7 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     }
 
     func current() {
-        myLocationButton.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().inset(-50)
-            make.bottom.equalToSuperview().inset(20)
-        }
-
+        mapView.translatesAutoresizingMaskIntoConstraints = false
         mapView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide)
             make.leading.equalToSuperview()
@@ -165,11 +158,44 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         }
     }
 
+    func fetchallcitysweather() async {
+//        do {
+        for city in City.allCases {
+            await WeatherManager.shared.getWeather(city: city)
+        }
+
+//        } catch {
+//
+//        }
+    }
+
     @objc func centerMapOnUserLocation() {
         // 사용자의 현재 위치로 지도를 이동하는 함수
         if let userLocation = locationManager.location?.coordinate {
-            let region = MKCoordinateRegion(center: userLocation, latitudinalMeters: 1000, longitudinalMeters: 1000)
+            let locationDegrees = 0.01
+            let region = MKCoordinateRegion(center: userLocation, latitudinalMeters: locationDegrees, longitudinalMeters: locationDegrees)
             mapView.setRegion(region, animated: true)
         }
+    }
+}
+
+extension City {
+    static func getCity(latitude: Double, longitude: Double) -> City? {
+        let location = CLLocation(latitude: latitude, longitude: longitude)
+        var closestCity: City?
+        var smallestDistance: CLLocationDistance?
+
+        for city in City.allCases {
+            let cityLocation = CLLocation(latitude: city.pinCoordinates.latitude,
+                                          longitude: city.pinCoordinates.longitude)
+            let distance = location.distance(from: cityLocation)
+
+            if smallestDistance == nil || distance < smallestDistance! {
+                smallestDistance = distance
+                closestCity = city
+            }
+        }
+
+        return closestCity
     }
 }

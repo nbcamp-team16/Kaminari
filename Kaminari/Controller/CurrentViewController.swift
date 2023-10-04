@@ -39,9 +39,6 @@ extension CurrentViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUI()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
         fetchData()
     }
 }
@@ -81,7 +78,6 @@ extension CurrentViewController {
 extension CurrentViewController {
     func cofigunreGifView() {
         view.insertSubview(self.gifImageView, at: 0)
-        self.gifImageView.animate(withGIFNamed: "rain")
         self.gifImageView.startAnimatingGIF()
         self.gifImageView.contentMode = .scaleToFill
         
@@ -149,15 +145,15 @@ extension CurrentViewController {
                 section.boundarySupplementaryItems = [header]
                 
             } else if sectionKind == .currentDailyWeatherList {
-                let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0))
+                let itemSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.8))
                 let item = self.collectionView.configureSectionItem(layoutSize: itemSize)
                 item.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
                 
-                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(0.3))
+                let groupSize = self.collectionView.configureSectionItemSize(widthDimension: .fractionalWidth(1.0), heightDimension: .estimated(150))
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
                 section = NSCollectionLayoutSection(group: group)
 
-                section.interGroupSpacing = 10
+//                section.interGroupSpacing = 10
                 section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
                 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
@@ -181,15 +177,15 @@ extension CurrentViewController {
                 guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrentThumbnailCell.identifier, for: indexPath) as? CurrentThumbnailCell else { preconditionFailure() }
                 let item = CurrentWeather.weatherList[indexPath.row]
                 cell.setupUI()
-                cell.currentWeatherIconImage.image = UIImage(systemName: WeatherManager.shared.symbol)
+                cell.currentWeatherIconImage.image = UIImage(named: self.settingImageView(for: WeatherManager.shared.symbol))
                 cell.currentTemperatureLabel.text = WeatherManager.shared.temp
                 cell.currentCityNameLabel.text = "대구광역시"
                 cell.layer.masksToBounds = true
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
-                cell.backgroundColor = .systemBackground
-                cell.layer.borderColor = UIColor.systemBackground.cgColor
-                cell.layer.borderWidth = 0.5
+                cell.backgroundColor = .clear
+//                cell.layer.borderColor = UIColor.systemBackground.cgColor
+//                cell.layer.borderWidth = 0.5
                 return cell
                 
             case .currentHourlyWeatherList:
@@ -218,7 +214,7 @@ extension CurrentViewController {
                 cell.setupShadow(color: UIColor.black.cgColor, opacity: 0.5, radius: 3)
                 cell.currentWeatherLabel.text = titleItem
                 cell.currentTemperatureLabel.text = "\(item ?? "n/a")"
-                cell.currentDescriptionLabel.text = "item.description"
+//                cell.currentDescriptionLabel.text = "item.description"
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
                 cell.backgroundColor = .systemBackground
@@ -264,18 +260,20 @@ extension CurrentViewController {
         Task {
             await WeatherManager.loadData(latitude: self.latitude ?? 0, longitude: self.longtitude ?? 0) { [weak self] in
                 guard let self = self else { return }
+                print("### \(WeatherManager.shared.symbol)")
                 self.tempArray = []
-                let item = WeatherManager.shared.weather?.dailyForecast.forecast[1]
+                let item = WeatherManager.shared.weather?.dailyForecast.forecast[0]
                 self.tempArray?.append(item?.condition.rawValue ?? "n/a")
-                self.tempArray?.append(addUnit(value: item?.highTemperature.value ?? 0))
-                self.tempArray?.append(addUnit(value: item?.lowTemperature.value ?? 0))
+                self.tempArray?.append(addUnit(value: item?.highTemperature.value.rounded() ?? 0))
+                self.tempArray?.append(addUnit(value: item?.lowTemperature.value.rounded() ?? 0))
                 self.tempArray?.append(self.formattedDate(date: item?.sun.sunrise ?? Date()))
                 self.tempArray?.append(self.formattedDate(date: item?.sun.sunset ?? Date()))
                 self.tempArray?.append(item?.uvIndex.value.formatted() ?? "n/a")
-                self.tempArray?.append(item?.wind.speed.value ?? 0)
-                print("&&& \(self.tempArray)")
-//                
+                self.tempArray?.append(item?.wind.speed.value.formatted() ?? 0)
+                
                 DispatchQueue.main.async {
+                    self.gifImageView.animate(withGIFNamed: self.settingGifImageView(for: WeatherManager.shared.symbol))
+                    self.gifImageView.image?.withRenderingMode(.alwaysOriginal)
                     self.collectionView.reloadData()
                 }
             }
@@ -297,7 +295,7 @@ extension CurrentViewController {
             if CLLocationManager.locationServicesEnabled() {
                 print("위치 서비스 On 상태")
                 self.locationManager.startUpdatingLocation() // 위치 정보 받아오기 시작
-                print(self.locationManager.location?.coordinate)
+                print("### \(self.locationManager.location?.coordinate)")
             } else {
                 print("위치 서비스 Off 상태")
             }
@@ -325,15 +323,14 @@ extension CurrentViewController {
     @objc private func refreshCollectionView() {
         print("### 새로고침")
         self.fetchData()
-
-        self.collectionView.reloadData()
+        WeatherManager.shared.weatherIndex += 1
         self.refreshControl.endRefreshing()
     }
 }
 
 extension CurrentViewController {
     func addUnit(value: Double) -> String {
-        let result = value
+        let result = Int(value)
         return "\(result)°C"
     }
     
@@ -343,5 +340,59 @@ extension CurrentViewController {
     
         let resultTime = dateformatter.string(from: date)
         return resultTime
+    }
+    
+    func settingGifImageView(for inputValue: String) -> String {
+        var result = ""
+        switch inputValue {
+        case "sun.max":
+            result = "sun"
+        case "cloud":
+            result = "cloud"
+        case "cloud.rain":
+            result = "rain"
+        case "cloud.moon":
+            result = "moon"
+        case "moon":
+            result = "moon"
+//        case "cloud.snow":
+//            result = "snow"
+//        case "cloud.bolt.rain":
+//            result = "thunderstorm_with_rain"
+//        case "tropicalstorm":
+//            result = "thunderstorm"
+//        case "tornado":
+//            result = "tornado"
+        default:
+            break
+        }
+        return result
+    }
+    
+    func settingImageView(for inputValue: String) -> String {
+        var result = ""
+        switch inputValue {
+        case "sun.max":
+            result = "clear_sky_day"
+        case "cloud":
+            result = "clouds"
+        case "cloud.rain":
+            result = "rain"
+        case "cloud.moon":
+            result = "moon"
+        case "moon":
+            result = "clear_sky_night"
+        case "cloud.snow":
+            result = "snow"
+        case "cloud.bolt.rain":
+            result = "thunderstorm_with_rain"
+        case "tropicalstorm":
+            result = "thunderstorm"
+        case "tornado":
+            result = "tornado"
+        default:
+            break
+        }
+        return result
     }
 }
