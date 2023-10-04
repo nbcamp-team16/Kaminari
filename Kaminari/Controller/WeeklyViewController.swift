@@ -145,6 +145,7 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
         cell.setIconImage(indexPath.row)
         cell.setTemperature(indexPath.row)
         cell.setSliderLength(indexPath.row)
+        cell.setSliderValue(indexPath.row)
 
         return cell
     }

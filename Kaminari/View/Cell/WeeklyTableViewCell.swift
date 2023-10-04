@@ -27,8 +27,14 @@ class WeeklyTableViewCell: UITableViewCell {
     let slider: MultiSlider = {
         let slider = MultiSlider()
         slider.orientation = .horizontal
-        slider.tintColor = .darkGray
+        slider.outerTrackColor = .darkGray
         slider.trackWidth = 5
+        slider.minimumValue = CGFloat(WeatherManager.shared.weeklyForecastLowerTemp()?.min() ?? 0)
+        slider.maximumValue = CGFloat(WeatherManager.shared.weeklyForcastHigherTemp()?.max() ?? 1)
+        slider.tintColor = .systemOrange
+        slider.hasRoundTrackEnds = true
+        slider.disabledThumbIndices = [0, 1]
+        slider.thumbImage = UIImage()
         return slider
     }()
     
@@ -86,6 +92,10 @@ extension WeeklyTableViewCell {
             make.centerX.equalToSuperview().offset(-65)
         }
     }
+    
+    func setSliderLevel() {
+        
+    }
 }
 
 extension WeeklyTableViewCell {
@@ -122,7 +132,11 @@ extension WeeklyTableViewCell {
         }
     }
     
-    func setSliderBar(_ index: Int) {}
+    func setSliderValue(_ index: Int) {
+        slider.value = [CGFloat(lowerTempList?[index] ?? 0), CGFloat(higherTempList?[index] ?? 0)]
+    }
+    
+
     
     func setSliderLength(_ index: Int) {
         if index == 0 {
