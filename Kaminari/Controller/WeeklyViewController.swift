@@ -73,7 +73,7 @@ private extension WeeklyViewController {
     }
 
     func setupLabels() {
-        let currentTemp = Int((WeatherManager.shared.weather?.currentWeather.temperature.value)!)
+        let currentTemp = Int((WeatherManager.shared.weather?.currentWeather.temperature.value) ?? 0)
         let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
 
         cityNameLabel.configure(text: cityName, fontSize: 40, font: .bold)

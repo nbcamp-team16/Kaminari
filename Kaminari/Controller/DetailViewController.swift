@@ -309,7 +309,6 @@ extension DetailViewController {
         }
     }
     
-    // 날짜 버튼 탭되었을 때 호출
     @objc func dateTapped(_ sender: UIButton) {
         selectedDateView?.removeFromSuperview()
         
@@ -328,11 +327,28 @@ extension DetailViewController {
         
         let selectedDateIndex = sender.tag
         let selectedDate = Calendar.current.date(byAdding: .day, value: selectedDateIndex, to: Date())!
+        let isToday = Calendar.current.isDateInToday(selectedDate)
         
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy년 MM월 dd일 EEEE"
-        let dateString = dateFormatter.string(from: selectedDate)
+        let lowerTempValue = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].lowTemperature.value ?? 0
+        let higherTempValue = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].highTemperature.value ?? 0
+        var currentTemp = Int(WeatherManager.shared.weather?.currentWeather.temperature.value ?? 0)
+        if !isToday {
+            currentTemp = Int((lowerTempValue + higherTempValue) / 2)
+        }
         
-        selectedDateLabel.text = dateString
+        let string = "\(Int(currentTemp))º \n 최고 \(Int(higherTempValue))º 최저 \(Int(lowerTempValue))º"
+        let attributedString = NSMutableAttributedString(string: string)
+
+        let range1 = (string as NSString).range(of: "\(Int(currentTemp))º")
+        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 36.0), range: range1)
+
+        let tempRange = "\(Int(higherTempValue))º 최저 \(Int(lowerTempValue))º"
+        let range2 = (string as NSString).range(of: tempRange)
+        attributedString.addAttribute(.font, value: UIFont.systemFont(ofSize: 16.0), range: range2)
+
+        descriptionLabel.attributedText = attributedString
     }
+
+
+
 }
