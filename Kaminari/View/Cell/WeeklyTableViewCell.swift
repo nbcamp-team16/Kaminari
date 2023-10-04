@@ -24,6 +24,24 @@ class WeeklyTableViewCell: UITableViewCell {
 
 //    let slashLabel = WeeklyCustomLabel()
     
+    func gradientLayer(bounds : CGRect) -> CAGradientLayer{
+        let gradient = CAGradientLayer()
+        gradient.frame = bounds
+        gradient.colors = [UIColor.systemBlue.cgColor, UIColor.green.cgColor, UIColor.yellow.cgColor, UIColor.red.cgColor]
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+        
+        return gradient
+    }
+    
+    func gradientColor(gradientLayer :CAGradientLayer) -> UIColor? {
+        UIGraphicsBeginImageContextWithOptions(gradientLayer.bounds.size, false, 0.0)
+        gradientLayer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return UIColor(patternImage: image!)
+    }
+    
     let slider: MultiSlider = {
         let slider = MultiSlider()
         slider.orientation = .horizontal
@@ -31,12 +49,17 @@ class WeeklyTableViewCell: UITableViewCell {
         slider.trackWidth = 5
         slider.minimumValue = CGFloat(WeatherManager.shared.weeklyForecastLowerTemp()?.min() ?? 0)
         slider.maximumValue = CGFloat(WeatherManager.shared.weeklyForcastHigherTemp()?.max() ?? 1)
-        slider.tintColor = .systemOrange
+        
         slider.hasRoundTrackEnds = true
         slider.disabledThumbIndices = [0, 1]
         slider.thumbImage = UIImage()
         return slider
     }()
+    
+    func setSliderGradient() {
+        let gradient = gradientLayer(bounds: self.bounds)
+        slider.tintColor = gradientColor(gradientLayer: gradient)
+    }
     
     let higherTempLabel = WeeklyCustomLabel()
     
@@ -51,6 +74,7 @@ class WeeklyTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupStackView()
+        setSliderGradient()
         self.backgroundColor = .clear
     }
     
@@ -173,3 +197,4 @@ extension WeeklyTableViewCell {
         }
     }
 }
+
