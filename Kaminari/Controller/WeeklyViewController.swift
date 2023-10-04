@@ -10,11 +10,12 @@ import UIKit
 import WeatherKit
 
 class WeeklyViewController: UIViewController {
+    let serarchVC = SearchViewController()
     let date = Date()
 
     var cityName: String = "현재 위치"
-    let sampleLatitude = 37.26
-    let sampleLongitude = 127.03
+    let sampleLatitude = MapManager.shared.latitude
+    let sampleLongitude = MapManager.shared.longitude
 
     let cityNameLabel = WeeklyCustomLabel()
     let detailLabel = WeeklyCustomLabel()
@@ -22,14 +23,14 @@ class WeeklyViewController: UIViewController {
 
     let line: UIView = {
         let line = UIView()
-        line.backgroundColor = .white
+        line.backgroundColor = .label
         return line
     }()
 
     let weeklyTable: UITableView = {
         let table = UITableView()
         table.layer.cornerRadius = 15
-        table.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.17)
+        table.backgroundColor = .table
         return table
     }()
 
@@ -48,41 +49,41 @@ extension WeeklyViewController {
 
     func viewWillAppear(_ animated: Bool) async {
         super.viewWillAppear(animated)
-        await WeatherManager.shared.getWeather(latitude: sampleLatitude, longitude: sampleLongitude)
+        await WeatherManager.loadData(latitude: sampleLatitude ?? 0, longitude: sampleLongitude ?? 0) { [weak self] in
+            guard let self = self else { return }
+        }
     }
 }
 
 extension WeeklyViewController {
     func setupBarButtonItem() {
         let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(tappedResearchButton))
-        barButtonItem.tintColor = .systemBackground
+        barButtonItem.tintColor = .label
         navigationItem.rightBarButtonItem = barButtonItem
     }
 
     @objc func tappedResearchButton(_ sender: UIBarButtonItem) {
-        weeklyTable.reloadData()
+        navigationController?.pushViewController(serarchVC, animated: true)
     }
 }
 
 private extension WeeklyViewController {
     func configureUI() {
-        view.backgroundColor = UIColor(red: 108.0/255.0, green: 202.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+        view.backgroundColor = .systemBackground
         setupLabels()
         configureTable()
-        print("----------\(WeatherManager.shared.weather?.currentWeather.temperature.value)")
     }
 
     func setupLabels() {
-        let currentTemp = Int((WeatherManager.shared.weather?.currentWeather.temperature.value)!)
         let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
 
         cityNameLabel.configure(text: cityName, fontSize: 40, font: .bold)
-        detailLabel.configure(text: "\(currentTemp)º | \(weatherSummury)", fontSize: 20, font: .regular)
+        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .regular)
         tableTitle.configure(text: "주간 예보", fontSize: 18, font: .regular)
 
-        cityNameLabel.setupLabelUI(fontColor: .white)
-        detailLabel.setupLabelUI(fontColor: .white)
-        tableTitle.setupLabelUI(fontColor: .white)
+        cityNameLabel.setupLabelUI(fontColor: .label)
+        detailLabel.setupLabelUI(fontColor: .label)
+        tableTitle.setupLabelUI(fontColor: .label)
 
         [cityNameLabel, detailLabel, tableTitle].forEach {
             view.addSubview($0)
@@ -117,7 +118,7 @@ private extension WeeklyViewController {
         weeklyTable.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(22)
             make.top.equalTo(line.snp.bottom).offset(17)
-            make.height.equalTo(440)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
         }
     }
 }
@@ -142,11 +143,21 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
         cell.setDateLabel(indexPath.row, nextDate!)
         cell.setIconImage(indexPath.row)
         cell.setTemperature(indexPath.row)
+        cell.setSliderLength(indexPath.row)
+        cell.setSliderValue(indexPath.row)
 
         return cell
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         present(DetailViewController(), animated: true)
+    }
+
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 60
+        } else {
+            return (weeklyTable.bounds.height - 60) / 9
+        }
     }
 }

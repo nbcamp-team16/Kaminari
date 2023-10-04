@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		1DC10FBB2AC17C9300EA7D1E /* WeeklyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */; };
 		1DC10FBD2AC2665200EA7D1E /* WeeklyCustomLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */; };
+		1DDC35DE2ACD09E90094F23B /* MultiSlider in Frameworks */ = {isa = PBXBuildFile; productRef = 1DDC35DD2ACD09E90094F23B /* MultiSlider */; };
 		4E10865E2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */; };
 		4E1086602AC3B73000D1FB31 /* CustomCollectionFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E10865F2AC3B73000D1FB31 /* CustomCollectionFooterView.swift */; };
 		4E26E49C2AC166B800CB3329 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E26E49B2AC166B800CB3329 /* AppDelegate.swift */; };
@@ -49,12 +50,16 @@
 		4E9235A32ACD63B700F122A2 /* WeathermapCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9235A22ACD63B700F122A2 /* WeathermapCity.swift */; };
 		4E9CA8952AC69653009BC666 /* WeatherManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9CA8932AC69652009BC666 /* WeatherManager.swift */; };
 		4E9CA8962AC69653009BC666 /* MapManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4E9CA8942AC69653009BC666 /* MapManager.swift */; };
+		DCA523722AC50435005501A5 /* SearchTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */; };
+		DCA523742AC5048D005501A5 /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */; };
+		E799C64D2ACACF3100495059 /* WeathermapCity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E799C64C2ACACF3100495059 /* WeathermapCity.swift */; };
 		FBDF2C3B2AC9591F000407B7 /* SearchRegionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */; };
 		FBDF2C3E2AC95934000407B7 /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = FBDF2C3D2AC95934000407B7 /* Then */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomButton.swift; path = ../../../../../../Downloads/CustomButton.swift; sourceTree = "<group>"; };
 		1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyTableViewCell.swift; sourceTree = "<group>"; };
 		1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeeklyCustomLabel.swift; path = ../WeeklyCustomLabel.swift; sourceTree = "<group>"; };
 		4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionHeaderView.swift; sourceTree = "<group>"; };
@@ -98,6 +103,9 @@
 		4E9235A22ACD63B700F122A2 /* WeathermapCity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeathermapCity.swift; sourceTree = "<group>"; };
 		4E9CA8932AC69652009BC666 /* WeatherManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
 		4E9CA8942AC69653009BC666 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
+		DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableHeaderView.swift; sourceTree = "<group>"; };
+		DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		E799C64C2ACACF3100495059 /* WeathermapCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeathermapCity.swift; sourceTree = "<group>"; };
 		FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRegionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +115,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4E26E4C12AC16C9400CB3329 /* SnapKit in Frameworks */,
+				1DDC35DE2ACD09E90094F23B /* MultiSlider in Frameworks */,
 				FBDF2C3E2AC95934000407B7 /* Then in Frameworks */,
 				4E6EDC6C2AC2D8690003420F /* Gifu in Frameworks */,
 			);
@@ -200,7 +209,6 @@
 				4E26E4B72AC1681600CB3329 /* RegionViewController.swift */,
 				4E26E4B52AC167F300CB3329 /* SearchViewController.swift */,
 				4E26E4B92AC1685000CB3329 /* DetailViewController.swift */,
-				1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */,
 				FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */,
 			);
 			path = Controller;
@@ -211,6 +219,7 @@
 			children = (
 				4E9235772ACD599E00F122A2 /* SearchTableHeaderView.swift */,
 				4E9235762ACD599E00F122A2 /* SearchTableViewCell.swift */,
+				1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */,
 				4E26E4C82AC1993600CB3329 /* CurrentThumbnailCell.swift */,
 				4E26E4C62AC197F200CB3329 /* CurrentTimelyCell.swift */,
 				4E26E4C42AC197D900CB3329 /* CurrentWeatherCell.swift */,
@@ -242,6 +251,7 @@
 				4E26E4C02AC16C9400CB3329 /* SnapKit */,
 				4E6EDC6B2AC2D8690003420F /* Gifu */,
 				FBDF2C3D2AC95934000407B7 /* Then */,
+				1DDC35DD2ACD09E90094F23B /* MultiSlider */,
 			);
 			productName = Kaminari;
 			productReference = 4E26E4982AC166B800CB3329 /* Kaminari.app */;
@@ -272,9 +282,10 @@
 			);
 			mainGroup = 4E26E48F2AC166B800CB3329;
 			packageReferences = (
-				4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */,
-				4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu" */,
-				FBDF2C3C2AC95934000407B7 /* XCRemoteSwiftPackageReference "Then" */,
+				4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit.git" */,
+				4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu.git" */,
+				FBDF2C3C2AC95934000407B7 /* XCRemoteSwiftPackageReference "Then.git" */,
+				1DDC35DC2ACD09E90094F23B /* XCRemoteSwiftPackageReference "MultiSlider" */,
 			);
 			productRefGroup = 4E26E4992AC166B800CB3329 /* Products */;
 			projectDirPath = "";
@@ -322,6 +333,7 @@
 				4E26E4BC2AC169C600CB3329 /* TabBarController.swift in Sources */,
 				4E9235A32ACD63B700F122A2 /* WeathermapCity.swift in Sources */,
 				4E92357B2ACD59AA00F122A2 /* WeeklyTableViewCell.swift in Sources */,
+				DCA523742AC5048D005501A5 /* SearchTableViewCell.swift in Sources */,
 				4E9CA8952AC69653009BC666 /* WeatherManager.swift in Sources */,
 				4E9235782ACD599E00F122A2 /* SearchTableViewCell.swift in Sources */,
 				4E26E4C72AC197F200CB3329 /* CurrentTimelyCell.swift in Sources */,
@@ -560,7 +572,15 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
-		4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+		1DDC35DC2ACD09E90094F23B /* XCRemoteSwiftPackageReference "MultiSlider" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/yonat/MultiSlider";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.2;
+			};
+		};
+		4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
 			requirement = {
@@ -568,7 +588,7 @@
 				minimumVersion = 5.6.0;
 			};
 		};
-		4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu" */ = {
+		4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kaishin/Gifu.git";
 			requirement = {
@@ -576,7 +596,7 @@
 				kind = branch;
 			};
 		};
-		FBDF2C3C2AC95934000407B7 /* XCRemoteSwiftPackageReference "Then" */ = {
+		FBDF2C3C2AC95934000407B7 /* XCRemoteSwiftPackageReference "Then.git" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/devxoul/Then.git";
 			requirement = {
@@ -587,19 +607,24 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1DDC35DD2ACD09E90094F23B /* MultiSlider */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1DDC35DC2ACD09E90094F23B /* XCRemoteSwiftPackageReference "MultiSlider" */;
+			productName = MultiSlider;
+		};
 		4E26E4C02AC16C9400CB3329 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 4E26E4BF2AC16C9400CB3329 /* XCRemoteSwiftPackageReference "SnapKit.git" */;
 			productName = SnapKit;
 		};
 		4E6EDC6B2AC2D8690003420F /* Gifu */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu" */;
+			package = 4E6EDC6A2AC2D8690003420F /* XCRemoteSwiftPackageReference "Gifu.git" */;
 			productName = Gifu;
 		};
 		FBDF2C3D2AC95934000407B7 /* Then */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = FBDF2C3C2AC95934000407B7 /* XCRemoteSwiftPackageReference "Then" */;
+			package = FBDF2C3C2AC95934000407B7 /* XCRemoteSwiftPackageReference "Then.git" */;
 			productName = Then;
 		};
 /* End XCSwiftPackageProductDependency section */
