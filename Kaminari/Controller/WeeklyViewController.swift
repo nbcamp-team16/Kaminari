@@ -75,11 +75,10 @@ private extension WeeklyViewController {
     }
 
     func setupLabels() {
-        let currentTemp = Int((WeatherManager.shared.weather?.currentWeather.temperature.value ?? 0))
         let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
 
         cityNameLabel.configure(text: cityName, fontSize: 40, font: .bold)
-        detailLabel.configure(text: "\(currentTemp)º | \(weatherSummury)", fontSize: 20, font: .regular)
+        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .regular)
         tableTitle.configure(text: "주간 예보", fontSize: 18, font: .regular)
 
         cityNameLabel.setupLabelUI(fontColor: .label)

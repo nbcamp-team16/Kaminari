@@ -45,7 +45,7 @@ class WeeklyTableViewCell: UITableViewCell {
     let slider: MultiSlider = {
         let slider = MultiSlider()
         slider.orientation = .horizontal
-        slider.outerTrackColor = .darkGray
+        slider.outerTrackColor = .slider
         slider.trackWidth = 5
         slider.minimumValue = CGFloat(WeatherManager.shared.weeklyForecastLowerTemp()?.min() ?? 0)
         slider.maximumValue = CGFloat(WeatherManager.shared.weeklyForcastHigherTemp()?.max() ?? 1)
