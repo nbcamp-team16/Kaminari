@@ -9,9 +9,9 @@ import Foundation
 
 class TimeManager {
     static let shared = TimeManager()
-    
+
     private init() {}
-    
+
     func getCurrentDate() -> Int {
         let formatter = DateFormatter()
         formatter.dateStyle = .long
