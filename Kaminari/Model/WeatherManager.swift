@@ -35,6 +35,7 @@ class WeatherManager {
     func getCity(latitude: CLLocationDegrees, longitude: CLLocationDegrees) -> City? {
         return City.allCases.first { ($0.pinCoordinates.latitude == latitude) && ($0.pinCoordinates.longitude == longitude) }
     }
+    
 
     func hourlyForecastTime(indexPath: Int) -> Date {
         let result = weather?.hourlyForecast.forecast[indexPath + weatherIndex].date ?? Date()
@@ -55,6 +56,17 @@ class WeatherManager {
         let result = weather?.hourlyForecast.forecast[indexPath].condition
         return result?.rawValue ?? ""
     }
+    
+    func weeklyForecastLowerTemp() -> [Double]? {
+            let result = weather?.dailyForecast.forecast.map({$0.lowTemperature.value})
+            return result
+        }
+        
+        func weeklyForcastHigherTemp() -> [Double]? {
+            let result = weather?.dailyForecast.forecast.map({$0.highTemperature.value})
+            return result
+        }
+
 
     func getWeather(latitude: Double, longitude: Double) async {
         do {

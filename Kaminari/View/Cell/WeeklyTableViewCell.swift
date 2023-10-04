@@ -5,20 +5,13 @@
 //  Created by 이수현 on 2023/09/25.
 //
 
+import MultiSlider
 import SnapKit
 import UIKit
 
 class WeeklyTableViewCell: UITableViewCell {
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        setupStackView()
-        self.backgroundColor = .clear
-    }
-    
-    @available(*, unavailable)
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    let lowerTempList = WeatherManager.shared.weeklyForecastLowerTemp()
+    let higherTempList = WeatherManager.shared.weeklyForcastHigherTemp()
     
     let dateLabel = WeeklyCustomLabel()
     
@@ -28,15 +21,43 @@ class WeeklyTableViewCell: UITableViewCell {
     }()
     
     let lowerTempLabel = WeeklyCustomLabel()
-
-    let slashLabel = WeeklyCustomLabel()
-//    let progressBar: UIProgressView = {
-//        let progressBar = UIProgressView()
-//        progressBar.trackTintColor = .lightGray
-//        progressBar.progressTintColor = .systemBlue
-//        progressBar.progress = 0.1
-//        return progressBar
-//    }()
+    
+    func gradientLayer(bounds: CGRect) -> CAGradientLayer {
+        let gradient = CAGradientLayer()
+        gradient.frame = bounds
+        gradient.colors = [UIColor.systemBlue.cgColor, UIColor.green.cgColor, UIColor.yellow.cgColor, UIColor.red.cgColor]
+        gradient.startPoint = CGPoint(x: 0.0, y: 0.5)
+        gradient.endPoint = CGPoint(x: 1.0, y: 0.5)
+    
+        return gradient
+    }
+    
+    func gradientColor(gradientLayer: CAGradientLayer) -> UIColor? {
+        UIGraphicsBeginImageContextWithOptions(gradientLayer.bounds.size, false, 0.0)
+        gradientLayer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return UIColor(patternImage: image!)
+    }
+    
+    let slider: MultiSlider = {
+        let slider = MultiSlider()
+        slider.orientation = .horizontal
+        slider.outerTrackColor = .slider
+        slider.trackWidth = 5
+        slider.minimumValue = CGFloat(WeatherManager.shared.weeklyForecastLowerTemp()?.min() ?? 0)
+        slider.maximumValue = CGFloat(WeatherManager.shared.weeklyForcastHigherTemp()?.max() ?? 1)
+        
+        slider.hasRoundTrackEnds = true
+        slider.disabledThumbIndices = [0, 1]
+        slider.thumbImage = UIImage()
+        return slider
+    }()
+    
+    func setSliderGradient() {
+        let gradient = gradientLayer(bounds: bounds)
+        slider.tintColor = gradientColor(gradientLayer: gradient)
+    }
     
     let higherTempLabel = WeeklyCustomLabel()
     
@@ -47,6 +68,18 @@ class WeeklyTableViewCell: UITableViewCell {
         stackView.spacing = 15
         return stackView
     }()
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        setupStackView()
+        setSliderGradient()
+        self.backgroundColor = .clear
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }
 
 extension WeeklyTableViewCell {
@@ -65,11 +98,10 @@ extension WeeklyTableViewCell {
         
         iconImageView.tintColor = .label
         lowerTempLabel.setupLabelUI(fontColor: .label)
-        slashLabel.setupLabelUI(fontColor: .label)
+
         higherTempLabel.setupLabelUI(fontColor: .label)
         
-        [lowerTempLabel, slashLabel, higherTempLabel].forEach { labelStackView.addArrangedSubview($0) }
-        [dateLabel, iconImageView, labelStackView].forEach { contentView.addSubview($0) }
+        [dateLabel, iconImageView, lowerTempLabel, slider, higherTempLabel].forEach { contentView.addSubview($0) }
         
         dateLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -78,13 +110,11 @@ extension WeeklyTableViewCell {
         
         iconImageView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.centerX.equalToSuperview().offset(-50)
-        }
-        labelStackView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.right.equalToSuperview().offset(-20)
+            make.centerX.equalToSuperview().offset(-65)
         }
     }
+    
+    func setSliderLevel() {}
 }
 
 extension WeeklyTableViewCell {
@@ -99,19 +129,18 @@ extension WeeklyTableViewCell {
             dateLabel.configure(text: convertStr, fontSize: 18, font: .semibold)
         }
     }
-
+    
     func setTemperature(_ index: Int) {
-        let lowerTemp = WeatherManager.shared.weather?.dailyForecast.forecast[index].lowTemperature
-        let higherTemp = WeatherManager.shared.weather?.dailyForecast.forecast[index].highTemperature
+        lowerTempLabel.configure(text: "\(Int(lowerTempList?[index] ?? 0))º", fontSize: 18, font: .regular)
         
-        lowerTempLabel.configure(text: "\(Int(lowerTemp?.value ?? 0))º", fontSize: 18, font: .regular)
-        slashLabel.configure(text: "/", fontSize: 18, font: .regular)
-        higherTempLabel.configure(text: "\(Int(higherTemp?.value ?? 0))º", fontSize: 18, font: .regular)
+        higherTempLabel.configure(text: "\(Int(higherTempList?[index] ?? 0))º", fontSize: 18, font: .regular)
         
         if index == 0 {
             lowerTempLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
-            slashLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+            lowerTempLabel.setupLabelUI(fontColor: .systemBlue)
+            
             higherTempLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+            higherTempLabel.setupLabelUI(fontColor: .systemRed)
         }
     }
     
@@ -121,6 +150,45 @@ extension WeeklyTableViewCell {
         if index == 0 {
             iconImageView.frame.size = CGSize(width: 100, height: 100)
             iconImageView.contentMode = .scaleAspectFill
+        }
+    }
+    
+    func setSliderValue(_ index: Int) {
+        slider.value = [CGFloat(lowerTempList?[index] ?? 0), CGFloat(higherTempList?[index] ?? 0)]
+    }
+    
+    func setSliderLength(_ index: Int) {
+        if index == 0 {
+            higherTempLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.right.equalToSuperview().offset(-12)
+            }
+            slider.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.width.equalTo(100)
+                make.right.equalTo(higherTempLabel.snp.left).offset(-12)
+            }
+            lowerTempLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.right.equalTo(slider.snp.left).offset(-12)
+            }
+            
+            iconImageView.snp.makeConstraints { $0.width.equalTo(40) }
+        } else {
+            higherTempLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.right.equalToSuperview().offset(-20)
+            }
+            slider.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.width.equalTo(90)
+                make.right.equalTo(higherTempLabel.snp.left).offset(-12)
+            }
+            lowerTempLabel.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.right.equalTo(slider.snp.left).offset(-12)
+            }
+            iconImageView.snp.makeConstraints { $0.width.height.equalTo(22) }
         }
     }
 }
