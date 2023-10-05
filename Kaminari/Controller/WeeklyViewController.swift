@@ -76,6 +76,7 @@ private extension WeeklyViewController {
     func configureUI() {
         view.backgroundColor = .systemBackground
         view.insertSubview(gifImageView, at: 0)
+        setCityName()
         setupLabels()
         configureTable()
         setGif()
@@ -94,12 +95,17 @@ private extension WeeklyViewController {
         }
     }
 
-    func setCityName() {}
+    func setCityName() {
+        MapManager.shared.getCityName(latitude: sampleLatitude, longitude: sampleLongitude, completion: { locality in
+            DispatchQueue.main.async {
+                self.cityNameLabel.configure(text: locality, fontSize: 40, font: .bold)
+            }
+        })
+    }
 
     func setupLabels() {
         let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
 
-        cityNameLabel.configure(text: cityName ?? "현재 위치", fontSize: 40, font: .bold)
         detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .semibold)
         tableTitle.configure(text: "주간 예보", fontSize: 18, font: .semibold)
 
@@ -140,7 +146,7 @@ private extension WeeklyViewController {
         weeklyTable.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(22)
             make.top.equalTo(line.snp.bottom).offset(17)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-25)
         }
     }
 }
@@ -155,7 +161,7 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return 9
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
