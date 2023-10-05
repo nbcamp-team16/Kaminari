@@ -5,10 +5,10 @@
 //  Created by (^ㅗ^)7 iMac on 2023/09/25.
 //
 
+import Gifu
 import SnapKit
 import UIKit
 import WeatherKit
-import Gifu
 
 class WeeklyViewController: UIViewController {
     let serarchVC = SearchViewController()
@@ -72,14 +72,24 @@ extension WeeklyViewController {
 private extension WeeklyViewController {
     func configureUI() {
         view.backgroundColor = .systemBackground
-        view.insertSubview(self.gifImageView, at: 0)
-        self.gifImageView.stopAnimatingGIF()
-        self.gifImageView.contentMode = .scaleAspectFit
-        self.gifImageView.snp.makeConstraints({make in
-            make.top.left.right.equalToSuperview()
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-10)})
+        view.insertSubview(gifImageView, at: 0)
+
         setupLabels()
         configureTable()
+        setGif()
+    }
+
+    func setGif() {
+        gifImageView.stopAnimatingGIF()
+        let current = CurrentViewController()
+        gifImageView.animate(withGIFNamed: current.settingGifImageView(for: WeatherManager.shared.symbol))
+        gifImageView.image?.withRenderingMode(.alwaysOriginal)
+
+        gifImageView.contentMode = .scaleAspectFill
+        gifImageView.snp.makeConstraints { make in
+            make.top.left.right.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-10)
+        }
     }
 
     func setupLabels() {
