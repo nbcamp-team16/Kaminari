@@ -8,9 +8,11 @@
 import SnapKit
 import UIKit
 import WeatherKit
+import Gifu
 
 class WeeklyViewController: UIViewController {
     let serarchVC = SearchViewController()
+    var gifImageView = GIFImageView(frame: .zero)
     let date = Date()
 
     var cityName: String = "현재 위치"
@@ -70,6 +72,12 @@ extension WeeklyViewController {
 private extension WeeklyViewController {
     func configureUI() {
         view.backgroundColor = .systemBackground
+        view.insertSubview(self.gifImageView, at: 0)
+        self.gifImageView.stopAnimatingGIF()
+        self.gifImageView.contentMode = .scaleAspectFit
+        self.gifImageView.snp.makeConstraints({make in
+            make.top.left.right.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-10)})
         setupLabels()
         configureTable()
     }

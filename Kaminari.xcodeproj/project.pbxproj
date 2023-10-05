@@ -51,7 +51,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CustomButton.swift; path = ../../../../../../Downloads/CustomButton.swift; sourceTree = "<group>"; };
 		1DC10FBA2AC17C9300EA7D1E /* WeeklyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeeklyTableViewCell.swift; sourceTree = "<group>"; };
 		1DC10FBC2AC2665200EA7D1E /* WeeklyCustomLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WeeklyCustomLabel.swift; path = ../WeeklyCustomLabel.swift; sourceTree = "<group>"; };
 		4E10865D2AC3B71B00D1FB31 /* CustomCollectionHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionHeaderView.swift; sourceTree = "<group>"; };
@@ -122,7 +121,6 @@
 			isa = PBXGroup;
 			children = (
 				4E92357C2ACD59CE00F122A2 /* CustomButton.swift */,
-				1D6A1BBF2AC7010F00CAFDDA /* CustomButton.swift */,
 				4E26E4CE2AC1D8B200CB3329 /* CustomCollectionView.swift */,
 				4E6EDC5F2AC27E6A0003420F /* CustomLabel.swift */,
 				4E6EDC632AC283250003420F /* CustomImageView.swift */,
