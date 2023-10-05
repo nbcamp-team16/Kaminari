@@ -80,11 +80,11 @@ class LineGraphView: UIView {
             addSubview(label)
         }
 
+        let paddingFactor: CGFloat = 0.1  // 조절된 패딩 값
+        let paddedHeight = rect.height * (1.0 - 2 * paddingFactor)
+
         for (index, value) in data.enumerated() {
             let x = rect.width * CGFloat(index) / CGFloat(data.count - 1)
-
-            let paddingFactor: CGFloat = 0.15
-            let paddedHeight = rect.height * (1.0 - 2 * paddingFactor)
 
             let rawNormalizedY = (value - (graphMinTemperature ?? 0)) / ((graphMaxTemperature ?? 0) - (graphMinTemperature ?? 0))
             let normalizedY = min(max(rawNormalizedY, 0.0), 1.0)
@@ -107,6 +107,7 @@ class LineGraphView: UIView {
         UIColor.white.setStroke()
         path.stroke()
     }
+
 
     override func layoutSubviews() {
         super.layoutSubviews()
@@ -169,7 +170,7 @@ extension DetailViewController {
     // 뷰가 로드되었을 때 호출
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
+        view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.85)
         setupNewUIElements()
     }
 
@@ -308,7 +309,7 @@ extension DetailViewController {
             make.centerX.equalToSuperview().offset(-10)
             make.top.equalTo(descriptionLabel.snp.bottom).offset(20)
             make.width.equalTo(300)
-            make.height.equalTo(150)
+            make.height.equalTo(200)
         }
 
         // 날씨 예보 라벨 설정
@@ -326,13 +327,16 @@ extension DetailViewController {
         // 날씨 예보 설명
         view.addSubview(forecastDescriptionTextView)
 
-        // 날씨 예보 설명 텍스트 필드 제약 조건 설정
+        // 날씨 예보 설명 텍스트 필드 설정 및 제약 조건 설정
+        forecastDescriptionTextView.textAlignment = .left
+
         forecastDescriptionTextView.snp.makeConstraints { make in
             make.top.equalTo(weatherForecastLabel.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(30)
             make.right.equalToSuperview().offset(-30)
             make.height.equalTo(80)
         }
+
 
         if let dateButton = daysStackView.arrangedSubviews[defaultSelectedIndex!].subviews.last as? UIButton {
             dateTapped(dateButton)
@@ -448,7 +452,7 @@ extension DetailViewController {
         }
 
         let weatherDescription = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].symbolName
-        forecastDescriptionTextView.text = "현재 기온은 \(currentTemp)℃이며 \n 오늘 기온은 \(Int(lowerTempValue))℃에서 \n \(Int(higherTempValue))℃ 사이입니다."
+        forecastDescriptionTextView.text = "현재 기온은 \(currentTemp)℃이며 오늘 기온은 \(Int(lowerTempValue))℃에서 \(Int(higherTempValue))℃ 사이입니다."
 
         lineGraphView.data = hourlyTemperatures
     }
