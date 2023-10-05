@@ -30,6 +30,7 @@ class MapManager {
         MapManager.geocoder.reverseGeocodeLocation(.init(latitude: latitude, longitude: longitude), preferredLocale: self.locale) { [weak self] placemarks, _ in
             guard self != nil else { return }
             guard let placemarks = placemarks, let address = placemarks.last else { return }
+            print("### \(placemarks)")
             guard let locality = address.locality else { return }
             completion(locality)
         }
