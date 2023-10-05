@@ -105,7 +105,8 @@ extension CurrentThumbnailCell {
         currentWeatherIconImage.contentMode = .scaleAspectFit
         currentWeatherIconImage.tintColor = .label
         currentWeatherIconImage.snp.makeConstraints { make in
-            make.top.bottom.leading.trailing.equalToSuperview().inset(5)
+            make.top.leading.trailing.equalToSuperview().inset(5)
+            make.bottom.equalToSuperview().offset(-30)
         }
     }
 
