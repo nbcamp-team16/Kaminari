@@ -25,7 +25,7 @@ class WeeklyViewController: UIViewController {
 
     let line: UIView = {
         let line = UIView()
-        line.backgroundColor = .label
+        line.backgroundColor = .reversedLabel
         return line
     }()
 
@@ -60,7 +60,7 @@ extension WeeklyViewController {
 extension WeeklyViewController {
     func setupBarButtonItem() {
         let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(tappedResearchButton))
-        barButtonItem.tintColor = .label
+        barButtonItem.tintColor = .reversedLabel
         navigationItem.rightBarButtonItem = barButtonItem
     }
 
@@ -96,12 +96,12 @@ private extension WeeklyViewController {
         let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
 
         cityNameLabel.configure(text: cityName, fontSize: 40, font: .bold)
-        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .regular)
-        tableTitle.configure(text: "주간 예보", fontSize: 18, font: .regular)
+        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .semibold)
+        tableTitle.configure(text: "주간 예보", fontSize: 18, font: .semibold)
 
-        cityNameLabel.setupLabelUI(fontColor: .label)
-        detailLabel.setupLabelUI(fontColor: .label)
-        tableTitle.setupLabelUI(fontColor: .label)
+        cityNameLabel.setupLabelUI(fontColor: .reversedLabel)
+        detailLabel.setupLabelUI(fontColor: .reversedLabel)
+        tableTitle.setupLabelUI(fontColor: .reversedLabel)
 
         [cityNameLabel, detailLabel, tableTitle].forEach {
             view.addSubview($0)
@@ -130,7 +130,7 @@ private extension WeeklyViewController {
         line.snp.makeConstraints { make in
             make.top.equalTo(tableTitle.snp.bottom).offset(8)
             make.left.right.equalToSuperview().inset(23)
-            make.height.equalTo(1)
+            make.height.equalTo(1.5)
         }
 
         weeklyTable.snp.makeConstraints { make in
