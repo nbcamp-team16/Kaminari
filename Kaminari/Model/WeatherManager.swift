@@ -16,10 +16,9 @@ class WeatherManager {
 
     var weather: Weather?
 
+    var weatherIndex = TimeManager.shared.getCurrentTime() + 13
 
-
-    let dailyTitleList: [String] = ["기후", "최고 온도", "최저 온도", "일출", "일몰", "자외선 지수", "바람"]
-
+    let dailyTitleList: [String] = ["기후", "최고 온도", "최저 온도", "일출", "일몰", "자외선 지수", "바람(m/s)"]
 
     var symbol: String {
         weather?.currentWeather.symbolName ?? "sunmax"
@@ -38,17 +37,17 @@ class WeatherManager {
     }
 
     func hourlyForecastTime(indexPath: Int) -> Date {
-        let result = weather?.hourlyForecast.forecast[indexPath + 21].date ?? Date()
+        let result = weather?.hourlyForecast.forecast[indexPath + weatherIndex].date ?? Date()
         return result
     }
 
     func hourlyForecastSymbol(indexPath: Int) -> String {
-        let result = weather?.hourlyForecast.forecast[indexPath + 21].symbolName ?? "sun.max"
+        let result = weather?.hourlyForecast.forecast[indexPath + weatherIndex].symbolName ?? "sun.max"
         return result
     }
 
     func hourlyForecastTemperature(indexPath: Int) -> String {
-        guard let result = weather?.hourlyForecast.forecast[indexPath + 21].temperature.value else { return "0" }
+        guard let result = weather?.hourlyForecast.forecast[indexPath + weatherIndex].temperature.value else { return "0" }
         return "\(Int(result))°C"
     }
 
@@ -57,11 +56,20 @@ class WeatherManager {
         return result?.rawValue ?? ""
     }
 
+    func weeklyForecastLowerTemp() -> [Double]? {
+        let result = weather?.dailyForecast.forecast.map { $0.lowTemperature.value }
+        return result
+    }
+
+    func weeklyForcastHigherTemp() -> [Double]? {
+        let result = weather?.dailyForecast.forecast.map { $0.highTemperature.value }
+        return result
+    }
+
     func getWeather(latitude: Double, longitude: Double) async {
         do {
             weather = try await Task.detached(priority: .userInitiated) {
-
-                try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude)) // Coordinates for Apple Park just as example coordinates
+                try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
                 return try await WeatherService.shared.weather(for: .init(latitude: latitude, longitude: longitude))
 
             }.value
@@ -80,7 +88,7 @@ class WeatherManager {
     func getWeather(city: City) async {
         do {
             weathers[city] = try await Task.detached(priority: .userInitiated) {
-                try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude)) // Coordinates for Apple Park just as example coordinates
+                try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude))
                 return try await WeatherService.shared.weather(for: .init(latitude: city.pinCoordinates.latitude, longitude: city.pinCoordinates.longitude))
 
             }.value
@@ -89,7 +97,6 @@ class WeatherManager {
         }
     }
 
-    //
     static func loadData(city: City, completion: @escaping () -> Void) {
         Task {
             await WeatherManager.shared.getWeather(city: city)
