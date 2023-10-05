@@ -12,7 +12,8 @@ import WeatherKit
 class WeeklyViewController: UIViewController {
     let serarchVC = SearchViewController()
     let date = Date()
-
+    var selectedDate: Date?
+    
     var cityName: String = "현재 위치"
     let sampleLatitude = MapManager.shared.latitude
     let sampleLongitude = MapManager.shared.longitude
@@ -150,8 +151,11 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        present(DetailViewController(), animated: true)
+        let detailVC = DetailViewController()
+        detailVC.defaultSelectedIndex = indexPath.row
+        present(detailVC, animated: true)
     }
+
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {

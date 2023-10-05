@@ -8,6 +8,8 @@
 import SnapKit
 import UIKit
 
+    var date: Date?
+
 // Custom UIView를 상속받는 클래스로서, 라인 그래프를 그리기 위한 클래스
 class LineGraphView: UIView {
     var data: [CGFloat] = [] {
@@ -55,32 +57,31 @@ class LineGraphView: UIView {
         let path = UIBezierPath()
         let minY = data.min() ?? 0
         let maxY = data.max() ?? 0
-        let graphHeight = maxY - minY
+        _ = maxY - minY
         
         // 조정된 X축 라벨들
         let xAxisLabels = ["오전 12시", "오전 6시", "오후 12시", "오후 6시"]
         for (index, labelText) in xAxisLabels.enumerated() {
             let x = rect.width * CGFloat(index) / CGFloat(xAxisLabels.count - 1)
-            let label = UILabel(frame: CGRect(x: x - 30, y: rect.height, width: 60, height: 20))
+            let label = UILabel(frame: CGRect(x: x - 30, y: rect.height + 3, width: 60, height: 20))
             label.text = labelText
             label.font = UIFont.systemFont(ofSize: 10)
-            label.textColor = .white
             label.textAlignment = .center
-            label.backgroundColor = .red
+            label.backgroundColor = .clear
             self.addSubview(label)
         }
 
         // 조정된 Y축 라벨들
         for (index, labelText) in yAxisLabels.enumerated() {
             let y = rect.height * CGFloat(index) / CGFloat(yAxisLabels.count - 1)
-            let label = UILabel(frame: CGRect(x: rect.width, y: y - 10, width: 40, height: 20))
+            let label = UILabel(frame: CGRect(x: rect.width + 10, y: y - 12, width: 40, height: 20))
             label.text = labelText
             label.font = UIFont.systemFont(ofSize: 10)
-            label.textColor = .white
             label.textAlignment = .left
-            label.backgroundColor = .red
+            label.backgroundColor = .clear
             self.addSubview(label)
         }
+
 
         for (index, value) in data.enumerated() {
             let x = rect.width * CGFloat(index) / CGFloat(data.count - 1)
@@ -113,7 +114,7 @@ class LineGraphView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         self.layer.cornerRadius = 17
-        self.clipsToBounds = true
+//        self.clipsToBounds = false
     }
 }
 
@@ -135,6 +136,8 @@ extension UIColor {
 }
 
 class DetailViewController: UIViewController {
+    
+    var defaultSelectedIndex: Int? = nil
     
     // UI 요소를 선언
     let testButton = CustomButton(frame: .zero) // 커스텀 버튼
@@ -170,8 +173,8 @@ extension DetailViewController {
     // 뷰가 로드되었을 때 호출
     override func viewDidLoad() {
         super.viewDidLoad()
-//        // 여러 UI 요소 설정
-//        view.backgroundColor = UIColor(red: 108.0/255.0, green: 202.0/255.0, blue: 255.0/255.0, alpha: 1.0)
+
+        print(defaultSelectedIndex)
         view.backgroundColor = .systemBackground
         setupNewUIElements()
     }
@@ -229,7 +232,6 @@ extension DetailViewController {
             dayLabel.text = dayFormatter.string(from: date)
             dayLabel.textAlignment = .center
 
-            
             let dateLabel = UILabel()
             dateLabel.text = dateFormatter.string(from: date)
             dateLabel.textAlignment = .center
@@ -238,6 +240,11 @@ extension DetailViewController {
             dateButton.tag = i
             dateButton.addTarget(self, action: #selector(dateTapped(_:)), for: .touchUpInside)
             dateButton.backgroundColor = UIColor.clear
+            
+            // 선택된 버튼 스타일 지정
+            if i == defaultSelectedIndex {
+                dateButton.backgroundColor = .blue  // 배경색을 파란색으로 지정
+            }
             
             let containerView = UIView()
             containerView.backgroundColor = UIColor.clear
@@ -345,6 +352,9 @@ extension DetailViewController {
         if let todayButton = daysStackView.arrangedSubviews.first?.subviews.last as? UIButton {
             dateTapped(todayButton)
         }
+        
+        
+        
     }
     
     @objc func dateTapped(_ sender: UIButton) {
@@ -439,5 +449,7 @@ extension DetailViewController {
         forecastDescriptionTextView.text = "현재 기온은 \(currentTemp)℃이며 \n 오늘 기온은 \(Int(lowerTempValue))℃에서 \n \(Int(higherTempValue))℃ 사이입니다."
         
         lineGraphView.data = hourlyTemperatures
+        
+
     }
 }
