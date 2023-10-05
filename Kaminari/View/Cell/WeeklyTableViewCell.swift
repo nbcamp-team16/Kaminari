@@ -94,12 +94,12 @@ extension WeeklyTableViewCell {
 
 extension WeeklyTableViewCell {
     func setupStackView() {
-        dateLabel.setupLabelUI(fontColor: .label)
+        dateLabel.setupLabelUI(fontColor: .reversedLabel)
         
-        iconImageView.tintColor = .label
-        lowerTempLabel.setupLabelUI(fontColor: .label)
+        iconImageView.tintColor = .reversedLabel
+        lowerTempLabel.setupLabelUI(fontColor: .reversedLabel)
 
-        higherTempLabel.setupLabelUI(fontColor: .label)
+        higherTempLabel.setupLabelUI(fontColor: .reversedLabel)
         
         [dateLabel, iconImageView, lowerTempLabel, slider, higherTempLabel].forEach { contentView.addSubview($0) }
         
@@ -131,9 +131,9 @@ extension WeeklyTableViewCell {
     }
     
     func setTemperature(_ index: Int) {
-        lowerTempLabel.configure(text: "\(Int(lowerTempList?[index] ?? 0))º", fontSize: 18, font: .regular)
+        lowerTempLabel.configure(text: "\(Int(lowerTempList?[index] ?? 0))º", fontSize: 18, font: .semibold)
         
-        higherTempLabel.configure(text: "\(Int(higherTempList?[index] ?? 0))º", fontSize: 18, font: .regular)
+        higherTempLabel.configure(text: "\(Int(higherTempList?[index] ?? 0))º", fontSize: 18, font: .semibold)
         
         if index == 0 {
             lowerTempLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)

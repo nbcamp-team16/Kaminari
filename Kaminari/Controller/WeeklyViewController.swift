@@ -11,11 +11,12 @@ import UIKit
 import WeatherKit
 
 class WeeklyViewController: UIViewController {
+    let current = CurrentViewController()
     let serarchVC = SearchViewController()
     var gifImageView = GIFImageView(frame: .zero)
     let date = Date()
 
-    var cityName: String = "현재 위치"
+    var cityName: String?
     let sampleLatitude = MapManager.shared.latitude
     let sampleLongitude = MapManager.shared.longitude
 
@@ -25,7 +26,7 @@ class WeeklyViewController: UIViewController {
 
     let line: UIView = {
         let line = UIView()
-        line.backgroundColor = .label
+        line.backgroundColor = .reversedLabel
         return line
     }()
 
@@ -44,6 +45,7 @@ class WeeklyViewController: UIViewController {
 extension WeeklyViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        setCityName()
         configureUI()
         setupTable()
         setupBarButtonItem()
@@ -51,6 +53,7 @@ extension WeeklyViewController {
 
     func viewWillAppear(_ animated: Bool) async {
         super.viewWillAppear(animated)
+
         await WeatherManager.loadData(latitude: sampleLatitude ?? 0, longitude: sampleLongitude ?? 0) { [weak self] in
             guard let self = self else { return }
         }
@@ -60,7 +63,7 @@ extension WeeklyViewController {
 extension WeeklyViewController {
     func setupBarButtonItem() {
         let barButtonItem = UIBarButtonItem(image: UIImage(systemName: "magnifyingglass"), style: .plain, target: self, action: #selector(tappedResearchButton))
-        barButtonItem.tintColor = .label
+        barButtonItem.tintColor = .reversedLabel
         navigationItem.rightBarButtonItem = barButtonItem
     }
 
@@ -73,7 +76,7 @@ private extension WeeklyViewController {
     func configureUI() {
         view.backgroundColor = .systemBackground
         view.insertSubview(gifImageView, at: 0)
-
+        setCityName()
         setupLabels()
         configureTable()
         setGif()
@@ -81,7 +84,7 @@ private extension WeeklyViewController {
 
     func setGif() {
         gifImageView.stopAnimatingGIF()
-        let current = CurrentViewController()
+
         gifImageView.animate(withGIFNamed: current.settingGifImageView(for: WeatherManager.shared.symbol))
         gifImageView.image?.withRenderingMode(.alwaysOriginal)
 
@@ -92,16 +95,23 @@ private extension WeeklyViewController {
         }
     }
 
+    func setCityName() {
+        MapManager.shared.getCityName(latitude: sampleLatitude, longitude: sampleLongitude, completion: { locality in
+            DispatchQueue.main.async {
+                self.cityNameLabel.configure(text: locality, fontSize: 40, font: .bold)
+            }
+        })
+    }
+
     func setupLabels() {
         let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
 
-        cityNameLabel.configure(text: cityName, fontSize: 40, font: .bold)
-        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .regular)
-        tableTitle.configure(text: "주간 예보", fontSize: 18, font: .regular)
+        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .semibold)
+        tableTitle.configure(text: "주간 예보", fontSize: 18, font: .semibold)
 
-        cityNameLabel.setupLabelUI(fontColor: .label)
-        detailLabel.setupLabelUI(fontColor: .label)
-        tableTitle.setupLabelUI(fontColor: .label)
+        cityNameLabel.setupLabelUI(fontColor: .reversedLabel)
+        detailLabel.setupLabelUI(fontColor: .reversedLabel)
+        tableTitle.setupLabelUI(fontColor: .reversedLabel)
 
         [cityNameLabel, detailLabel, tableTitle].forEach {
             view.addSubview($0)
@@ -130,13 +140,13 @@ private extension WeeklyViewController {
         line.snp.makeConstraints { make in
             make.top.equalTo(tableTitle.snp.bottom).offset(8)
             make.left.right.equalToSuperview().inset(23)
-            make.height.equalTo(1)
+            make.height.equalTo(1.5)
         }
 
         weeklyTable.snp.makeConstraints { make in
             make.left.right.equalToSuperview().inset(22)
             make.top.equalTo(line.snp.bottom).offset(17)
-            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-25)
         }
     }
 }
@@ -151,7 +161,7 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return 9
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
