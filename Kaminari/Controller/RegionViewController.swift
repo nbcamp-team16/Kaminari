@@ -5,20 +5,22 @@ import UIKit
 import WeatherKit
 
 class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapViewDelegate {
+    // MARK: 프로퍼티 선언
+
     let customImage = UIImage(named: "Image")
-    // 이미지 추가
     var weather: Weather?
     var locationManager = CLLocationManager()
     var mapView: MKMapView!
-    //    var count = 0
 
     deinit {
         print("### ViewController deinitialized")
     }
 
+    // MARK: viewDidLoad 메서드
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = .white
+        view.backgroundColor = .systemBackground
         locationManager.delegate = self
 
         mapView = MKMapView()
@@ -46,7 +48,7 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         current()
     }
 
-    // fetchData 또는 mapView 순서 문제
+    // MARK: - MKMapViewDelegate 메서드
 
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation {
@@ -65,9 +67,7 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
 
         if annotationView == nil {
             let currentWeather = WeatherManager.shared.weathers[targetCity]?.currentWeather
-//            print("###", currentWeather)
             let symbolName = currentWeather?.symbolName
-//            print("###", symbolName)
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
             annotationView?.image = UIImage(systemName: symbolName ?? "sun.max")
             annotationView?.frame.size = CGSize(width: 30, height: 30)
@@ -80,21 +80,11 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         return annotationView
     }
 
-//    for city in City.allCases {
-//        if let targetCity = WeatherManager.shared.getCity(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
-//        {
-//            if let currentWeather = WeatherManager.shared.weathers[targetCity]?.currentWeather {
-//                print("City: \(targetCity), Current Weather: \(currentWeather)")
-//            }
-//        } else {
-//            print("\(city)")
-//        }
-//    }
-    // 네트워크 call 하기전에 map을 그리고 있다. 호출 부분 문제 또는 타이밍 문제
+    // MARK: - 사용자 추적 모드 설정 메서드
 
-    func setUserTrackingMode(mode: MKUserTrackingMode, animated: Bool) {
-        // Your code to set the user tracking mode goes here
-    }
+    func setUserTrackingMode(mode: MKUserTrackingMode, animated: Bool) {}
+
+    // MARK: - 커스텀 핀 추가 메서드
 
     func addCustomPins() {
         let pinCoordinates = City.allCases.map { $0.pinCoordinates }
@@ -114,39 +104,21 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         }
     }
 
-//        print(count)
-//        for (index, coordinate) in pinCoordinates.enumerated() {
-//            // 좌표, 제목 활용 반복문 사용한다.
-//            let pinAnnotation = MKPointAnnotation()
-//            // 객체를 생성한다.
-//            pinAnnotation.coordinate = coordinate
-//            // 객체의 좌표를 현재 좌표로 설정한다.
-//            pinAnnotation.title = WeatherManager.shared.weather?.currentWeather.temperature.description
-//            // 객체의 제목을 현재 좌표의 인덱스로 설정한다.
-//            mapView.addAnnotation(pinAnnotation)
-//            // 맵뷰에 객체를 추가하여 보이게 한다.
-//        }
+    // MARK: - 데이터 가져오기 메서드
 
     func fetchData() {
         City.allCases.forEach { city in
             Task {
                 let pinCoordinates = city.pinCoordinates
-//                print("###", pinCoordinates)
                 await WeatherManager.loadData(city: city) {
                     let manager = WeatherManager.shared.weathers
-//                    print("###", manager)
-
-//                    let currentWeather = WeatherManager.shared.weather?.currentWeather
-//                    manager.weather?.currentWeather.date = currentWeather?.date ?? Date()
-//                    manager.weather?.currentWeather.symbolName = currentWeather?.symbolName ?? "sun.max"
-                    //                print(currentWeather as Any) // 필요하면 주석처리
-                    //                print(currentWeather?.symbolName) // 필요하면 주석처리
-                    //                print("###", manager.weather?.currentWeather.symbolName)
                     DispatchQueue.main.async {}
                 }
             }
         }
     }
+
+    // MARK: - 현재 지도 설정 메서드
 
     func current() {
         mapView.translatesAutoresizingMaskIntoConstraints = false
@@ -158,16 +130,15 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
         }
     }
 
+    // MARK: - 모든 도시의 날씨 가져오기 메서드
+
     func fetchallcitysweather() async {
-//        do {
         for city in City.allCases {
             await WeatherManager.shared.getWeather(city: city)
         }
-
-//        } catch {
-//
-//        }
     }
+
+    // MARK: - 사용자 위치를 중심으로 지도 이동 메서드
 
     @objc func centerMapOnUserLocation() {
         // 사용자의 현재 위치로 지도를 이동하는 함수
@@ -179,7 +150,11 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
     }
 }
 
+// MARK: - City 확장
+
 extension City {
+    // MARK: - 주어진 좌표에 가장 가까운 도시 찾기
+
     static func getCity(latitude: Double, longitude: Double) -> City? {
         let location = CLLocation(latitude: latitude, longitude: longitude)
         var closestCity: City?
