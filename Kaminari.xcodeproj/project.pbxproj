@@ -91,7 +91,6 @@
 		4E9235A22ACD63B700F122A2 /* WeathermapCity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeathermapCity.swift; sourceTree = "<group>"; };
 		4E9CA8932AC69652009BC666 /* WeatherManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeatherManager.swift; sourceTree = "<group>"; };
 		4E9CA8942AC69653009BC666 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
-		DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		4ED267FE2ACE9FC500EB9552 /* wind.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = wind.gif; sourceTree = "<group>"; };
 		FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRegionViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -111,14 +110,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		1DB5A4442ACD8D610073431A /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */,
-			);
-			name = "Recovered References";
-			sourceTree = "<group>";
-		};
 		4E10865C2AC3B6DC00D1FB31 /* SubComponents */ = {
 			isa = PBXGroup;
 			children = (
@@ -139,7 +130,6 @@
 			children = (
 				4E26E49A2AC166B800CB3329 /* Kaminari */,
 				4E26E4992AC166B800CB3329 /* Products */,
-				1DB5A4442ACD8D610073431A /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -486,7 +476,7 @@
 				CODE_SIGN_ENTITLEMENTS = Kaminari/Kaminari.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WVX5V7QT8W;
+				DEVELOPMENT_TEAM = 4MN45GZSDT;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Kaminari/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -515,7 +505,7 @@
 				CODE_SIGN_ENTITLEMENTS = Kaminari/Kaminari.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = WVX5V7QT8W;
+				DEVELOPMENT_TEAM = 4MN45GZSDT;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Kaminari/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
