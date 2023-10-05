@@ -168,7 +168,9 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        present(DetailViewController(), animated: true)
+        let detailVC = DetailViewController()
+        detailVC.defaultSelectedIndex = indexPath.row
+        present(detailVC, animated: true)
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
