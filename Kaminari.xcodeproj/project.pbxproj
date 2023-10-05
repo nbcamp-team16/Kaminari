@@ -93,8 +93,6 @@
 		4E9CA8942AC69653009BC666 /* MapManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapManager.swift; sourceTree = "<group>"; };
 		4EAC3E792ACEDCAA00A486D8 /* moon.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = moon.gif; sourceTree = "<group>"; };
 		4ED267FE2ACE9FC500EB9552 /* wind.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = wind.gif; sourceTree = "<group>"; };
-		DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableHeaderView.swift; sourceTree = "<group>"; };
-		DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
 		E76C2AF62ACE353700B33C0A /* CustomButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
 		E799C64C2ACACF3100495059 /* WeathermapCity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeathermapCity.swift; sourceTree = "<group>"; };
 		FBDF2C3A2AC9591F000407B7 /* SearchRegionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRegionViewController.swift; sourceTree = "<group>"; };
@@ -136,7 +134,6 @@
 			children = (
 				4E26E49A2AC166B800CB3329 /* Kaminari */,
 				4E26E4992AC166B800CB3329 /* Products */,
-				E7FC280F2ACEE0C9009F7AC1 /* Recovered References */,
 			);
 			sourceTree = "<group>";
 		};
@@ -219,15 +216,6 @@
 				4E26E4C42AC197D900CB3329 /* CurrentWeatherCell.swift */,
 			);
 			path = Cell;
-			sourceTree = "<group>";
-		};
-		E7FC280F2ACEE0C9009F7AC1 /* Recovered References */ = {
-			isa = PBXGroup;
-			children = (
-				DCA523712AC50435005501A5 /* SearchTableHeaderView.swift */,
-				DCA523732AC5048D005501A5 /* SearchTableViewCell.swift */,
-			);
-			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
