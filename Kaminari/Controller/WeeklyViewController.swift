@@ -11,11 +11,12 @@ import UIKit
 import WeatherKit
 
 class WeeklyViewController: UIViewController {
+    let current = CurrentViewController()
     let serarchVC = SearchViewController()
     var gifImageView = GIFImageView(frame: .zero)
     let date = Date()
 
-    var cityName: String = "현재 위치"
+    var cityName: String?
     let sampleLatitude = MapManager.shared.latitude
     let sampleLongitude = MapManager.shared.longitude
 
@@ -44,6 +45,7 @@ class WeeklyViewController: UIViewController {
 extension WeeklyViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        setCityName()
         configureUI()
         setupTable()
         setupBarButtonItem()
@@ -51,6 +53,7 @@ extension WeeklyViewController {
 
     func viewWillAppear(_ animated: Bool) async {
         super.viewWillAppear(animated)
+
         await WeatherManager.loadData(latitude: sampleLatitude ?? 0, longitude: sampleLongitude ?? 0) { [weak self] in
             guard let self = self else { return }
         }
@@ -73,7 +76,6 @@ private extension WeeklyViewController {
     func configureUI() {
         view.backgroundColor = .systemBackground
         view.insertSubview(gifImageView, at: 0)
-
         setupLabels()
         configureTable()
         setGif()
@@ -81,7 +83,7 @@ private extension WeeklyViewController {
 
     func setGif() {
         gifImageView.stopAnimatingGIF()
-        let current = CurrentViewController()
+
         gifImageView.animate(withGIFNamed: current.settingGifImageView(for: WeatherManager.shared.symbol))
         gifImageView.image?.withRenderingMode(.alwaysOriginal)
 
@@ -92,10 +94,12 @@ private extension WeeklyViewController {
         }
     }
 
+    func setCityName() {}
+
     func setupLabels() {
         let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
 
-        cityNameLabel.configure(text: cityName, fontSize: 40, font: .bold)
+        cityNameLabel.configure(text: cityName ?? "현재 위치", fontSize: 40, font: .bold)
         detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .semibold)
         tableTitle.configure(text: "주간 예보", fontSize: 18, font: .semibold)
 
