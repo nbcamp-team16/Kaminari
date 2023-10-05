@@ -153,7 +153,6 @@ extension CurrentViewController {
                 let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitem: item, count: 2)
                 section = NSCollectionLayoutSection(group: group)
 
-//                section.interGroupSpacing = 10
                 section.contentInsets = self.collectionView.configureContentInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
                 
                 let headerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(50))
@@ -179,11 +178,16 @@ extension CurrentViewController {
                 cell.setupUI()
                 cell.currentWeatherIconImage.image = UIImage(named: self.settingImageView(for: WeatherManager.shared.symbol))
                 cell.currentTemperatureLabel.text = WeatherManager.shared.temp
-                cell.currentCityNameLabel.text = "대구광역시"
+                MapManager.shared.getCityName(latitude: self.latitude ?? 0, longitude: self.longtitude ?? 0, completion: { locality in
+                    DispatchQueue.main.async {
+                        cell.currentCityNameLabel.text = locality
+                    }
+                })
                 cell.layer.masksToBounds = true
                 cell.layer.shadowOffset = CGSize(width: 2, height: 2)
                 cell.layer.cornerRadius = 10
                 cell.backgroundColor = .clear
+                
                 return cell
                 
             case .currentHourlyWeatherList:
@@ -267,7 +271,7 @@ extension CurrentViewController {
                 self.tempArray?.append(self.formattedDate(date: item?.sun.sunset ?? Date()))
                 self.tempArray?.append(item?.uvIndex.value.formatted() ?? "n/a")
                 self.tempArray?.append(item?.wind.speed.value.formatted() ?? 0)
-                
+                print("### \(WeatherManager.shared.weather?.currentWeather.symbolName)")
                 DispatchQueue.main.async {
                     self.gifImageView.animate(withGIFNamed: self.settingGifImageView(for: WeatherManager.shared.symbol))
                     self.gifImageView.image?.withRenderingMode(.alwaysOriginal)
@@ -346,14 +350,16 @@ extension CurrentViewController {
             result = "sun"
         case "cloud":
             result = "cloud"
-        case "cloud.rain":
+        case "cloud.moon.rain":
             result = "rain"
         case "cloud.moon":
             result = "moon"
         case "moon":
             result = "moon"
+        case "wind":
+            result = "wind"
         default:
-            break
+            result = "sun"
         }
         return result
     }
@@ -365,12 +371,14 @@ extension CurrentViewController {
             result = "clear_sky_day"
         case "cloud":
             result = "clouds"
-        case "cloud.rain":
+        case "cloud.moon.rain":
             result = "rain"
         case "cloud.moon":
             result = "moon"
         case "moon":
             result = "clear_sky_night"
+        case "wind":
+            result = "wind"
         case "cloud.snow":
             result = "snow"
         case "cloud.bolt.rain":
@@ -380,7 +388,7 @@ extension CurrentViewController {
         case "tornado":
             result = "tornado"
         default:
-            break
+            result = "atmosphere"
         }
         return result
     }
