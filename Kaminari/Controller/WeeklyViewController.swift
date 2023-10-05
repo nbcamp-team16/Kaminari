@@ -5,12 +5,14 @@
 //  Created by (^ㅗ^)7 iMac on 2023/09/25.
 //
 
+import Gifu
 import SnapKit
 import UIKit
 import WeatherKit
 
 class WeeklyViewController: UIViewController {
     let serarchVC = SearchViewController()
+    var gifImageView = GIFImageView(frame: .zero)
     let date = Date()
 
     var cityName: String = "현재 위치"
@@ -70,8 +72,24 @@ extension WeeklyViewController {
 private extension WeeklyViewController {
     func configureUI() {
         view.backgroundColor = .systemBackground
+        view.insertSubview(gifImageView, at: 0)
+
         setupLabels()
         configureTable()
+        setGif()
+    }
+
+    func setGif() {
+        gifImageView.stopAnimatingGIF()
+        let current = CurrentViewController()
+        gifImageView.animate(withGIFNamed: current.settingGifImageView(for: WeatherManager.shared.symbol))
+        gifImageView.image?.withRenderingMode(.alwaysOriginal)
+
+        gifImageView.contentMode = .scaleAspectFill
+        gifImageView.snp.makeConstraints { make in
+            make.top.left.right.equalToSuperview()
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-10)
+        }
     }
 
     func setupLabels() {
