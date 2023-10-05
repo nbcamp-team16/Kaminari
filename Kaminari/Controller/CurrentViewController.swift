@@ -354,7 +354,7 @@ extension CurrentViewController {
             result = "rain"
         case "cloud.moon":
             result = "moon"
-        case "moon":
+        case "moon.stars":
             result = "moon"
         case "wind":
             result = "wind"
@@ -375,7 +375,7 @@ extension CurrentViewController {
             result = "rain"
         case "cloud.moon":
             result = "moon"
-        case "moon":
+        case "moon.stars":
             result = "clear_sky_night"
         case "wind":
             result = "wind"
