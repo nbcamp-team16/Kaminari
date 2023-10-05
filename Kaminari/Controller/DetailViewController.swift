@@ -30,8 +30,6 @@ class LineGraphView: UIView {
         let maxTemp = fahrenheitToCelsius(graphMaxTemperature ?? 0)
         let midTemp = (minTemp + maxTemp) / 2
         let labels = ["\(Int(maxTemp))℃", "\(Int(midTemp))℃", "\(Int(minTemp))℃"]
-        
-        print("Y Axis Labels: \(labels)") // 디버깅 로그 추가
         return labels
     }
 
@@ -173,9 +171,7 @@ extension DetailViewController {
     // 뷰가 로드되었을 때 호출
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        print(defaultSelectedIndex)
-        view.backgroundColor = .systemBackground
+        view.backgroundColor = UIColor.systemBackground.withAlphaComponent(0.9)
         setupNewUIElements()
     }
     
@@ -240,11 +236,6 @@ extension DetailViewController {
             dateButton.tag = i
             dateButton.addTarget(self, action: #selector(dateTapped(_:)), for: .touchUpInside)
             dateButton.backgroundColor = UIColor.clear
-            
-            // 선택된 버튼 스타일 지정
-            if i == defaultSelectedIndex {
-                dateButton.backgroundColor = .blue  // 배경색을 파란색으로 지정
-            }
             
             let containerView = UIView()
             containerView.backgroundColor = UIColor.clear
@@ -347,23 +338,30 @@ extension DetailViewController {
             make.height.equalTo(80)
         }
 
-        
-        // 오늘 버튼 설정
-        if let todayButton = daysStackView.arrangedSubviews.first?.subviews.last as? UIButton {
-            dateTapped(todayButton)
+
+        if let dateButton = daysStackView.arrangedSubviews[defaultSelectedIndex!].subviews.last as? UIButton {
+            dateTapped(dateButton)
         }
-        
-        
-        
     }
     
     @objc func dateTapped(_ sender: UIButton) {
+        print("dateTapped function called")
+
+        // Check and log the view hierarchy
+        var currentView: UIView? = sender
+        var hierarchy: [String] = []
+        while let unwrappedView = currentView {
+            hierarchy.append(String(describing: type(of: unwrappedView)))
+            currentView = unwrappedView.superview
+        }
+        print(hierarchy.joined(separator: " -> "))
+
         selectedDateView?.removeFromSuperview()
-        
+
         guard let containerView = sender.superview else {
             return
         }
-        
+
         let selectedView = UIView()
         selectedView.backgroundColor = UIColor.gray
         selectedView.layer.cornerRadius = 17
@@ -372,15 +370,16 @@ extension DetailViewController {
             make.edges.equalToSuperview().inset(-3)
         }
         selectedDateView = selectedView
-        
+
         let selectedDateIndex = sender.tag
         let selectedDate = Calendar.current.date(byAdding: .day, value: selectedDateIndex, to: Date())!
-        
+
+
         // 선택된 날짜를 `selectedDateLabel`에 표시
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy년 M월 d일 EEEE"
         selectedDateLabel.text = dateFormatter.string(from: selectedDate)
-        
+
         // 날씨 아이콘 가져오기
         let symbolName = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].symbolName ?? "sun.max"
 
@@ -409,8 +408,6 @@ extension DetailViewController {
         completeText.append(boldAttributedString)
         titleLabel.attributedText = completeText
 
-
-
         let lowerTempValue = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].lowTemperature.value ?? 0
         let higherTempValue = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].highTemperature.value ?? 0
         let isToday = Calendar.current.isDateInToday(selectedDate)
@@ -418,6 +415,18 @@ extension DetailViewController {
         if !isToday {
             currentTemp = Int((lowerTempValue + higherTempValue) / 2)
         }
+
+        // 선택된 버튼의 위치로 스크롤
+        if let scrollView = sender.superview?.superview?.superview as? UIScrollView {
+            let buttonPosition = sender.frame.origin.x - (scrollView.frame.width / 2) + (sender.frame.width / 2)
+            print("Button frame: \(sender.frame)")
+            print("ScrollView contentSize: \(scrollView.contentSize)")
+            print("ScrollView contentOffset: \(scrollView.contentOffset)")
+            print("ScrollView frame: \(scrollView.frame)")
+            print("Calculated buttonPosition: \(buttonPosition)")
+            scrollView.setContentOffset(CGPoint(x: max(0, buttonPosition), y: 0), animated: true)
+        }
+
 
         // Y축 범위 조정 로직 추가
         let adjustedLowerTempValue = lowerTempValue - 3
@@ -444,12 +453,11 @@ extension DetailViewController {
                 hourlyTemperatures.append(CGFloat(temperature))
             }
         }
-        
+
         let weatherDescription = WeatherManager.shared.weather?.dailyForecast.forecast[selectedDateIndex].symbolName
         forecastDescriptionTextView.text = "현재 기온은 \(currentTemp)℃이며 \n 오늘 기온은 \(Int(lowerTempValue))℃에서 \n \(Int(higherTempValue))℃ 사이입니다."
-        
-        lineGraphView.data = hourlyTemperatures
-        
 
+        lineGraphView.data = hourlyTemperatures
     }
+
 }
