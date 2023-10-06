@@ -70,6 +70,29 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             let symbolName = currentWeather?.symbolName
             annotationView = MKAnnotationView(annotation: annotation, reuseIdentifier: reuseIdentifier)
             annotationView?.image = UIImage(systemName: symbolName ?? "sun.max")
+
+            let tempLabel = UILabel()
+            if let temperature = currentWeather?.temperature {
+                let tempInCelsius = Int(temperature.converted(to: .celsius).value)
+                tempLabel.text = "\(tempInCelsius)°"
+                tempLabel.textColor = .label
+                tempLabel.backgroundColor = .systemBackground
+
+            } else {
+                tempLabel.text = "N/A"
+
+                tempLabel.textColor = .label
+                tempLabel.backgroundColor = .systemBackground
+            }
+
+            tempLabel.translatesAutoresizingMaskIntoConstraints = false
+
+            annotationView?.addSubview(tempLabel)
+
+            tempLabel.snp.makeConstraints { make in
+                make.centerX.equalTo(annotationView!.snp.centerX)
+                make.top.equalTo(annotationView!.snp.bottom)
+            }
             annotationView?.frame.size = CGSize(width: 30, height: 30)
             annotationView?.canShowCallout = false
 
