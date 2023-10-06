@@ -12,7 +12,8 @@ import WeatherKit
 
 class WeeklyViewController: UIViewController {
     let current = CurrentViewController()
-    let serarchVC = SearchViewController()
+    let searchVC = SearchViewController()
+
     var gifImageView = GIFImageView(frame: .zero)
     let date = Date()
 
@@ -55,8 +56,6 @@ extension WeeklyViewController {
         super.viewWillAppear(animated)
         weeklyTable.reloadData()
         fetchData()
-        print("### 현재 위치 latitude: \(MapManager.shared.newLatitude) longtitude: \(MapManager.shared.newLongitude)")
-        
     }
 }
 
@@ -68,7 +67,7 @@ extension WeeklyViewController {
     }
 
     @objc func tappedResearchButton(_ sender: UIBarButtonItem) {
-        navigationController?.pushViewController(serarchVC, animated: true)
+        navigationController?.pushViewController(searchVC, animated: true)
     }
 }
 
@@ -89,7 +88,6 @@ private extension WeeklyViewController {
                 DispatchQueue.main.async {
                     self.setCityName()
                     self.setGif()
-                    
                 }
             }
         }
@@ -117,9 +115,9 @@ private extension WeeklyViewController {
     }
 
     func setupLabels() {
-        let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
+        let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition
 
-        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .semibold)
+        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(switchingWeatherInfoCase(weatherSummury ?? .clear, WeatherManager.shared.weather?.currentWeather.isDaylight ?? .random())[0])", fontSize: 20, font: .semibold)
         tableTitle.configure(text: "주간 예보", fontSize: 18, font: .semibold)
 
         cityNameLabel.setupLabelUI(fontColor: .reversedLabel)
