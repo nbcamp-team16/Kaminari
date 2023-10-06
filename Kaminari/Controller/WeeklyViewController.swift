@@ -17,8 +17,6 @@ class WeeklyViewController: UIViewController {
     let date = Date()
 
     var cityName: String?
-    let sampleLatitude = MapManager.shared.latitude
-    let sampleLongitude = MapManager.shared.longitude
 
     let cityNameLabel = WeeklyCustomLabel()
     let detailLabel = WeeklyCustomLabel()
@@ -45,18 +43,20 @@ class WeeklyViewController: UIViewController {
 extension WeeklyViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        MapManager.shared.newLatitude = MapManager.shared.latitude
+        MapManager.shared.newLongitude = MapManager.shared.longitude
         setCityName()
         configureUI()
         setupTable()
         setupBarButtonItem()
     }
 
-    func viewWillAppear(_ animated: Bool) async {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        await WeatherManager.loadData(latitude: sampleLatitude ?? 0, longitude: sampleLongitude ?? 0) { [weak self] in
-            guard let self = self else { return }
-        }
+        weeklyTable.reloadData()
+        fetchData()
+        print("### 현재 위치 latitude: \(MapManager.shared.newLatitude) longtitude: \(MapManager.shared.newLongitude)")
+        
     }
 }
 
@@ -82,6 +82,19 @@ private extension WeeklyViewController {
         setGif()
     }
 
+    func fetchData() {
+        Task {
+            await WeatherManager.loadData(latitude: MapManager.shared.newLatitude, longitude: MapManager.shared.newLongitude) { [weak self] in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.setCityName()
+                    self.setGif()
+                    
+                }
+            }
+        }
+    }
+
     func setGif() {
         gifImageView.stopAnimatingGIF()
 
@@ -96,7 +109,7 @@ private extension WeeklyViewController {
     }
 
     func setCityName() {
-        MapManager.shared.getCityName(latitude: sampleLatitude, longitude: sampleLongitude, completion: { locality in
+        MapManager.shared.getCityName(latitude: MapManager.shared.newLatitude, longitude: MapManager.shared.newLongitude, completion: { locality in
             DispatchQueue.main.async {
                 self.cityNameLabel.configure(text: locality, fontSize: 40, font: .bold)
             }
@@ -185,9 +198,9 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 60
+            return 70
         } else {
-            return (weeklyTable.bounds.height - 60) / 9
+            return (weeklyTable.bounds.height - 70) / 8
         }
     }
 }

@@ -97,20 +97,12 @@ extension WeeklyTableViewCell {
         dateLabel.setupLabelUI(fontColor: .reversedLabel)
         
         iconImageView.tintColor = .reversedLabel
-        lowerTempLabel.setupLabelUI(fontColor: .reversedLabel)
 
-        higherTempLabel.setupLabelUI(fontColor: .reversedLabel)
-        
         [dateLabel, iconImageView, lowerTempLabel, slider, higherTempLabel].forEach { contentView.addSubview($0) }
         
         dateLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.left.equalTo(20)
-        }
-        
-        iconImageView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.centerX.equalToSuperview().offset(-65)
         }
     }
 }
@@ -139,14 +131,21 @@ extension WeeklyTableViewCell {
             
             higherTempLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
             higherTempLabel.setupLabelUI(fontColor: .systemRed)
+        } else {
+            lowerTempLabel.setupLabelUI(fontColor: .reversedLabel)
+            higherTempLabel.setupLabelUI(fontColor: .reversedLabel)
         }
     }
     
     func setIconImage(_ index: Int) {
         let symbolName = WeatherManager.shared.weather?.dailyForecast.forecast[index].symbolName
         iconImageView.image = UIImage(systemName: symbolName ?? "sun.max")
+        iconImageView.contentMode = .scaleAspectFill
         if index == 0 {
             iconImageView.frame.size = CGSize(width: 100, height: 100)
+            iconImageView.contentMode = .scaleAspectFill
+        } else {
+            iconImageView.frame.size = CGSize(width: 50, height: 50)
             iconImageView.contentMode = .scaleAspectFill
         }
     }
@@ -157,6 +156,10 @@ extension WeeklyTableViewCell {
     
     func setSliderLength(_ index: Int) {
         if index == 0 {
+            iconImageView.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.centerX.equalToSuperview().offset(-65)
+            }
             higherTempLabel.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
                 make.right.equalToSuperview().offset(-12)
@@ -171,8 +174,11 @@ extension WeeklyTableViewCell {
                 make.right.equalTo(slider.snp.left).offset(-12)
             }
             
-            iconImageView.snp.makeConstraints { $0.width.equalTo(40) }
         } else {
+            iconImageView.snp.makeConstraints { make in
+                make.centerY.equalToSuperview()
+                make.centerX.equalToSuperview().offset(-65)
+            }
             higherTempLabel.snp.makeConstraints { make in
                 make.centerY.equalToSuperview()
                 make.right.equalToSuperview().offset(-20)
@@ -186,7 +192,6 @@ extension WeeklyTableViewCell {
                 make.centerY.equalToSuperview()
                 make.right.equalTo(slider.snp.left).offset(-12)
             }
-            iconImageView.snp.makeConstraints { $0.width.equalTo(22) }
         }
     }
 }
