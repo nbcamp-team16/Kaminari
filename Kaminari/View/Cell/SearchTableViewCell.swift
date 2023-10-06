@@ -16,8 +16,6 @@ class SearchTableViewCell: UITableViewCell {
     let temperature = UILabel()
     let city = UILabel()
     let weather = UILabel()
-    let maxTemp = UILabel()
-    let minTemp = UILabel()
     let weatherImg = UIImageView()
     let backgroundImg = UIImageView()
     
@@ -36,7 +34,7 @@ class SearchTableViewCell: UITableViewCell {
         }
         
         wrapView.addSubview(temperature)
-        temperature.font = .systemFont(ofSize: 40, weight: .ultraLight)
+        temperature.font = .systemFont(ofSize: 45, weight: .thin)
         temperature.textColor = .white
         temperature.snp.makeConstraints{ make in
             make.top.equalToSuperview().inset(8)
@@ -61,25 +59,9 @@ class SearchTableViewCell: UITableViewCell {
         
         wrapView.addSubview(weatherImg)
         weatherImg.snp.makeConstraints{ make in
-            make.top.equalToSuperview().inset(8)
+            make.centerY.equalToSuperview()
             make.right.equalToSuperview().inset(15)
-            make.size.equalTo(CGSize(width: 50, height: 50))
-        }
-        
-        wrapView.addSubview(minTemp)
-        minTemp.font = .systemFont(ofSize: 15, weight: .thin)
-        minTemp.textColor = .white
-        minTemp.snp.makeConstraints{ make in
-            make.right.equalToSuperview().inset(15)
-            make.top.equalTo(city.snp.top)
-        }
-        
-        wrapView.addSubview(maxTemp)
-        maxTemp.font = .systemFont(ofSize: 15, weight: .thin)
-        maxTemp.textColor = .white
-        maxTemp.snp.makeConstraints{ make in
-            make.top.equalTo(city.snp.top)
-            make.right.equalTo(minTemp.snp.left).offset(-8)
+            make.size.equalTo(CGSize(width: 60, height: 60))
         }
     }
 
@@ -95,8 +77,7 @@ class SearchTableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+        self.backgroundColor = .none
     }
 
 }
