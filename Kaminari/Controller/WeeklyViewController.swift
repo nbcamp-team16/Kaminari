@@ -54,7 +54,6 @@ extension WeeklyViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        weeklyTable.reloadData()
         fetchData()
     }
 }
@@ -88,6 +87,7 @@ private extension WeeklyViewController {
                 DispatchQueue.main.async {
                     self.setCityName()
                     self.setGif()
+                    self.weeklyTable.reloadData()
                 }
             }
         }
