@@ -325,10 +325,10 @@ extension CurrentViewController {
     }
 
     @objc private func refreshCollectionView() {
-//        print("### 새로고침")
-//        MapManager.shared.latitude = 37.577535
-//        MapManager.shared.longitude = 126.9779692
-//        print("### \(MapManager.shared.newLatitude):::\(MapManager.shared.newLongitude)")
+        print("### 새로고침")
+        MapManager.shared.latitude = 37.577535
+        MapManager.shared.longitude = 126.9779692
+        print("### \(MapManager.shared.newLatitude):::\(MapManager.shared.newLongitude)")
         self.fetchData()
         WeatherManager.shared.weatherIndex += 1
         self.refreshControl.endRefreshing()

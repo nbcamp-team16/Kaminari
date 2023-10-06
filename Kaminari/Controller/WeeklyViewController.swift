@@ -12,13 +12,12 @@ import WeatherKit
 
 class WeeklyViewController: UIViewController {
     let current = CurrentViewController()
-    let serarchVC = SearchViewController()
+    let searchVC = SearchViewController()
+
     var gifImageView = GIFImageView(frame: .zero)
     let date = Date()
 
     var cityName: String?
-    let sampleLatitude = MapManager.shared.latitude
-    let sampleLongitude = MapManager.shared.longitude
 
     let cityNameLabel = WeeklyCustomLabel()
     let detailLabel = WeeklyCustomLabel()
@@ -45,18 +44,18 @@ class WeeklyViewController: UIViewController {
 extension WeeklyViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        MapManager.shared.newLatitude = MapManager.shared.latitude
+        MapManager.shared.newLongitude = MapManager.shared.longitude
         setCityName()
         configureUI()
         setupTable()
         setupBarButtonItem()
     }
 
-    func viewWillAppear(_ animated: Bool) async {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        await WeatherManager.loadData(latitude: sampleLatitude ?? 0, longitude: sampleLongitude ?? 0) { [weak self] in
-            guard let self = self else { return }
-        }
+        weeklyTable.reloadData()
+        fetchData()
     }
 }
 
@@ -68,7 +67,7 @@ extension WeeklyViewController {
     }
 
     @objc func tappedResearchButton(_ sender: UIBarButtonItem) {
-        navigationController?.pushViewController(serarchVC, animated: true)
+        navigationController?.pushViewController(searchVC, animated: true)
     }
 }
 
@@ -80,6 +79,18 @@ private extension WeeklyViewController {
         setupLabels()
         configureTable()
         setGif()
+    }
+
+    func fetchData() {
+        Task {
+            await WeatherManager.loadData(latitude: MapManager.shared.newLatitude, longitude: MapManager.shared.newLongitude) { [weak self] in
+                guard let self = self else { return }
+                DispatchQueue.main.async {
+                    self.setCityName()
+                    self.setGif()
+                }
+            }
+        }
     }
 
     func setGif() {
@@ -96,7 +107,7 @@ private extension WeeklyViewController {
     }
 
     func setCityName() {
-        MapManager.shared.getCityName(latitude: sampleLatitude, longitude: sampleLongitude, completion: { locality in
+        MapManager.shared.getCityName(latitude: MapManager.shared.newLatitude, longitude: MapManager.shared.newLongitude, completion: { locality in
             DispatchQueue.main.async {
                 self.cityNameLabel.configure(text: locality, fontSize: 40, font: .bold)
             }
@@ -104,9 +115,9 @@ private extension WeeklyViewController {
     }
 
     func setupLabels() {
-        let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition.rawValue ?? "0"
+        let weatherSummury = WeatherManager.shared.weather?.currentWeather.condition
 
-        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(weatherSummury)", fontSize: 20, font: .semibold)
+        detailLabel.configure(text: "\(WeatherManager.shared.temp) | \(switchingWeatherInfoCase(weatherSummury ?? .clear, WeatherManager.shared.weather?.currentWeather.isDaylight ?? .random())[0])", fontSize: 20, font: .semibold)
         tableTitle.configure(text: "주간 예보", fontSize: 18, font: .semibold)
 
         cityNameLabel.setupLabelUI(fontColor: .reversedLabel)
@@ -185,9 +196,9 @@ extension WeeklyViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 60
+            return 70
         } else {
-            return (weeklyTable.bounds.height - 60) / 9
+            return (weeklyTable.bounds.height - 70) / 8
         }
     }
 }
