@@ -6,26 +6,46 @@ import SnapKit
 import UIKit
 import MapKit
 import Foundation
+import WeatherKit
 
 let defaults = UserDefaults.standard // Userdefaults로 섭씨, 화씨 설정
 let defaultUnit = ["tempUnit": "섭씨"] // 기본값
 
-// dummy
-let weather1 = WeatherInfo(temp: 25, cityName: "인천광역시", weather: .cloudyABit, maxTemp: 27, minTemp: 18)
-let weather2 = WeatherInfo(temp: -4, cityName: "서울광역시", weather: .snowy, maxTemp: 3, minTemp: -8)
-let weather3 = WeatherInfo(temp: 13, cityName: "광주광역시", weather: .rainy, maxTemp: 17, minTemp: 8)
-let weather4 = WeatherInfo(temp: 33, cityName: "대구광역시", weather: .sunny, maxTemp: 34, minTemp: 27)
-let weather5 = WeatherInfo(temp: 15, cityName: "제주특별시", weather: .thunder, maxTemp: 21, minTemp: 11)
-let weather6 = WeatherInfo(temp: 15, cityName: "울산광역시", weather: .thunder, maxTemp: 21, minTemp: 11)
 
-let data = [weather1, weather2, weather3, weather4, weather5, weather6]
-let dummy = ["부평", "을지로", "왕십리", "을왕리", "울산"]
+
+var locationData: [LocationData] = []
+
+struct LocationData {
+    var name: String?
+    var latitude: Double?
+    var longtitude: Double?
+}
+
+struct WeatherData {
+    var condition: WeatherCondition?
+    var symbolName: String?
+    var date: Date?
+    var temperature: Int?
+    var isDaylight: Bool?
+}
+
+struct CurrentWeatherData {
+    var locationData: LocationData
+    var weatherData: WeatherData
+}
 
 class SearchViewController: UITableViewController {
+    var weather: Weather?
+    var tempWeatherData: WeatherData = WeatherData()
+    var locationManager = MapManager.locationManager
+    var currentWeatherData: [CurrentWeatherData]? = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let currentLocant = configureMapData()
+        print("현재 위치 데이터: \(currentLocant)")
+
         defaults.register(defaults: defaultUnit)
-        navBar()
         
         view.backgroundColor = .systemBackground
 
@@ -47,7 +67,14 @@ class SearchViewController: UITableViewController {
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        tableView.reloadData()
+        navBar()
+        let currentLocant = configureMapData()
+        
+        if locationData.count == 0 {locationData.append(currentLocant)}
+        else {locationData[0] = currentLocant}
+             print("viewWillAppear locationData: \(String(describing: locationData))")
+        
+        fetchData(locationArray: locationData)
         view.window?.overrideUserInterfaceStyle = .dark
     }
 
@@ -89,9 +116,14 @@ class SearchViewController: UITableViewController {
 
     @objc func setMenu() -> UIMenu {
         let celsius = UIAction(title: "섭씨", image: UIImage(systemName: "c.circle"), handler: {_ in
-           print("섭씨")
+            print("섭씨")
+            defaults.set("섭씨", forKey: "tempUnit")
+            self.tableView.reloadData()
         })
-        let fahrenheit = UIAction(title: "화씨", image: UIImage(systemName: "f.circle"), handler: {_ in           print("화씨")
+        let fahrenheit = UIAction(title: "화씨", image: UIImage(systemName: "f.circle"), handler: {_ in
+            print("화씨")
+            defaults.set("화씨", forKey: "tempUnit")
+            self.tableView.reloadData()
         })
 
         let menu = UIMenu(title: "", children: [celsius, fahrenheit])
@@ -101,98 +133,232 @@ class SearchViewController: UITableViewController {
     deinit {
         print("### SearchViewController deinitialized")
     }
+    
+    func configureMapData() -> LocationData{
+        // 포그라운드일 때 위치 추적 권한 요청
+        self.locationManager.requestWhenInUseAuthorization()
+
+        // 배터리에 맞게 권장되는 최적의 정확도
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+
+        // 사용자에게 허용 받기 alert 띄우기
+        self.locationManager.requestWhenInUseAuthorization()
+
+        // 아이폰 설정에서의 위치 서비스가 켜진 상태라면
+        DispatchQueue.main.async {
+            if CLLocationManager.locationServicesEnabled() {
+                print("위치 서비스 On 상태")
+                self.locationManager.startUpdatingLocation() // 위치 정보 받아오기 시작
+                print(self.locationManager.location?.coordinate as Any)
+            } else {
+                print("위치 서비스 Off 상태")
+            }
+        }
+
+        // 위,경도 가져오기
+        var locant: LocationData = LocationData(name: "🧭 현재위치")
+        let coor = self.locationManager.location?.coordinate
+        locant.latitude = coor?.latitude
+        locant.longtitude = coor?.longitude
+
+        print("### 현재 위도 경도 : \(MapManager.shared.latitude) : \(MapManager.shared.longitude)")
+        print("### 저장된 현재 locant 값 : 위도 - \(String(describing: locant.latitude)), 경도 - \(String(describing: locant.longtitude))")
+        return locant
+    }
+    
+    func fetchData(locationArray: [LocationData]) {
+        let shared = WeatherManager.shared
+        var tempcurrentWeatherData: [CurrentWeatherData] = []
+        Task {
+            for data in locationArray {
+                let latitude = data.latitude ?? 0
+                let longitude = data.longtitude ?? 0
+                await shared.getWeather(latitude: latitude, longitude: longitude)
+                let item = WeatherManager.shared.weather?.currentWeather
+                
+                if let condition = item?.condition {self.tempWeatherData.condition = condition}
+                if let date = item?.date {self.tempWeatherData.date = date}
+                if let symbolName = item?.symbolName {self.tempWeatherData.symbolName = symbolName}
+                if let temperature = item?.temperature {
+                    let temperatureInt = Int(temperature.converted(to: .celsius).value)
+                    self.tempWeatherData.temperature = temperatureInt
+                }
+                if let isDaylight = item?.isDaylight {self.tempWeatherData.isDaylight = isDaylight}
+                
+                print("tempWeatherData : \(tempWeatherData)")
+                let temp = CurrentWeatherData(locationData: data, weatherData: self.tempWeatherData)
+                tempcurrentWeatherData.append(temp)
+            }
+            self.currentWeatherData = tempcurrentWeatherData
+            self.tableView.reloadData() //
+            print("### \(String(describing: self.currentWeatherData))")
+        }
+    }
 }
             
 extension SearchViewController {
-
     override func numberOfSections(in tableView: UITableView) -> Int {1}
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {data.count}
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        currentWeatherData?.count ?? 0
+    }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {120}
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let unit = defaults.string(forKey: "tempUnit")
-
         let cell = tableView.dequeueReusableCell(withIdentifier: SearchTableViewCell.identifier, for: indexPath) as! SearchTableViewCell
-
-        let weatherData = data[indexPath.row]
+        let data = currentWeatherData?[indexPath.row]
 
         // cell 데이터 연결(임시로 dummy와 연결)
         switch unit {
-        case "섭씨":
-            cell.temperature.text = String(weatherData.temp) + "℃"
-            cell.maxTemp.text = "최고" + String(weatherData.maxTemp) + "℃"
-            cell.minTemp.text = "최소" + String(weatherData.minTemp) + "℃"
-            print(cell.temperature.text as Any)
-        case "화씨":
-            cell.temperature.text = String(Int(Double(weatherData.temp) * 1.8) + 32) + "℉"
-            cell.maxTemp.text = "최고" + String(Int(Double(weatherData.maxTemp) * 1.8) + 32) + "℉"
-            cell.minTemp.text = "최소" + String(Int(Double(weatherData.minTemp) * 1.8) + 32) + "℉"
-            print(cell.temperature.text as Any)
-        default :
-            cell.temperature.text = String(weatherData.temp) + "℃"
-            cell.maxTemp.text = "최고" + String(weatherData.maxTemp) + "℃"
-            cell.minTemp.text = "최소" + String(weatherData.minTemp) + "℃"
-            print(cell.temperature.text as Any)
+        case "섭씨": cell.temperature.text = "\(String(describing: data!.weatherData.temperature!))℃"
+        case "화씨": cell.temperature.text = "\(String(describing: Int(Double((data!.weatherData.temperature)!) * 1.8) + 32))℉"
+        default : cell.temperature.text = "\(String(describing: data!.weatherData.temperature!))℃"
         }
-
-        let dataForEnumCase: WeatherInfoForWeatherCase = setWeatherUI(weatherCase: weatherData.weather, needString: true, needBackImg: true, needWeatherImg: true, weatherInfo: weatherData)
-
-        cell.weather.text = dataForEnumCase.weatherString
-        cell.weatherImg.image = UIImage(named: dataForEnumCase.weatherImgName!)
-        cell.backgroundImg.image = UIImage(named: dataForEnumCase.BackImgName!)
-        cell.city.text = weatherData.cityName
-
+                
+        cell.weather.text = switchingWeatherInfoCase(data!.weatherData.condition ?? .clear, data!.weatherData.isDaylight ?? true)[0]
+        cell.city.text = data?.locationData.name
+        cell.weatherImg.image = UIImage(named: switchingWeatherInfoCase(data!.weatherData.condition ?? .clear, data!.weatherData.isDaylight ?? true)[1])
+        cell.weatherImg.tintColor = .label
+        
+        switch data!.weatherData.isDaylight {
+        case true: cell.backgroundImg.image = UIImage(named: "back_day_searchPage")
+        case false: cell.backgroundImg.image = UIImage(named: "back_night_searchPage")
+        default: cell.backgroundImg.image = UIImage(named: "back_day_searchPage")
+        }
+        
+        cell.selectionStyle = .none
+        
         return cell
     }
-}
-
-struct WeatherInfoForWeatherCase {
-    var weatherString: String?
-    var weatherImgName: String?
-    var BackImgName: String?
-
-    init(weatherString: String? = nil, weatherImgName: String? = nil, BackImgName: String? = nil) {
-        self.weatherString = weatherString
-        self.weatherImgName = weatherImgName
-        self.BackImgName = BackImgName
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selectedLat = currentWeatherData![indexPath.row].locationData.latitude
+        let selectedLong = currentWeatherData![indexPath.row].locationData.longtitude
+        
+        MapManager.shared.latitude = selectedLat!
+        MapManager.shared.longitude = selectedLong!
+        let currentVC = CurrentViewController()
+        
+        self.navigationController?.popViewController(animated: true)
     }
+    
 }
 
-struct WeatherInfo {
-    var temp: Int
-    var cityName: String
-    var weather: WeatherCase
-    var maxTemp: Int
-    var minTemp: Int
-}
-
-enum WeatherCase {
-    case cloudyABit, snowy, rainy, sunny, thunder
-}
-
-func connectBoolWithString(weather: String, weatherImgName: String, backgroundImgName: String, _ needString: Bool, _ needBackImg: Bool, _ needWeatherImg: Bool) -> WeatherInfoForWeatherCase {
-    var result = WeatherInfoForWeatherCase()
-    if needString == true {result.weatherString = weather}
-    if needBackImg == true {result.BackImgName = backgroundImgName}
-    if needWeatherImg == true {result.weatherImgName = weatherImgName}
-    return result
-}
-
-
-func setWeatherUI(weatherCase: WeatherCase, needString: Bool, needBackImg: Bool, needWeatherImg: Bool, weatherInfo: WeatherInfo) -> WeatherInfoForWeatherCase {
-    switch weatherCase {
-    case .cloudyABit:
-        return connectBoolWithString(weather: "약간 흐림", weatherImgName: "cloudy_a_bit", backgroundImgName: "back_cloudy_a_bit", needString, needBackImg, needWeatherImg)
-    case .snowy:
-        return connectBoolWithString(weather: "눈", weatherImgName: "snowy", backgroundImgName: "back_snowy", needString, needBackImg, needWeatherImg)
-    case .rainy:
-        return connectBoolWithString(weather: "비", weatherImgName: "rainy", backgroundImgName: "back_rainy", needString, needBackImg, needWeatherImg)
-    case .sunny:
-        return connectBoolWithString(weather: "맑음", weatherImgName: "sunny", backgroundImgName: "back_sunny", needString, needBackImg, needWeatherImg)
-    case .thunder:
-        return connectBoolWithString(weather: "낙뢰", weatherImgName: "thunder", backgroundImgName: "back_thunder", needString, needBackImg, needWeatherImg)
+func switchingWeatherInfoCase(_ condition: WeatherCondition, _ isDaylight: Bool) -> [String] {
+    
+    var conditionString: String
+    var imgString: String
+    switch condition {
+    case .clear:
+        conditionString = "맑음"
+        if isDaylight {imgString = "clear_sky_day"}
+        else {imgString = "clear_sky_night"}
+    case .cloudy:
+        conditionString = "흐림"
+        imgString = "clouds"
+    case .mostlyClear:
+        conditionString = "대부분 맑음"
+        if isDaylight {imgString = "clear_sky_day"}
+        else {imgString = "clear_sky_night"}
+    case .blowingDust:
+        conditionString = "풍진"
+        imgString = "atmosphere"
+    case .foggy:
+        conditionString = "안개"
+        imgString = "atmosphere"
+    case .haze:
+        conditionString = "안개"
+        imgString = "atmosphere"
+    case .mostlyCloudy:
+        conditionString = "대체로 흐림"
+        imgString = "clouds"
+    case .partlyCloudy:
+        conditionString = "부분적으로 흐림"
+        imgString = "clouds"
+    case .smoky:
+        conditionString = "침침한"
+        imgString = "clouds"
+    case .breezy:
+        conditionString = "가벼운 바람"
+        imgString = "wind"
+    case .windy:
+        conditionString = "강풍"
+        imgString = "wind"
+    case .drizzle:
+        conditionString = "이슬비"
+        imgString = "rain"
+    case .heavyRain:
+        conditionString = "폭우"
+        imgString = "rain"
+    case .isolatedThunderstorms:
+        conditionString = "뇌우"
+        imgString = "rain"
+    case .rain:
+        conditionString = "비"
+        imgString = "rain"
+    case .sunShowers:
+        conditionString = "여우비"
+        imgString = "rain"
+    case .scatteredThunderstorms:
+        conditionString = "뇌우"
+        imgString = "thunderstorm_with_rain"
+    case .strongStorms:
+        conditionString = "강한 뇌우"
+        imgString = "thunderstorm_with_rain"
+    case .thunderstorms:
+        conditionString = "뇌우"
+        imgString = "thunderstorm_with_rain"
+    case .frigid:
+        conditionString = "서리"
+        imgString = "snow"
+    case .hail:
+        conditionString = "빗발"
+        imgString = "rain"
+    case .hot:
+        conditionString = "폭염"
+        if isDaylight {imgString = "clear_sky_day"}
+        else {imgString = "clear_sky_night"}
+    case .flurries:
+        conditionString = "폭풍우"
+        imgString = "rain"
+    case .sleet:
+        conditionString = "진눈깨비"
+        imgString = "snow"
+    case .snow:
+        conditionString = "눈"
+        imgString = "snow"
+    case .sunFlurries:
+        conditionString = "눈보라"
+        imgString = "snow"
+    case .wintryMix:
+        conditionString = "진눈깨비"
+        imgString = "snow"
+    case .blizzard:
+        conditionString = "눈보라"
+        imgString = "snow"
+    case .blowingSnow:
+        conditionString = "눈보라"
+        imgString = "snow"
+    case .freezingDrizzle:
+        conditionString = "진눈깨비"
+        imgString = "snow"
+    case .freezingRain:
+        conditionString = "어는 비"
+        imgString = "snow"
+    case .heavySnow:
+        conditionString = "폭설"
+        imgString = "snow"
+    case .hurricane:
+        conditionString = "허리케인"
+        imgString = "tornado"
+    case .tropicalStorm:
+        conditionString = "열대성 폭풍"
+        imgString = "tornado"
+    default : conditionString = "맑음"
+        if isDaylight {imgString = "clear_sky_day"}
+        else {imgString = "clear_sky_night"}
     }
+    return [conditionString, imgString]
 }
-
