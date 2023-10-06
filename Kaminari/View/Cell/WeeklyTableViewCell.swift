@@ -113,8 +113,6 @@ extension WeeklyTableViewCell {
             make.centerX.equalToSuperview().offset(-65)
         }
     }
-    
-    func setSliderLevel() {}
 }
 
 extension WeeklyTableViewCell {
@@ -188,7 +186,7 @@ extension WeeklyTableViewCell {
                 make.centerY.equalToSuperview()
                 make.right.equalTo(slider.snp.left).offset(-12)
             }
-            iconImageView.snp.makeConstraints { $0.width.height.equalTo(22) }
+            iconImageView.snp.makeConstraints { $0.width.equalTo(22) }
         }
     }
 }
