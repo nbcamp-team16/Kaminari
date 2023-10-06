@@ -61,7 +61,7 @@
        <br />
      </td>
      <td align="center" valign="top" width="14.28%">
-       <a href="https://github.com/dnjs012452">
+       <a href="https://github.com/YoungDuck1592">
        <img src="https://avatars.githubusercontent.com/u/139099626?v=4" width="100px;" alt="서영덕"/>
        <br />
          <sub>
