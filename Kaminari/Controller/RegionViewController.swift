@@ -80,7 +80,7 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             }
 
             tempLabel.textColor = .black
-            tempLabel.backgroundColor = UIColor.white
+            tempLabel.backgroundColor = UIColor(red: 100/255, green: 204/255, blue: 197/255, alpha: 1)
 
             tempLabel.translatesAutoresizingMaskIntoConstraints = false
 
