@@ -38,6 +38,9 @@ class CurrentViewController: UIViewController {
 extension CurrentViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
+        MapManager.shared.newLatitude = MapManager.shared.latitude
+        MapManager.shared.newLongitude = MapManager.shared.longitude
+        print("### \(MapManager.shared.latitude) ::: \(MapManager.shared.longitude)")
         self.setupUI()
         fetchData()
     }
@@ -178,7 +181,7 @@ extension CurrentViewController {
                 cell.setupUI()
                 cell.currentWeatherIconImage.image = UIImage(named: self.settingImageView(for: WeatherManager.shared.symbol))
                 cell.currentTemperatureLabel.text = WeatherManager.shared.temp
-                MapManager.shared.getCityName(latitude: self.latitude ?? 0, longitude: self.longtitude ?? 0, completion: { locality in
+                MapManager.shared.getCityName(latitude: MapManager.shared.newLatitude, longitude: MapManager.shared.newLongitude, completion: { locality in
                     DispatchQueue.main.async {
                         cell.currentCityNameLabel.text = locality
                     }
@@ -259,7 +262,7 @@ extension CurrentViewController {
 extension CurrentViewController {
     func fetchData() {
         Task {
-            await WeatherManager.loadData(latitude: self.latitude ?? 0, longitude: self.longtitude ?? 0) { [weak self] in
+            await WeatherManager.loadData(latitude: MapManager.shared.newLatitude, longitude: MapManager.shared.newLongitude) { [weak self] in
                 guard let self = self else { return }
                 print("### \(WeatherManager.shared.symbol)")
                 self.tempArray = []
@@ -322,7 +325,10 @@ extension CurrentViewController {
     }
 
     @objc private func refreshCollectionView() {
-        print("### 새로고침")
+//        print("### 새로고침")
+//        MapManager.shared.latitude = 37.577535
+//        MapManager.shared.longitude = 126.9779692
+//        print("### \(MapManager.shared.newLatitude):::\(MapManager.shared.newLongitude)")
         self.fetchData()
         WeatherManager.shared.weatherIndex += 1
         self.refreshControl.endRefreshing()

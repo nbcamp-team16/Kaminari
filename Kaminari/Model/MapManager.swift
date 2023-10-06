@@ -18,12 +18,26 @@ class MapManager {
 
     var locale = Locale(identifier: "Ko-kr")
 
+    var newLatitude: Double = 0
+    var newLongitude: Double = 0
+
     var latitude: Double {
-        return MapManager.locationManager.location?.coordinate.latitude ?? 0.0
+        get {
+            return MapManager.locationManager.location?.coordinate.latitude ?? 0.0
+        }
+        set {
+            self.newLatitude = newValue
+        }
     }
 
     var longitude: Double {
-        return MapManager.locationManager.location?.coordinate.longitude ?? 0.0
+        get {
+            return MapManager.locationManager.location?.coordinate.longitude ?? 0.0
+        }
+
+        set {
+            self.newLongitude = newValue
+        }
     }
 
     func getCityName(latitude: Double, longitude: Double, completion: @escaping (String) -> Void) {
