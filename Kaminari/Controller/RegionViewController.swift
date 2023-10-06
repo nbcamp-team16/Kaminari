@@ -75,12 +75,15 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
             if let temperature = currentWeather?.temperature {
                 let tempInCelsius = Int(temperature.converted(to: .celsius).value)
                 tempLabel.text = "\(tempInCelsius)°"
+                tempLabel.textColor = .label
+                tempLabel.backgroundColor = .systemBackground
+
             } else {
                 tempLabel.text = "N/A"
-            }
 
-            tempLabel.textColor = .black
-            tempLabel.backgroundColor = UIColor(red: 100/255, green: 204/255, blue: 197/255, alpha: 1)
+                tempLabel.textColor = .label
+                tempLabel.backgroundColor = .systemBackground
+            }
 
             tempLabel.translatesAutoresizingMaskIntoConstraints = false
 
@@ -90,7 +93,7 @@ class RegionViewController: UIViewController, CLLocationManagerDelegate, MKMapVi
                 make.centerX.equalTo(annotationView!.snp.centerX)
                 make.top.equalTo(annotationView!.snp.bottom)
             }
-            annotationView?.frame.size = CGSize(width: 40, height: 40)
+            annotationView?.frame.size = CGSize(width: 30, height: 30)
             annotationView?.canShowCallout = false
 
         } else {
